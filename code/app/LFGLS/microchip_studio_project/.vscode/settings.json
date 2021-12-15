@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "ep40_function_specification.h": "c",
+        "stddef.h": "c",
+        "stdint.h": "c",
+        "ep40_cfg.h": "c",
+        "lin.h": "c",
+        "system.h": "c",
+        "atmel_start_pins.h": "c"
+    }
+}

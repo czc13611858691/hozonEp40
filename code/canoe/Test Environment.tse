@@ -1,0 +1,799 @@
+;CANoe Version |4|11|0|41845 Test Environment 
+Version: 11.0.81 Build 81
+32 PRO
+25
+APPDIR Vector.CANalyzer.LIN.NetworkMonitor.DLL
+Vector.CANalyzer.LIN.NetworkMonitor, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANalyzer.LIN.NetworkMonitor.NetworkMonitor
+1
+1.0.1
+APPDIR Vector.CANalyzer.LIN.InteractiveScheduler.DLL
+Vector.CANalyzer.LIN.InteractiveScheduler, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANalyzer.LIN.InteractiveScheduler.Controller.CANwinGateway
+2
+1.0.0
+APPDIR Vector.CANoe.SignalGenerators.DLL
+Vector.CANoe.SignalGenerators, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.SignalGenerators.ComponentWrapper
+3
+1.0.1
+APPDIR Vector.CANalyzer.LIN.NMWindow.DLL
+Vector.CANalyzer.LIN.NMWindow, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANalyzer.LIN.NMWindow.NMWindow
+4
+1.0.0
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.StressIG
+5
+1.0.0
+VTSPersistentRoot 1 Begin_Of_Object
+1
+1
+TS_PERSISTENT_ROOT_ID_STRING_0x792341fe
+1
+2
+VTSFolder 2 Begin_Of_Object
+1
+VTSItem 3 Begin_Of_Object
+1
+3 3598236289 0
+1
+END_OF_ITEM_DATA
+End_Of_Object VTSItem 3
+4
+Test Environment
+1
+3662447665
+<VFileName V7 QL> 1 "report.xml" 
+END_OF_FILE_NAME
+<VFileName V7 QL> 1 "" 
+END_OF_FILE_NAME
+1
+1
+END_OF_FOLDER_DATA
+End_Of_Object VTSFolder 2
+VTSNetControlBlock 2 Begin_Of_Object
+1
+VTSWrapper<class_VNETSimControlConfiguration> 3 Begin_Of_Object
+2
+VTSItem 4 Begin_Of_Object
+1
+3 3662447665 0
+1
+END_OF_ITEM_DATA
+End_Of_Object VTSItem 4
+2
+VNETSimControlConfiguration 4 Begin_Of_Object
+1
+VNETControlConfiguration 5 Begin_Of_Object
+1
+VConfigurationRoot 6 Begin_Of_Object
+1
+End_Of_Object VConfigurationRoot 6
+VNETControlBox 6 Begin_Of_Object
+2
+VUniqueBox 7 Begin_Of_Object
+1
+VBoxRoot 8 Begin_Of_Object
+1
+1
+1 0 0 2 0 764 -1 -1 205 262 973 718
+LIN Stress IG
+1
+
+MDI_DOCK_INFO_END
+5
+1
+6
+0 2 0 764 -1 -1 205 262 973 718
+6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
+END_OF_DOCK_INFO
+1
+0
+0
+0
+0
+1280 792
+END_OF_DESKTOP_DATA
+6
+0 1 0 0 0 0 256 158 1024 634
+6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
+END_OF_DOCK_INFO
+0
+-1
+0
+0
+0
+0 0
+END_OF_DESKTOP_DATA
+6
+0 1 0 0 0 0 256 158 1024 634
+6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
+END_OF_DOCK_INFO
+0
+0
+0
+0
+0
+0 0
+END_OF_DESKTOP_DATA
+6
+0 1 0 0 0 0 256 158 1024 634
+6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
+END_OF_DOCK_INFO
+0
+-1
+0
+0
+0
+0 0
+END_OF_DESKTOP_DATA
+END_OF_DESKTOP_DATA_COLLECTION
+0
+0 1
+1
+6
+0 1 0 0 0 0 256 158 1024 634
+6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
+END_OF_DOCK_INFO
+0
+-1
+0
+0
+0
+0 0
+END_OF_DESKTOP_DATA
+6
+0 1 0 0 0 0 256 158 1024 634
+6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
+END_OF_DOCK_INFO
+0
+-1
+0
+0
+0
+0 0
+END_OF_DESKTOP_DATA
+6
+0 1 0 0 0 0 256 158 1024 634
+6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
+END_OF_DOCK_INFO
+0
+-1
+0
+0
+0
+0 0
+END_OF_DESKTOP_DATA
+6
+0 1 0 0 0 0 256 158 1024 634
+6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
+END_OF_DOCK_INFO
+0
+-1
+0
+0
+0
+0 0
+END_OF_DESKTOP_DATA
+END_OF_DESKTOP_DATA_COLLECTION
+0
+END_OF_DESKTOP_MEMBER
+{BDF87B99-FC45-4C11-8709-ED46CF2BF622}
+0
+End_Of_Object VBoxRoot 8
+1 -1 0 0 0 0 0 0 0 0 0 0
+End_Of_Object VUniqueBox 7
+1
+1 -1 0 0 0 0 0 0 0 0 0 0
+0
+End_Of_Object VNETControlBox 6
+589
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.StressIG
+1
+1
+APPDIR CANw_Net.DLL
+CANw_Net, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANalyzer.ApplicationSerializer
+2
+mApp
+2
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.StressIGData
+3
+mData
+3
+APPDIR Components\Vector.CANalyzer.Serialization\1.5.0.0\Vector.CANalyzer.Serialization.dll
+Vector.CANalyzer.Serialization, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b273882a063429a6
+Vector.CANalyzer.Serialization.SerializationVersion
+4
+SerializationVersion
+4
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+0
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:2
+2
+--TextFormatter: End of Object--
+TypeRef:3
+3
+Int32
+EntriesNum
+2
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.StressEntryData
+5
+Entry_0
+5
+TypeRef:5
+Entry_1
+6
+UInt32
+CurrentEntryIndex
+0
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.EntryViews
+6
+CurrentEntryView
+7
+Int32
+value__
+0
+--TextFormatter: End of Object--
+TypeRef:4
+SerializationVersion
+8
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+1
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:5
+5
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.FrameData
+7
+mFrameData
+9
+Boolean
+mIsHeaderToTransmit
+True
+Boolean
+mIsResponseToTransmit
+True
+Int32
+mChannelIndex
+1
+TypeRef:4
+SerializationVersion
+10
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+0
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:5
+6
+TypeRef:7
+mFrameData
+11
+Boolean
+mIsHeaderToTransmit
+True
+Boolean
+mIsResponseToTransmit
+False
+Int32
+mChannelIndex
+1
+--TextFormatter: End of Object--
+TypeRef:7
+9
+Int32
+Id
+16
+Int32
+Length
+8
+Int32
+LengthTrans
+8
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.HeaderData
+8
+HeaderSettings
+12
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.RawData
+9
+RawData
+13
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.ResponseData
+10
+RespSettings
+14
+TypeRef:4
+SerializationVersion
+15
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+1
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:7
+11
+Int32
+Id
+33
+Int32
+Length
+8
+Int32
+LengthTrans
+8
+TypeRef:8
+HeaderSettings
+16
+TypeRef:9
+RawData
+17
+TypeRef:10
+RespSettings
+18
+--TextFormatter: End of Object--
+TypeRef:8
+12
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.BaudrateData
+11
+Baudrate
+19
+Int32
+ComponentNumber
+6
+Int16
+mHeaderComponentType0
+0
+Boolean
+mIsToTransmit0
+True
+Int32
+mValue0
+18
+Int16
+mHeaderComponentType1
+1
+Boolean
+mIsToTransmit1
+True
+Int32
+mValue1
+2
+Int16
+mHeaderComponentType2
+2
+Boolean
+mIsToTransmit2
+True
+Int32
+mValue2
+85
+Int16
+mHeaderComponentType3
+3
+Boolean
+mIsToTransmit3
+True
+Double
+mValue3
+0
+Int16
+mHeaderComponentType4
+4
+Boolean
+mIsToTransmit4
+True
+Int32
+mValue4
+80
+Int16
+mHeaderComponentType5
+5
+Boolean
+mIsToTransmit5
+True
+Int32
+mValue5
+1
+TypeRef:4
+SerializationVersion
+20
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+0
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:9
+13
+Int32
+DataBytesCount
+8
+Byte
+DataByte_0
+254
+Byte
+DataByte_1
+255
+Byte
+DataByte_2
+255
+Byte
+DataByte_3
+255
+Byte
+DataByte_4
+79
+Byte
+DataByte_5
+254
+Byte
+DataByte_6
+255
+Byte
+DataByte_7
+255
+APPDIR Vector.CANoe.LIN.StressIG.DLL
+Vector.CANoe.LIN.StressIG, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.LIN.StressIG.ChecksumData
+12
+mCSData
+21
+TypeRef:4
+SerializationVersion
+22
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+1
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:10
+14
+TypeRef:11
+Baudrate
+23
+Int32
+TimingValuesNum
+9
+Int32
+TimingValue0
+0
+Int32
+TimingValue1
+0
+Int32
+TimingValue2
+0
+Int32
+TimingValue3
+0
+Int32
+TimingValue4
+0
+Int32
+TimingValue5
+0
+Int32
+TimingValue6
+0
+Int32
+TimingValue7
+0
+Int32
+TimingValue8
+0
+Int32
+TimingValue10
+0
+TypeRef:4
+SerializationVersion
+24
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+1
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:8
+16
+TypeRef:11
+Baudrate
+25
+Int32
+ComponentNumber
+6
+Int16
+mHeaderComponentType0
+0
+Boolean
+mIsToTransmit0
+True
+Int32
+mValue0
+18
+Int16
+mHeaderComponentType1
+1
+Boolean
+mIsToTransmit1
+True
+Int32
+mValue1
+2
+Int16
+mHeaderComponentType2
+2
+Boolean
+mIsToTransmit2
+True
+Int32
+mValue2
+85
+Int16
+mHeaderComponentType3
+3
+Boolean
+mIsToTransmit3
+True
+Double
+mValue3
+0
+Int16
+mHeaderComponentType4
+4
+Boolean
+mIsToTransmit4
+True
+Int32
+mValue4
+97
+Int16
+mHeaderComponentType5
+5
+Boolean
+mIsToTransmit5
+True
+Int32
+mValue5
+1
+--TextFormatter: End of Object--
+TypeRef:9
+17
+Int32
+DataBytesCount
+8
+Byte
+DataByte_0
+0
+Byte
+DataByte_1
+128
+Byte
+DataByte_2
+248
+Byte
+DataByte_3
+255
+Byte
+DataByte_4
+255
+Byte
+DataByte_5
+255
+Byte
+DataByte_6
+255
+Byte
+DataByte_7
+127
+TypeRef:12
+mCSData
+26
+--TextFormatter: End of Object--
+TypeRef:10
+18
+TypeRef:11
+Baudrate
+27
+Int32
+TimingValuesNum
+9
+Int32
+TimingValue0
+0
+Int32
+TimingValue1
+0
+Int32
+TimingValue2
+0
+Int32
+TimingValue3
+0
+Int32
+TimingValue4
+0
+Int32
+TimingValue5
+0
+Int32
+TimingValue6
+0
+Int32
+TimingValue7
+0
+Int32
+TimingValue8
+0
+Int32
+TimingValue10
+0
+--TextFormatter: End of Object--
+TypeRef:11
+19
+Int32
+BRMode
+0
+Int32
+BRValue
+19200
+TypeRef:4
+SerializationVersion
+28
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+0
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:12
+21
+Int32
+CSType
+0
+Int32
+CSModel
+1
+Byte
+CSValue
+98
+TypeRef:4
+SerializationVersion
+29
+UInt16
+mMajor
+1
+UInt16
+mMinor
+0
+UInt16
+mPatch
+0
+--TextFormatter: End of Object--
+--TextFormatter: End of Object--
+TypeRef:11
+23
+Int32
+BRMode
+0
+Int32
+BRValue
+19200
+--TextFormatter: End of Object--
+TypeRef:11
+25
+Int32
+BRMode
+0
+Int32
+BRValue
+19200
+--TextFormatter: End of Object--
+TypeRef:12
+26
+Int32
+CSType
+0
+Int32
+CSModel
+1
+Byte
+CSValue
+165
+--TextFormatter: End of Object--
+TypeRef:11
+27
+Int32
+BRMode
+0
+Int32
+BRValue
+19200
+--TextFormatter: End of Object--
+End_Of_Object VNETControlConfiguration 5
+End_Of_Object VNETSimControlConfiguration 4
+TS_WRP_DATA_END
+End_Of_Object VTSWrapper<class_VNETSimControlConfiguration> 3
+1
+TS_NET_CONTROL_BLOCK_END
+End_Of_Object VTSNetControlBlock 2
+1
+3598236289
+2
+1
+3598236289
+1
+3662447665
+1
+3662447665
+0
+End_Of_Object VTSPersistentRoot 1
