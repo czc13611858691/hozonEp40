@@ -107,7 +107,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x28 adc.o
  .debug_ranges  0x00000000       0x18 adc.o
- .debug_line    0x00000000      0x151 adc.o
+ .debug_line    0x00000000      0x14f adc.o
  .debug_str     0x00000000      0x464 adc.o
  .comment       0x00000000       0x31 adc.o
  .debug_frame   0x00000000       0x34 adc.o
@@ -227,19 +227,6 @@ Discarded input sections
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
- .text.soft_timer_adc_task
-                0x00000000       0x40 main.o
- .text.sof_timer_motor_test_task
-                0x00000000        0x8 main.o
- .text.soft_timer_touch_printf_task
-                0x00000000       0x5c main.o
- .text.soft_timer_slide_printf_task
-                0x00000000       0x5e main.o
- .text.soft_timer_touch_led_task
-                0x00000000      0x1c2 main.o
- .text.soft_timer_lin_printf_task
-                0x00000000        0x2 main.o
- .bss.adc_res   0x00000000        0x4 main.o
  .data.page_addr
                 0x00000000        0x4 main.o
  .text          0x00000000        0x0 middleware/lin/coreapi/lin_common_api.o
@@ -800,6 +787,7 @@ LOAD ../qtouch/lib/gcc\libqtm_scroller_avr64da_0x000b.a
 LOAD ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a
 LOAD d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega2\libm.a
 END GROUP
+Address of section .text set to 0x4800
 START GROUP
 LOAD d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a
 LOAD d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega2\libm.a
@@ -906,57 +894,57 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x78e0
+.text           0x00004800     0x78e0
  *(.vectors)
- .vectors       0x00000000      0x100 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
-                0x00000000                __vector_default
-                0x00000000                __vectors
+ .vectors       0x00004800      0x100 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
+                0x00004800                __vector_default
+                0x00004800                __vectors
  *(.vectors)
  *(.progmem.gcc*)
  .progmem.gcc_sw_table.ep40_lin_signal_update_while_task
-                0x00000100       0x14 ep40_cfg.o
+                0x00004900       0x14 ep40_cfg.o
  .progmem.gcc_sw_table.CallbackHandler
-                0x00000114       0x1a middleware/lin/lowlevel/lin.o
+                0x00004914       0x1a middleware/lin/lowlevel/lin.o
  .progmem.gcc_sw_table.lin_tl_callback_handler
-                0x0000012e       0x10 middleware/lin/transport/lin_commontl_proto.o
-                0x0000013e                . = ALIGN (0x2)
-                0x0000013e                __trampolines_start = .
+                0x0000492e       0x10 middleware/lin/transport/lin_commontl_proto.o
+                0x0000493e                . = ALIGN (0x2)
+                0x0000493e                __trampolines_start = .
  *(.trampolines)
- .trampolines   0x0000013e        0x0 linker stubs
+ .trampolines   0x0000493e        0x0 linker stubs
  *(.trampolines*)
-                0x0000013e                __trampolines_end = .
+                0x0000493e                __trampolines_end = .
  *libprintf_flt.a:*(.progmem.data)
  *libc.a:*(.progmem.data)
  *(.progmem*)
-                0x0000013e                . = ALIGN (0x2)
+                0x0000493e                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
  *(.lowtext)
  *(.lowtext*)
-                0x0000013e                __ctors_start = .
+                0x0000493e                __ctors_start = .
  *(.ctors)
-                0x0000013e                __ctors_end = .
-                0x0000013e                __dtors_start = .
+                0x0000493e                __ctors_end = .
+                0x0000493e                __dtors_start = .
  *(.dtors)
-                0x0000013e                __dtors_end = .
+                0x0000493e                __dtors_end = .
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x0000013e        0x0 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
-                0x0000013e                __init
+ .init0         0x0000493e        0x0 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
+                0x0000493e                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x0000013e        0xc D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
+ .init2         0x0000493e        0xc D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x0000014a       0x16 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_copy_data.o)
-                0x0000014a                __do_copy_data
- .init4         0x00000160       0x10 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_clear_bss.o)
-                0x00000160                __do_clear_bss
+ .init4         0x0000494a       0x16 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_copy_data.o)
+                0x0000494a                __do_copy_data
+ .init4         0x00004960       0x10 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_clear_bss.o)
+                0x00004960                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -967,548 +955,548 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x00000170        0x8 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
+ .init9         0x00004970        0x8 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
  *(.init9)
  *(.text)
- .text          0x00000178        0x4 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
-                0x00000178                __vector_38
-                0x00000178                __vector_22
-                0x00000178                __vector_63
-                0x00000178                __vector_28
-                0x00000178                __vector_1
-                0x00000178                __vector_32
-                0x00000178                __vector_34
-                0x00000178                __vector_62
-                0x00000178                __vector_46
-                0x00000178                __bad_interrupt
-                0x00000178                __vector_6
-                0x00000178                __vector_31
-                0x00000178                __vector_35
-                0x00000178                __vector_39
-                0x00000178                __vector_23
-                0x00000178                __vector_30
-                0x00000178                __vector_45
-                0x00000178                __vector_25
-                0x00000178                __vector_61
-                0x00000178                __vector_11
-                0x00000178                __vector_54
-                0x00000178                __vector_17
-                0x00000178                __vector_19
-                0x00000178                __vector_56
-                0x00000178                __vector_7
-                0x00000178                __vector_49
-                0x00000178                __vector_41
-                0x00000178                __vector_43
-                0x00000178                __vector_5
-                0x00000178                __vector_33
-                0x00000178                __vector_47
-                0x00000178                __vector_52
-                0x00000178                __vector_37
-                0x00000178                __vector_4
-                0x00000178                __vector_44
-                0x00000178                __vector_51
-                0x00000178                __vector_9
-                0x00000178                __vector_2
-                0x00000178                __vector_21
-                0x00000178                __vector_15
-                0x00000178                __vector_36
-                0x00000178                __vector_58
-                0x00000178                __vector_29
-                0x00000178                __vector_60
-                0x00000178                __vector_40
-                0x00000178                __vector_8
-                0x00000178                __vector_26
-                0x00000178                __vector_48
-                0x00000178                __vector_14
-                0x00000178                __vector_57
-                0x00000178                __vector_53
-                0x00000178                __vector_10
-                0x00000178                __vector_50
-                0x00000178                __vector_16
-                0x00000178                __vector_59
-                0x00000178                __vector_18
-                0x00000178                __vector_20
-                0x00000178                __vector_42
-                0x0000017c                . = ALIGN (0x2)
+ .text          0x00004978        0x4 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
+                0x00004978                __vector_38
+                0x00004978                __vector_22
+                0x00004978                __vector_63
+                0x00004978                __vector_28
+                0x00004978                __vector_1
+                0x00004978                __vector_32
+                0x00004978                __vector_34
+                0x00004978                __vector_62
+                0x00004978                __vector_46
+                0x00004978                __bad_interrupt
+                0x00004978                __vector_6
+                0x00004978                __vector_31
+                0x00004978                __vector_35
+                0x00004978                __vector_39
+                0x00004978                __vector_23
+                0x00004978                __vector_30
+                0x00004978                __vector_45
+                0x00004978                __vector_25
+                0x00004978                __vector_61
+                0x00004978                __vector_11
+                0x00004978                __vector_54
+                0x00004978                __vector_17
+                0x00004978                __vector_19
+                0x00004978                __vector_56
+                0x00004978                __vector_7
+                0x00004978                __vector_49
+                0x00004978                __vector_41
+                0x00004978                __vector_43
+                0x00004978                __vector_5
+                0x00004978                __vector_33
+                0x00004978                __vector_47
+                0x00004978                __vector_52
+                0x00004978                __vector_37
+                0x00004978                __vector_4
+                0x00004978                __vector_44
+                0x00004978                __vector_51
+                0x00004978                __vector_9
+                0x00004978                __vector_2
+                0x00004978                __vector_21
+                0x00004978                __vector_15
+                0x00004978                __vector_36
+                0x00004978                __vector_58
+                0x00004978                __vector_29
+                0x00004978                __vector_60
+                0x00004978                __vector_40
+                0x00004978                __vector_8
+                0x00004978                __vector_26
+                0x00004978                __vector_48
+                0x00004978                __vector_14
+                0x00004978                __vector_57
+                0x00004978                __vector_53
+                0x00004978                __vector_10
+                0x00004978                __vector_50
+                0x00004978                __vector_16
+                0x00004978                __vector_59
+                0x00004978                __vector_18
+                0x00004978                __vector_20
+                0x00004978                __vector_42
+                0x0000497c                . = ALIGN (0x2)
  *(.text.*)
  .text.atmel_start_init
-                0x0000017c        0xa atmel_start.o
-                0x0000017c                atmel_start_init
+                0x0000497c        0xa atmel_start.o
+                0x0000497c                atmel_start_init
  .text.__vector_55
-                0x00000186       0xaa driver_isr.o
-                0x00000186                __vector_55
+                0x00004986       0xaa driver_isr.o
+                0x00004986                __vector_55
  .text.__vector_3
-                0x00000230       0x4e driver_isr.o
-                0x00000230                __vector_3
+                0x00004a30       0x4e driver_isr.o
+                0x00004a30                __vector_3
  .text.__vector_12
-                0x0000027e       0x62 driver_isr.o
-                0x0000027e                __vector_12
+                0x00004a7e       0x62 driver_isr.o
+                0x00004a7e                __vector_12
  .text.soft_timer_sin_data_task
-                0x000002e0       0x4a driver_isr.o
-                0x000002e0                soft_timer_sin_data_task
+                0x00004ae0       0x4a driver_isr.o
+                0x00004ae0                soft_timer_sin_data_task
  .text.__vector_13
-                0x0000032a       0x4e driver_isr.o
-                0x0000032a                __vector_13
+                0x00004b2a       0x4e driver_isr.o
+                0x00004b2a                __vector_13
  .text.backlight_cb
-                0x00000378        0x6 ep40_cfg.o
-                0x00000378                backlight_cb
+                0x00004b78        0x6 ep40_cfg.o
+                0x00004b78                backlight_cb
  .text.rear_led_ctrl
-                0x0000037e       0x28 ep40_cfg.o
-                0x0000037e                rear_led_ctrl
+                0x00004b7e       0x28 ep40_cfg.o
+                0x00004b7e                rear_led_ctrl
  .text.window_lock_led_cb
-                0x000003a6       0x28 ep40_cfg.o
-                0x000003a6                window_lock_led_cb
+                0x00004ba6       0x28 ep40_cfg.o
+                0x00004ba6                window_lock_led_cb
  .text.soft_timer_rear_btn_task
-                0x000003ce       0x70 ep40_cfg.o
-                0x000003ce                soft_timer_rear_btn_task
+                0x00004bce       0x70 ep40_cfg.o
+                0x00004bce                soft_timer_rear_btn_task
  .text.soft_timer_window_lock_task
-                0x0000043e       0x34 ep40_cfg.o
-                0x0000043e                soft_timer_window_lock_task
+                0x00004c3e       0x34 ep40_cfg.o
+                0x00004c3e                soft_timer_window_lock_task
  .text.soft_timer_lin_signal_update_task
-                0x00000472       0x3e ep40_cfg.o
-                0x00000472                soft_timer_lin_signal_update_task
+                0x00004c72       0x3e ep40_cfg.o
+                0x00004c72                soft_timer_lin_signal_update_task
  .text.ep40_lin_signal_update_while_task
-                0x000004b0      0x43c ep40_cfg.o
-                0x000004b0                ep40_lin_signal_update_while_task
+                0x00004cb0      0x43c ep40_cfg.o
+                0x00004cb0                ep40_lin_signal_update_while_task
  .text.lin_signal_send_x_times
-                0x000008ec       0x18 ep40_cfg.o
-                0x000008ec                lin_signal_send_x_times
+                0x000050ec       0x18 ep40_cfg.o
+                0x000050ec                lin_signal_send_x_times
  .text.window_lock_signal_cb
-                0x00000904        0xc ep40_cfg.o
-                0x00000904                window_lock_signal_cb
+                0x00005104        0xc ep40_cfg.o
+                0x00005104                window_lock_signal_cb
  .text.left_window_signal_out_cb
-                0x00000910       0x20 ep40_cfg.o
-                0x00000910                left_window_signal_out_cb
+                0x00005110       0x20 ep40_cfg.o
+                0x00005110                left_window_signal_out_cb
  .text.right_window_signal_out_cb
-                0x00000930       0x20 ep40_cfg.o
-                0x00000930                right_window_signal_out_cb
+                0x00005130       0x20 ep40_cfg.o
+                0x00005130                right_window_signal_out_cb
  .text.window_obj_var_clear
-                0x00000950       0x2e ep40_cfg.o
-                0x00000950                window_obj_var_clear
+                0x00005150       0x2e ep40_cfg.o
+                0x00005150                window_obj_var_clear
  .text.soft_timer_window_task
-                0x0000097e      0x3ca ep40_cfg.o
-                0x0000097e                soft_timer_window_task
+                0x0000517e      0x3ca ep40_cfg.o
+                0x0000517e                soft_timer_window_task
  .text.btn_rear_tick_task
-                0x00000d48       0xd4 ep40_function_specification.o
-                0x00000d48                btn_rear_tick_task
+                0x00005548       0xd4 ep40_function_specification.o
+                0x00005548                btn_rear_tick_task
  .text.window_task
-                0x00000e1c      0x158 ep40_function_specification.o
-                0x00000e1c                window_task
+                0x0000561c      0x158 ep40_function_specification.o
+                0x0000561c                window_task
  .text.window_lock_task
-                0x00000f74       0x3a ep40_function_specification.o
-                0x00000f74                window_lock_task
+                0x00005774       0x3a ep40_function_specification.o
+                0x00005774                window_lock_task
  .text.backlight_task
-                0x00000fae       0x6c ep40_function_specification.o
-                0x00000fae                backlight_task
+                0x000057ae       0x6c ep40_function_specification.o
+                0x000057ae                backlight_task
  .text.lin_go_to_sleep
-                0x0000101a       0x26 ep40_function_specification.o
-                0x0000101a                lin_go_to_sleep
+                0x0000581a       0x26 ep40_function_specification.o
+                0x0000581a                lin_go_to_sleep
  .text.HC595_Write
-                0x00001040       0xaa hc595.o
-                0x00001040                HC595_Write
+                0x00005840       0xaa hc595.o
+                0x00005840                HC595_Write
  .text.led_set_level
-                0x000010ea       0x62 led.o
-                0x000010ea                led_set_level
+                0x000058ea       0x62 led.o
+                0x000058ea                led_set_level
  .text.led_update_buf_task
-                0x0000114c        0xe led.o
-                0x0000114c                led_update_buf_task
+                0x0000594c        0xe led.o
+                0x0000594c                led_update_buf_task
  .text.led_init
-                0x0000115a       0x14 led.o
-                0x0000115a                led_init
- .text.main     0x0000116e       0x96 main.o
-                0x0000116e                main
+                0x0000595a       0x14 led.o
+                0x0000595a                led_init
+ .text.main     0x0000596e       0x96 main.o
+                0x0000596e                main
  .text.l_sys_init
-                0x00001204        0x4 middleware/lin/coreapi/lin_common_api.o
-                0x00001204                l_sys_init
+                0x00005a04        0x4 middleware/lin/coreapi/lin_common_api.o
+                0x00005a04                l_sys_init
  .text.l_ifc_init
-                0x00001208       0x14 middleware/lin/coreapi/lin_common_api.o
-                0x00001208                l_ifc_init
+                0x00005a08       0x14 middleware/lin/coreapi/lin_common_api.o
+                0x00005a08                l_ifc_init
  .text.lin_update_tx_flags
-                0x0000121c       0xa2 middleware/lin/coreapi/lin_common_proto.o
+                0x00005a1c       0xa2 middleware/lin/coreapi/lin_common_proto.o
  .text.lin_bus_activity_timeout
-                0x000012be       0x48 middleware/lin/coreapi/lin_common_proto.o
+                0x00005abe       0x48 middleware/lin/coreapi/lin_common_proto.o
  .text.lin_get_frame_index
-                0x00001306       0x5a middleware/lin/coreapi/lin_common_proto.o
-                0x00001306                lin_get_frame_index
+                0x00005b06       0x5a middleware/lin/coreapi/lin_common_proto.o
+                0x00005b06                lin_get_frame_index
  .text.lin_update_tx
-                0x00001360      0x14e middleware/lin/coreapi/lin_common_proto.o
+                0x00005b60      0x14e middleware/lin/coreapi/lin_common_proto.o
  .text.lin_handle_error
-                0x000014ae      0x154 middleware/lin/coreapi/lin_common_proto.o
+                0x00005cae      0x154 middleware/lin/coreapi/lin_common_proto.o
  .text.lin_process_uncd_frame
-                0x00001602      0x19a middleware/lin/coreapi/lin_common_proto.o
-                0x00001602                lin_process_uncd_frame
+                0x00005e02      0x19a middleware/lin/coreapi/lin_common_proto.o
+                0x00005e02                lin_process_uncd_frame
  .text.lin_process_id
-                0x0000179c      0x22c middleware/lin/coreapi/lin_common_proto.o
+                0x00005f9c      0x22c middleware/lin/coreapi/lin_common_proto.o
  .text.lin_update_rx
-                0x000019c8      0x20e middleware/lin/coreapi/lin_common_proto.o
+                0x000061c8      0x20e middleware/lin/coreapi/lin_common_proto.o
  .text.lin_pid_resp_callback_handler
-                0x00001bd6       0x3e middleware/lin/coreapi/lin_common_proto.o
-                0x00001bd6                lin_pid_resp_callback_handler
+                0x000063d6       0x3e middleware/lin/coreapi/lin_common_proto.o
+                0x000063d6                lin_pid_resp_callback_handler
  .text.lin_update_word_status_j2602
-                0x00001c14       0x54 middleware/lin/coreapi/lin_j2602_proto.o
-                0x00001c14                lin_update_word_status_j2602
+                0x00006414       0x54 middleware/lin/coreapi/lin_j2602_proto.o
+                0x00006414                lin_update_word_status_j2602
  .text.lin_update_word_status_lin21
-                0x00001c68       0xc2 middleware/lin/coreapi/lin_lin21_proto.o
-                0x00001c68                lin_update_word_status_lin21
+                0x00006468       0xc2 middleware/lin/coreapi/lin_lin21_proto.o
+                0x00006468                lin_update_word_status_lin21
  .text.lin_update_err_signal
-                0x00001d2a       0xee middleware/lin/coreapi/lin_lin21_proto.o
-                0x00001d2a                lin_update_err_signal
+                0x0000652a       0xee middleware/lin/coreapi/lin_lin21_proto.o
+                0x0000652a                lin_update_err_signal
  .text.lin_update_rx_evnt_frame
-                0x00001e18       0xe0 middleware/lin/coreapi/lin_lin21_proto.o
-                0x00001e18                lin_update_rx_evnt_frame
+                0x00006618       0xe0 middleware/lin/coreapi/lin_lin21_proto.o
+                0x00006618                lin_update_rx_evnt_frame
  .text.lin_make_res_evnt_frame
-                0x00001ef8       0x38 middleware/lin/coreapi/lin_lin21_proto.o
-                0x00001ef8                lin_make_res_evnt_frame
+                0x000066f8       0x38 middleware/lin/coreapi/lin_lin21_proto.o
+                0x000066f8                lin_make_res_evnt_frame
  .text.ld_make_slave_response_pdu
-                0x00001f30      0x24e middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x00006730      0x24e middleware/lin/diagnostic/lin_diagnostic_service.o
  .text.lin_condittional_change_nad
-                0x0000217e      0x1d2 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x0000697e      0x1d2 middleware/lin/diagnostic/lin_diagnostic_service.o
  .text.lin_assign_nad
-                0x00002350       0xf2 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x00006b50       0xf2 middleware/lin/diagnostic/lin_diagnostic_service.o
  .text.lin_diagservice_assign_frame_id_range
-                0x00002442      0x192 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x00006c42      0x192 middleware/lin/diagnostic/lin_diagnostic_service.o
  .text.lin_diagservice_read_by_identifier
-                0x000025d4      0x1ca middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x00006dd4      0x1ca middleware/lin/diagnostic/lin_diagnostic_service.o
  .text.lin_read_data_by_identify
-                0x0000279e      0x306 middleware/lin/diagnostic/lin_diagnostic_service.o
-                0x0000279e                lin_read_data_by_identify
+                0x00006f9e      0x306 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x00006f9e                lin_read_data_by_identify
  .text.lin_slave_session_ctr
-                0x00002aa4      0x18e middleware/lin/diagnostic/lin_diagnostic_service.o
-                0x00002aa4                lin_slave_session_ctr
+                0x000072a4      0x18e middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x000072a4                lin_slave_session_ctr
  .text.lin_routine_control
-                0x00002c32      0x180 middleware/lin/diagnostic/lin_diagnostic_service.o
-                0x00002c32                lin_routine_control
+                0x00007432      0x180 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x00007432                lin_routine_control
  .text.control_dtc_setting
-                0x00002db2      0x118 middleware/lin/diagnostic/lin_diagnostic_service.o
-                0x00002db2                control_dtc_setting
+                0x000075b2      0x118 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x000075b2                control_dtc_setting
  .text.lin_transfer_data
-                0x00002eca      0x294 middleware/lin/diagnostic/lin_diagnostic_service.o
-                0x00002eca                lin_transfer_data
+                0x000076ca      0x294 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x000076ca                lin_transfer_data
  .text.lin_diag_service_callback
-                0x0000315e      0x194 middleware/lin/diagnostic/lin_diagnostic_service.o
-                0x0000315e                lin_diag_service_callback
+                0x0000795e      0x194 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x0000795e                lin_diag_service_callback
  .text.ld_read_by_id_callout
-                0x000032f2       0x42 middleware/lin/lin_cfg.o
-                0x000032f2                ld_read_by_id_callout
+                0x00007af2       0x42 middleware/lin/lin_cfg.o
+                0x00007af2                ld_read_by_id_callout
  .text.LIN_DRV_ProcessParity
-                0x00003334       0x90 middleware/lin/lin_common.o
-                0x00003334                LIN_DRV_ProcessParity
+                0x00007b34       0x90 middleware/lin/lin_common.o
+                0x00007b34                LIN_DRV_ProcessParity
  .text.LIN_DRV_MakeChecksumByte
-                0x000033c4       0x4c middleware/lin/lin_common.o
-                0x000033c4                LIN_DRV_MakeChecksumByte
+                0x00007bc4       0x4c middleware/lin/lin_common.o
+                0x00007bc4                LIN_DRV_MakeChecksumByte
  .text.LIN_DRV_ProcessFrameHeader
-                0x00003410       0x96 middleware/lin/lin_driver.o
+                0x00007c10       0x96 middleware/lin/lin_driver.o
  .text.LIN_COM_DRV_MakeChecksumByte
-                0x000034a6       0x58 middleware/lin/lin_driver.o
+                0x00007ca6       0x58 middleware/lin/lin_driver.o
  .text.LIN_DRV_ProcessSendFrameData
-                0x000034fe       0xe6 middleware/lin/lin_driver.o
+                0x00007cfe       0xe6 middleware/lin/lin_driver.o
  .text.LIN_DRV_Init
-                0x000035e4       0x46 middleware/lin/lin_driver.o
-                0x000035e4                LIN_DRV_Init
+                0x00007de4       0x46 middleware/lin/lin_driver.o
+                0x00007de4                LIN_DRV_Init
  .text.LIN_DRV_GotoIdleState
-                0x0000362a       0x1e middleware/lin/lin_driver.o
-                0x0000362a                LIN_DRV_GotoIdleState
+                0x00007e2a       0x1e middleware/lin/lin_driver.o
+                0x00007e2a                LIN_DRV_GotoIdleState
  .text.LIN_DRV_ProcessReceiveFrameData
-                0x00003648       0xea middleware/lin/lin_driver.o
+                0x00007e48       0xea middleware/lin/lin_driver.o
  .text.LIN_DRV_GoToSleepMode
-                0x00003732       0x1e middleware/lin/lin_driver.o
-                0x00003732                LIN_DRV_GoToSleepMode
+                0x00007f32       0x1e middleware/lin/lin_driver.o
+                0x00007f32                LIN_DRV_GoToSleepMode
  .text.LIN_DRV_AbortTransferData
-                0x00003750       0x24 middleware/lin/lin_driver.o
-                0x00003750                LIN_DRV_AbortTransferData
+                0x00007f50       0x24 middleware/lin/lin_driver.o
+                0x00007f50                LIN_DRV_AbortTransferData
  .text.LIN_DRV_InstallCallback
-                0x00003774       0x1a middleware/lin/lin_driver.o
-                0x00003774                LIN_DRV_InstallCallback
+                0x00007f74       0x1a middleware/lin/lin_driver.o
+                0x00007f74                LIN_DRV_InstallCallback
  .text.LIN_DRV_IRQHandler
-                0x0000378e      0x104 middleware/lin/lin_driver.o
-                0x0000378e                LIN_DRV_IRQHandler
+                0x00007f8e      0x104 middleware/lin/lin_driver.o
+                0x00007f8e                LIN_DRV_IRQHandler
  .text.LIN_DRV_SendFrameData
-                0x00003892       0x96 middleware/lin/lin_driver.o
-                0x00003892                LIN_DRV_SendFrameData
+                0x00008092       0x96 middleware/lin/lin_driver.o
+                0x00008092                LIN_DRV_SendFrameData
  .text.LIN_DRV_ReceiveFrameData
-                0x00003928       0x54 middleware/lin/lin_driver.o
-                0x00003928                LIN_DRV_ReceiveFrameData
+                0x00008128       0x54 middleware/lin/lin_driver.o
+                0x00008128                LIN_DRV_ReceiveFrameData
  .text.LIN_DRV_TimeoutService
-                0x0000397c       0xd2 middleware/lin/lin_driver.o
-                0x0000397c                LIN_DRV_TimeoutService
+                0x0000817c       0xd2 middleware/lin/lin_driver.o
+                0x0000817c                LIN_DRV_TimeoutService
  .text.LIN_DRV_SetTimeoutCounter
-                0x00003a4e       0x1c middleware/lin/lin_driver.o
-                0x00003a4e                LIN_DRV_SetTimeoutCounter
+                0x0000824e       0x1c middleware/lin/lin_driver.o
+                0x0000824e                LIN_DRV_SetTimeoutCounter
  .text.LIN_DRV_GetReceiveStatus
-                0x00003a6a       0x42 middleware/lin/lin_driver.o
-                0x00003a6a                LIN_DRV_GetReceiveStatus
+                0x0000826a       0x42 middleware/lin/lin_driver.o
+                0x0000826a                LIN_DRV_GetReceiveStatus
  .text.CallbackHandler
-                0x00003aac      0x19e middleware/lin/lowlevel/lin.o
+                0x000082ac      0x19e middleware/lin/lowlevel/lin.o
  .text.lin_process_parity
-                0x00003c4a        0x6 middleware/lin/lowlevel/lin.o
-                0x00003c4a                lin_process_parity
+                0x0000844a        0x6 middleware/lin/lowlevel/lin.o
+                0x0000844a                lin_process_parity
  .text.lin_lld_init
-                0x00003c50      0x298 middleware/lin/lowlevel/lin.o
-                0x00003c50                lin_lld_init
+                0x00008450      0x298 middleware/lin/lowlevel/lin.o
+                0x00008450                lin_lld_init
  .text.lin_lld_ignore_response
-                0x00003ee8       0x28 middleware/lin/lowlevel/lin.o
-                0x00003ee8                lin_lld_ignore_response
+                0x000086e8       0x28 middleware/lin/lowlevel/lin.o
+                0x000086e8                lin_lld_ignore_response
  .text.lin_lld_set_low_power_mode
-                0x00003f10       0x28 middleware/lin/lowlevel/lin.o
-                0x00003f10                lin_lld_set_low_power_mode
+                0x00008710       0x28 middleware/lin/lowlevel/lin.o
+                0x00008710                lin_lld_set_low_power_mode
  .text.lin_lld_set_response
-                0x00003f38       0xa0 middleware/lin/lowlevel/lin.o
-                0x00003f38                lin_lld_set_response
+                0x00008738       0xa0 middleware/lin/lowlevel/lin.o
+                0x00008738                lin_lld_set_response
  .text.lin_lld_rx_response
-                0x00003fd8       0xa0 middleware/lin/lowlevel/lin.o
-                0x00003fd8                lin_lld_rx_response
+                0x000087d8       0xa0 middleware/lin/lowlevel/lin.o
+                0x000087d8                lin_lld_rx_response
  .text.lin_lld_timeout_service
-                0x00004078      0x294 middleware/lin/lowlevel/lin.o
-                0x00004078                lin_lld_timeout_service
- .text.ld_init  0x0000430c      0x112 middleware/lin/transport/lin_commontl_api.o
-                0x0000430c                ld_init
+                0x00008878      0x294 middleware/lin/lowlevel/lin.o
+                0x00008878                lin_lld_timeout_service
+ .text.ld_init  0x00008b0c      0x112 middleware/lin/transport/lin_commontl_api.o
+                0x00008b0c                ld_init
  .text.ld_put_raw
-                0x0000441e       0x8a middleware/lin/transport/lin_commontl_api.o
-                0x0000441e                ld_put_raw
+                0x00008c1e       0x8a middleware/lin/transport/lin_commontl_api.o
+                0x00008c1e                ld_put_raw
  .text.ld_get_raw
-                0x000044a8       0x14 middleware/lin/transport/lin_commontl_api.o
-                0x000044a8                ld_get_raw
+                0x00008ca8       0x14 middleware/lin/transport/lin_commontl_api.o
+                0x00008ca8                ld_get_raw
  .text.ld_raw_rx_status
-                0x000044bc       0x12 middleware/lin/transport/lin_commontl_api.o
-                0x000044bc                ld_raw_rx_status
+                0x00008cbc       0x12 middleware/lin/transport/lin_commontl_api.o
+                0x00008cbc                ld_raw_rx_status
  .text.lin_tl_handle_timeout
-                0x000044ce       0xd8 middleware/lin/transport/lin_commontl_proto.o
+                0x00008cce       0xd8 middleware/lin/transport/lin_commontl_proto.o
  .text.lin_tl_handler_error
-                0x000045a6       0xca middleware/lin/transport/lin_commontl_proto.o
+                0x00008da6       0xca middleware/lin/transport/lin_commontl_proto.o
  .text.lin_tl_handler_tx_completed
-                0x00004670       0xcc middleware/lin/transport/lin_commontl_proto.o
+                0x00008e70       0xcc middleware/lin/transport/lin_commontl_proto.o
  .text.lin_tl_attach_service
-                0x0000473c       0x88 middleware/lin/transport/lin_commontl_proto.o
+                0x00008f3c       0x88 middleware/lin/transport/lin_commontl_proto.o
  .text.tl_receive_message
-                0x000047c4      0x1d8 middleware/lin/transport/lin_commontl_proto.o
+                0x00008fc4      0x1d8 middleware/lin/transport/lin_commontl_proto.o
  .text.tl_put_raw
-                0x0000499c       0xde middleware/lin/transport/lin_commontl_proto.o
-                0x0000499c                tl_put_raw
+                0x0000919c       0xde middleware/lin/transport/lin_commontl_proto.o
+                0x0000919c                tl_put_raw
  .text.lin_process_single_frame
-                0x00004a7a       0xdc middleware/lin/transport/lin_commontl_proto.o
+                0x0000927a       0xdc middleware/lin/transport/lin_commontl_proto.o
  .text.lin_process_first_frame
-                0x00004b56      0x1b2 middleware/lin/transport/lin_commontl_proto.o
+                0x00009356      0x1b2 middleware/lin/transport/lin_commontl_proto.o
  .text.lin_process_consecutive_frame
-                0x00004d08      0x180 middleware/lin/transport/lin_commontl_proto.o
+                0x00009508      0x180 middleware/lin/transport/lin_commontl_proto.o
  .text.lin_process_pdu
-                0x00004e88       0x62 middleware/lin/transport/lin_commontl_proto.o
+                0x00009688       0x62 middleware/lin/transport/lin_commontl_proto.o
  .text.lin_tl_handler_rx_completed
-                0x00004eea      0x116 middleware/lin/transport/lin_commontl_proto.o
+                0x000096ea      0x116 middleware/lin/transport/lin_commontl_proto.o
  .text.tl_get_raw
-                0x00005000       0x94 middleware/lin/transport/lin_commontl_proto.o
-                0x00005000                tl_get_raw
+                0x00009800       0x94 middleware/lin/transport/lin_commontl_proto.o
+                0x00009800                tl_get_raw
  .text.lin_tl_make_master_request_pdu
-                0x00005094       0x3c middleware/lin/transport/lin_commontl_proto.o
+                0x00009894       0x3c middleware/lin/transport/lin_commontl_proto.o
  .text.lin_tl_get_pdu
-                0x000050d0       0x30 middleware/lin/transport/lin_commontl_proto.o
+                0x000098d0       0x30 middleware/lin/transport/lin_commontl_proto.o
  .text.lin_tl_callback_handler
-                0x00005100       0xf0 middleware/lin/transport/lin_commontl_proto.o
-                0x00005100                lin_tl_callback_handler
+                0x00009900       0xf0 middleware/lin/transport/lin_commontl_proto.o
+                0x00009900                lin_tl_callback_handler
  .text.touch_ptc_pin_config
-                0x000051f0      0x16a qtouch/touch.o
+                0x000099f0      0x16a qtouch/touch.o
  .text.qtm_measure_complete_callback
-                0x0000535a        0x8 qtouch/touch.o
+                0x00009b5a        0x8 qtouch/touch.o
  .text.qtm_error_callback
-                0x00005362        0x8 qtouch/touch.o
+                0x00009b62        0x8 qtouch/touch.o
  .text.touch_sensors_config
-                0x0000536a       0x6e qtouch/touch.o
+                0x00009b6a       0x6e qtouch/touch.o
  .text.Timer_set_period
-                0x000053d8       0x14 qtouch/touch.o
-                0x000053d8                Timer_set_period
+                0x00009bd8       0x14 qtouch/touch.o
+                0x00009bd8                Timer_set_period
  .text.touch_init
-                0x000053ec       0x10 qtouch/touch.o
-                0x000053ec                touch_init
+                0x00009bec       0x10 qtouch/touch.o
+                0x00009bec                touch_init
  .text.touch_process
-                0x000053fc       0x7a qtouch/touch.o
-                0x000053fc                touch_process
+                0x00009bfc       0x7a qtouch/touch.o
+                0x00009bfc                touch_process
  .text.touch_timer_handler
-                0x00005476       0x22 qtouch/touch.o
-                0x00005476                touch_timer_handler
+                0x00009c76       0x22 qtouch/touch.o
+                0x00009c76                touch_timer_handler
  .text.get_sensor_state
-                0x00005498       0x1e qtouch/touch.o
-                0x00005498                get_sensor_state
+                0x00009c98       0x1e qtouch/touch.o
+                0x00009c98                get_sensor_state
  .text.get_scroller_state
-                0x000054b6       0x24 qtouch/touch.o
-                0x000054b6                get_scroller_state
+                0x00009cb6       0x24 qtouch/touch.o
+                0x00009cb6                get_scroller_state
  .text.get_scroller_position
-                0x000054da       0x26 qtouch/touch.o
-                0x000054da                get_scroller_position
+                0x00009cda       0x26 qtouch/touch.o
+                0x00009cda                get_scroller_position
  .text.__vector_27
-                0x00005500       0x48 qtouch/touch.o
-                0x00005500                __vector_27
+                0x00009d00       0x48 qtouch/touch.o
+                0x00009d00                __vector_27
  .text.soft_timer_create
-                0x00005548       0x4a soft_timer.o
-                0x00005548                soft_timer_create
+                0x00009d48       0x4a soft_timer.o
+                0x00009d48                soft_timer_create
  .text.soft_timer_run
-                0x00005592       0x44 soft_timer.o
-                0x00005592                soft_timer_run
+                0x00009d92       0x44 soft_timer.o
+                0x00009d92                soft_timer_run
  .text.ADC_0_init
-                0x000055d6       0x16 src/adc_basic.o
-                0x000055d6                ADC_0_init
+                0x00009dd6       0x16 src/adc_basic.o
+                0x00009dd6                ADC_0_init
  .text.__vector_24
-                0x000055ec       0x5c src/adc_basic.o
-                0x000055ec                __vector_24
+                0x00009dec       0x5c src/adc_basic.o
+                0x00009dec                __vector_24
  .text.BOD_init
-                0x00005648        0x8 src/bod.o
-                0x00005648                BOD_init
+                0x00009e48        0x8 src/bod.o
+                0x00009e48                BOD_init
  .text.CLKCTRL_init
-                0x00005650       0x10 src/clkctrl.o
-                0x00005650                CLKCTRL_init
+                0x00009e50       0x10 src/clkctrl.o
+                0x00009e50                CLKCTRL_init
  .text.CPUINT_init
-                0x00005660        0x6 src/cpuint.o
-                0x00005660                CPUINT_init
+                0x00009e60        0x6 src/cpuint.o
+                0x00009e60                CPUINT_init
  .text.DAC_0_init
-                0x00005666       0x10 src/dac_basic.o
-                0x00005666                DAC_0_init
+                0x00009e66       0x10 src/dac_basic.o
+                0x00009e66                DAC_0_init
  .text.DAC_0_set_output
-                0x00005676       0x1c src/dac_basic.o
-                0x00005676                DAC_0_set_output
+                0x00009e76       0x1c src/dac_basic.o
+                0x00009e76                DAC_0_set_output
  .text.mcu_init
-                0x00005692       0xaa src/driver_init.o
-                0x00005692                mcu_init
+                0x00009e92       0xaa src/driver_init.o
+                0x00009e92                mcu_init
  .text.USART_1_initialization
-                0x0000573c       0x22 src/driver_init.o
-                0x0000573c                USART_1_initialization
+                0x00009f3c       0x22 src/driver_init.o
+                0x00009f3c                USART_1_initialization
  .text.USART_0_initialization
-                0x0000575e       0x22 src/driver_init.o
-                0x0000575e                USART_0_initialization
+                0x00009f5e       0x22 src/driver_init.o
+                0x00009f5e                USART_0_initialization
  .text.DAC_0_initialization
-                0x00005780       0x18 src/driver_init.o
-                0x00005780                DAC_0_initialization
+                0x00009f80       0x18 src/driver_init.o
+                0x00009f80                DAC_0_initialization
  .text.ADC_0_initialization
-                0x00005798       0x2a src/driver_init.o
-                0x00005798                ADC_0_initialization
+                0x00009f98       0x2a src/driver_init.o
+                0x00009f98                ADC_0_initialization
  .text.TIMER_1_initialization
-                0x000057c2       0x1c src/driver_init.o
-                0x000057c2                TIMER_1_initialization
+                0x00009fc2       0x1c src/driver_init.o
+                0x00009fc2                TIMER_1_initialization
  .text.TIMER_0_initialization
-                0x000057de        0x6 src/driver_init.o
-                0x000057de                TIMER_0_initialization
+                0x00009fde        0x6 src/driver_init.o
+                0x00009fde                TIMER_0_initialization
  .text.TIMER_2_initialization
-                0x000057e4        0x6 src/driver_init.o
-                0x000057e4                TIMER_2_initialization
+                0x00009fe4        0x6 src/driver_init.o
+                0x00009fe4                TIMER_2_initialization
  .text.system_init
-                0x000057ea       0x82 src/driver_init.o
-                0x000057ea                system_init
+                0x00009fea       0x82 src/driver_init.o
+                0x00009fea                system_init
  .text.FLASH_0_write_eeprom_byte
-                0x0000586c       0x38 src/nvmctrl_basic.o
-                0x0000586c                FLASH_0_write_eeprom_byte
+                0x0000a06c       0x38 src/nvmctrl_basic.o
+                0x0000a06c                FLASH_0_write_eeprom_byte
  .text.protected_write_io
-                0x000058a4        0xa src/protected_io.o
-                0x000058a4                protected_write_io
+                0x0000a0a4        0xa src/protected_io.o
+                0x0000a0a4                protected_write_io
  .text.Timer_init
-                0x000058ae       0x1a src/rtc.o
-                0x000058ae                Timer_init
+                0x0000a0ae       0x1a src/rtc.o
+                0x0000a0ae                Timer_init
  .text.SLPCTRL_init
-                0x000058c8        0x4 src/slpctrl.o
-                0x000058c8                SLPCTRL_init
+                0x0000a0c8        0x4 src/slpctrl.o
+                0x0000a0c8                SLPCTRL_init
  .text.TIMER_1_init
-                0x000058cc       0x1e src/tca.o
-                0x000058cc                TIMER_1_init
+                0x0000a0cc       0x1e src/tca.o
+                0x0000a0cc                TIMER_1_init
  .text.TIMER_0_init
-                0x000058ea       0x1c src/tcb.o
-                0x000058ea                TIMER_0_init
+                0x0000a0ea       0x1c src/tcb.o
+                0x0000a0ea                TIMER_0_init
  .text.TIMER_2_init
-                0x00005906       0x1c src/tcb.o
-                0x00005906                TIMER_2_init
+                0x0000a106       0x1c src/tcb.o
+                0x0000a106                TIMER_2_init
  .text.USART_0_init
-                0x00005922       0x18 src/usart.o
-                0x00005922                USART_0_init
+                0x0000a122       0x18 src/usart.o
+                0x0000a122                USART_0_init
  .text.USART_1_init
-                0x0000593a       0x20 src/usart_basic.o
-                0x0000593a                USART_1_init
+                0x0000a13a       0x20 src/usart_basic.o
+                0x0000a13a                USART_1_init
  .text.USART_1_write
-                0x0000595a        0xe src/usart_basic.o
-                0x0000595a                USART_1_write
+                0x0000a15a        0xe src/usart_basic.o
+                0x0000a15a                USART_1_write
  .text.USART_1_printCHAR
-                0x00005968        0xa src/usart_basic.o
-                0x00005968                USART_1_printCHAR
+                0x0000a168        0xa src/usart_basic.o
+                0x0000a168                USART_1_printCHAR
  .text.USART4_Read
-                0x00005972        0xe src/usart_basic.o
-                0x00005972                USART4_Read
+                0x0000a172        0xe src/usart_basic.o
+                0x0000a172                USART4_Read
  .text.USART4_Send
-                0x00005980        0xe src/usart_basic.o
-                0x00005980                USART4_Send
+                0x0000a180        0xe src/usart_basic.o
+                0x0000a180                USART4_Send
  .text.VREF_0_init
-                0x0000598e        0xe src/vref.o
-                0x0000598e                VREF_0_init
+                0x0000a18e        0xe src/vref.o
+                0x0000a18e                VREF_0_init
  .text.check_for_aks_block
-                0x0000599c       0xd2 ../qtouch/lib/gcc\libqtm_touch_key_avr64da_0x0002.a(avr_touch_key_g_avr64da.o)
+                0x0000a19c       0xd2 ../qtouch/lib/gcc\libqtm_touch_key_avr64da_0x0002.a(avr_touch_key_g_avr64da.o)
  .text.qtm_update_qtlib_timer
-                0x00005a6e       0x16 ../qtouch/lib/gcc\libqtm_touch_key_avr64da_0x0002.a(avr_touch_key_g_avr64da.o)
-                0x00005a6e                qtm_update_qtlib_timer
+                0x0000a26e       0x16 ../qtouch/lib/gcc\libqtm_touch_key_avr64da_0x0002.a(avr_touch_key_g_avr64da.o)
+                0x0000a26e                qtm_update_qtlib_timer
  .text.qtm_init_sensor_key
-                0x00005a84       0x3e ../qtouch/lib/gcc\libqtm_touch_key_avr64da_0x0002.a(avr_touch_key_g_avr64da.o)
-                0x00005a84                qtm_init_sensor_key
+                0x0000a284       0x3e ../qtouch/lib/gcc\libqtm_touch_key_avr64da_0x0002.a(avr_touch_key_g_avr64da.o)
+                0x0000a284                qtm_init_sensor_key
  .text.qtm_key_sensors_process
-                0x00005ac2      0x74e ../qtouch/lib/gcc\libqtm_touch_key_avr64da_0x0002.a(avr_touch_key_g_avr64da.o)
-                0x00005ac2                qtm_key_sensors_process
- .text.divide   0x00006210       0x50 ../qtouch/lib/gcc\libqtm_scroller_avr64da_0x000b.a(avr_scroller_g_avr64da.o)
+                0x0000a2c2      0x74e ../qtouch/lib/gcc\libqtm_touch_key_avr64da_0x0002.a(avr_touch_key_g_avr64da.o)
+                0x0000a2c2                qtm_key_sensors_process
+ .text.divide   0x0000aa10       0x50 ../qtouch/lib/gcc\libqtm_scroller_avr64da_0x000b.a(avr_scroller_g_avr64da.o)
  .text.qtm_init_scroller_module
-                0x00006260       0x80 ../qtouch/lib/gcc\libqtm_scroller_avr64da_0x000b.a(avr_scroller_g_avr64da.o)
-                0x00006260                qtm_init_scroller_module
+                0x0000aa60       0x80 ../qtouch/lib/gcc\libqtm_scroller_avr64da_0x000b.a(avr_scroller_g_avr64da.o)
+                0x0000aa60                qtm_init_scroller_module
  .text.qtm_scroller_process
-                0x000062e0      0x642 ../qtouch/lib/gcc\libqtm_scroller_avr64da_0x000b.a(avr_scroller_g_avr64da.o)
-                0x000062e0                qtm_scroller_process
+                0x0000aae0      0x642 ../qtouch/lib/gcc\libqtm_scroller_avr64da_0x000b.a(avr_scroller_g_avr64da.o)
+                0x0000aae0                qtm_scroller_process
  .text.charge_share_test
-                0x00006922       0x90 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000b122       0x90 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
  .text.select_next_channel_to_measure
-                0x000069b2       0x66 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000b1b2       0x66 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
  .text.qtm_measure_node
-                0x00006a18      0x22a ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000b218      0x22a ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
  .text.qtm_acquisition_process
-                0x00006c42      0x504 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
-                0x00006c42                qtm_acquisition_process
+                0x0000b442      0x504 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000b442                qtm_acquisition_process
  .text.qtm_ptc_init_acquisition_module
-                0x00007146      0x16e ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
-                0x00007146                qtm_ptc_init_acquisition_module
+                0x0000b946      0x16e ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000b946                qtm_ptc_init_acquisition_module
  .text.qtm_ptc_qtlib_assign_signal_memory
-                0x000072b4       0x14 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
-                0x000072b4                qtm_ptc_qtlib_assign_signal_memory
+                0x0000bab4       0x14 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000bab4                qtm_ptc_qtlib_assign_signal_memory
  .text.qtm_ptc_start_measurement_seq
-                0x000072c8       0xe0 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
-                0x000072c8                qtm_ptc_start_measurement_seq
+                0x0000bac8       0xe0 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000bac8                qtm_ptc_start_measurement_seq
  .text.qtm_enable_sensor_node
-                0x000073a8       0x3e ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
-                0x000073a8                qtm_enable_sensor_node
+                0x0000bba8       0x3e ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000bba8                qtm_enable_sensor_node
  .text.qtm_calibrate_sensor_node
-                0x000073e6       0x82 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
-                0x000073e6                qtm_calibrate_sensor_node
+                0x0000bbe6       0x82 ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000bbe6                qtm_calibrate_sensor_node
  .text.qtm_avr_da_ptc_handler_wcomp
-                0x00007468       0x8c ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
-                0x00007468                qtm_avr_da_ptc_handler_wcomp
+                0x0000bc68       0x8c ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000bc68                qtm_avr_da_ptc_handler_wcomp
  .text.qtm_avr_da_ptc_handler_eoc
-                0x000074f4       0xae ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
-                0x000074f4                qtm_avr_da_ptc_handler_eoc
+                0x0000bcf4       0xae ../qtouch/lib/gcc\libqtm_acq_avr64da_0x0037.a(avr_acq_g_avr64da.o)
+                0x0000bcf4                qtm_avr_da_ptc_handler_eoc
  .text.libgcc.mul
-                0x000075a2       0x20 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_mulsi3.o)
-                0x000075a2                __mulsi3
+                0x0000bda2       0x20 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_mulsi3.o)
+                0x0000bda2                __mulsi3
  .text.libgcc.div
-                0x000075c2       0x44 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_udivmodsi4.o)
-                0x000075c2                __udivmodsi4
- .text.libgcc   0x00007606        0xc d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_tablejump2.o)
-                0x00007606                __tablejump2__
+                0x0000bdc2       0x44 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_udivmodsi4.o)
+                0x0000bdc2                __udivmodsi4
+ .text.libgcc   0x0000be06        0xc d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_tablejump2.o)
+                0x0000be06                __tablejump2__
  .text.libgcc.mul
-                0x00007612       0x1e d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_umulhisi3.o)
-                0x00007612                __umulhisi3
+                0x0000be12       0x1e d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_umulhisi3.o)
+                0x0000be12                __umulhisi3
  .text.libgcc.mul
-                0x00007630       0x16 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_muluhisi3.o)
-                0x00007630                __muluhisi3
+                0x0000be30       0x16 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_muluhisi3.o)
+                0x0000be30                __muluhisi3
  .text.libgcc.builtins
-                0x00007646       0x3c d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_ashrdi3.o)
-                0x00007646                __ashrdi3
-                0x0000764a                __lshrdi3
- .text.libgcc   0x00007682       0x18 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_cmpdi2_s8.o)
-                0x00007682                __cmpdi2_s8
+                0x0000be46       0x3c d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_ashrdi3.o)
+                0x0000be46                __ashrdi3
+                0x0000be4a                __lshrdi3
+ .text.libgcc   0x0000be82       0x18 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_cmpdi2_s8.o)
+                0x0000be82                __cmpdi2_s8
  .text.avr-libc
-                0x0000769a      0x242 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega2\libc.a(malloc.o)
-                0x0000769a                malloc
-                0x000077ca                free
-                0x000078dc                . = ALIGN (0x2)
+                0x0000be9a      0x242 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega2\libc.a(malloc.o)
+                0x0000be9a                malloc
+                0x0000bfca                free
+                0x0000c0dc                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000078dc        0x0 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_exit.o)
-                0x000078dc                _exit
-                0x000078dc                exit
+ .fini9         0x0000c0dc        0x0 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_exit.o)
+                0x0000c0dc                _exit
+                0x0000c0dc                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1527,11 +1515,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000078dc        0x4 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_exit.o)
+ .fini0         0x0000c0dc        0x4 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega2\libgcc.a(_exit.o)
  *(.fini0)
-                0x000078e0                _etext = .
+                0x0000c0e0                _etext = .
 
-.data           0x00806000      0x41c load address 0x000078e0
+.data           0x00806000      0x41c load address 0x0000c0e0
                 0x00806000                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00806000        0x6 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega2\libc.a(malloc.o)
@@ -1670,17 +1658,17 @@ END GROUP
  .bss.sin_data_index
                 0x0080641d        0x2 driver_isr.o
                 0x0080641d                sin_data_index
- .bss.rear_status_last.6477
+ .bss.rear_status_last.6472
                 0x0080641f        0x1 ep40_cfg.o
- .bss.rear_status.6478
+ .bss.rear_status.6473
                 0x00806420        0x1 ep40_cfg.o
- .bss.btn_status_last.6396
+ .bss.btn_status_last.6391
                 0x00806421        0x1 ep40_cfg.o
- .bss.btn_status.6397
+ .bss.btn_status.6392
                 0x00806422        0x1 ep40_cfg.o
- .bss.btn_status_last.6371
+ .bss.btn_status_last.6366
                 0x00806423        0x1 ep40_cfg.o
- .bss.btn_status.6372
+ .bss.btn_status.6367
                 0x00806424        0x1 ep40_cfg.o
  .bss.bin_size_cnt
                 0x00806425        0x2 main.o
@@ -1799,8 +1787,8 @@ END GROUP
  COMMON         0x00806902        0x6 d:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avrxmega2\libc.a(iob.o)
                 0x00806902                __iob
                 0x00806908                PROVIDE (__bss_end, .)
-                0x000078e0                __data_load_start = LOADADDR (.data)
-                0x00007cfc                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000c0e0                __data_load_start = LOADADDR (.data)
+                0x0000c4fc                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00806908        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -1911,7 +1899,7 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0xa40
+.debug_aranges  0x00000000      0xa10
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x20 atmel_start.o
@@ -1926,110 +1914,110 @@ END GROUP
  .debug_aranges
                 0x00000140       0x30 led.o
  .debug_aranges
-                0x00000170       0x50 main.o
+                0x00000170       0x20 main.o
  .debug_aranges
-                0x000001c0       0x48 middleware/lin/coreapi/lin_common_api.o
+                0x00000190       0x48 middleware/lin/coreapi/lin_common_api.o
  .debug_aranges
-                0x00000208       0x60 middleware/lin/coreapi/lin_common_proto.o
+                0x000001d8       0x60 middleware/lin/coreapi/lin_common_proto.o
  .debug_aranges
-                0x00000268       0x20 middleware/lin/coreapi/lin_j2602_proto.o
+                0x00000238       0x20 middleware/lin/coreapi/lin_j2602_proto.o
  .debug_aranges
-                0x00000288       0x38 middleware/lin/coreapi/lin_lin21_proto.o
+                0x00000258       0x38 middleware/lin/coreapi/lin_lin21_proto.o
  .debug_aranges
-                0x000002c0       0x90 middleware/lin/diagnostic/lin_diagnostic_service.o
+                0x00000290       0x90 middleware/lin/diagnostic/lin_diagnostic_service.o
  .debug_aranges
-                0x00000350       0x18 middleware/lin/lin1.o
+                0x00000320       0x18 middleware/lin/lin1.o
  .debug_aranges
-                0x00000368       0x20 middleware/lin/lin_cfg.o
+                0x00000338       0x20 middleware/lin/lin_cfg.o
  .debug_aranges
-                0x00000388       0x28 middleware/lin/lin_common.o
+                0x00000358       0x28 middleware/lin/lin_common.o
  .debug_aranges
-                0x000003b0       0xc0 middleware/lin/lin_driver.o
+                0x00000380       0xc0 middleware/lin/lin_driver.o
  .debug_aranges
-                0x00000470       0x88 middleware/lin/lowlevel/lin.o
+                0x00000440       0x88 middleware/lin/lowlevel/lin.o
  .debug_aranges
-                0x000004f8       0x60 middleware/lin/transport/lin_commontl_api.o
+                0x000004c8       0x60 middleware/lin/transport/lin_commontl_api.o
  .debug_aranges
-                0x00000558       0x90 middleware/lin/transport/lin_commontl_proto.o
+                0x00000528       0x90 middleware/lin/transport/lin_commontl_proto.o
  .debug_aranges
-                0x000005e8       0xb8 qtouch/touch.o
+                0x000005b8       0xb8 qtouch/touch.o
  .debug_aranges
-                0x000006a0       0x28 soft_timer.o
+                0x00000670       0x28 soft_timer.o
  .debug_aranges
-                0x000006c8       0x80 src/adc_basic.o
+                0x00000698       0x80 src/adc_basic.o
  .debug_aranges
-                0x00000748       0x20 src/bod.o
+                0x00000718       0x20 src/bod.o
  .debug_aranges
-                0x00000768       0x20 src/clkctrl.o
+                0x00000738       0x20 src/clkctrl.o
  .debug_aranges
-                0x00000788       0x20 src/cpuint.o
+                0x00000758       0x20 src/cpuint.o
  .debug_aranges
-                0x000007a8       0x40 src/dac_basic.o
+                0x00000778       0x40 src/dac_basic.o
  .debug_aranges
-                0x000007e8       0x60 src/driver_init.o
+                0x000007b8       0x60 src/driver_init.o
  .debug_aranges
-                0x00000848       0x80 src/nvmctrl_basic.o
+                0x00000818       0x80 src/nvmctrl_basic.o
  .debug_aranges
-                0x000008c8       0x20 src/protected_io.o
+                0x00000898       0x20 src/protected_io.o
  .debug_aranges
-                0x000008e8       0x20 src/rtc.o
+                0x000008b8       0x20 src/rtc.o
  .debug_aranges
-                0x00000908       0x28 src/slpctrl.o
+                0x000008d8       0x28 src/slpctrl.o
  .debug_aranges
-                0x00000930       0x20 src/tca.o
+                0x00000900       0x20 src/tca.o
  .debug_aranges
-                0x00000950       0x28 src/tcb.o
+                0x00000920       0x28 src/tcb.o
  .debug_aranges
-                0x00000978       0x20 src/usart.o
+                0x00000948       0x20 src/usart.o
  .debug_aranges
-                0x00000998       0x88 src/usart_basic.o
+                0x00000968       0x88 src/usart_basic.o
  .debug_aranges
-                0x00000a20       0x20 src/vref.o
+                0x000009f0       0x20 src/vref.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000    0x17f94
+.debug_info     0x00000000    0x1770c
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x3072 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
  .debug_info    0x00003072       0xb0 atmel_start.o
  .debug_info    0x00003122      0x721 driver_isr.o
- .debug_info    0x00003843     0x122c ep40_cfg.o
- .debug_info    0x00004a6f      0x9c7 ep40_function_specification.o
- .debug_info    0x00005436      0x3c1 hc595.o
- .debug_info    0x000057f7      0x33d led.o
- .debug_info    0x00005b34      0xf61 main.o
- .debug_info    0x00006a95      0x488 middleware/lin/coreapi/lin_common_api.o
- .debug_info    0x00006f1d     0x13da middleware/lin/coreapi/lin_common_proto.o
- .debug_info    0x000082f7      0x345 middleware/lin/coreapi/lin_j2602_proto.o
- .debug_info    0x0000863c      0xd22 middleware/lin/coreapi/lin_lin21_proto.o
- .debug_info    0x0000935e     0x1c8e middleware/lin/diagnostic/lin_diagnostic_service.o
- .debug_info    0x0000afec      0x474 middleware/lin/lin1.o
- .debug_info    0x0000b460      0xb19 middleware/lin/lin_cfg.o
- .debug_info    0x0000bf79      0x250 middleware/lin/lin_common.o
- .debug_info    0x0000c1c9     0x12c7 middleware/lin/lin_driver.o
- .debug_info    0x0000d490     0x1ca0 middleware/lin/lowlevel/lin.o
- .debug_info    0x0000f130      0xff3 middleware/lin/transport/lin_commontl_api.o
- .debug_info    0x00010123     0x162f middleware/lin/transport/lin_commontl_proto.o
- .debug_info    0x00011752     0x1f4b qtouch/touch.o
- .debug_info    0x0001369d      0x19d soft_timer.o
- .debug_info    0x0001383a      0x6c9 src/adc_basic.o
- .debug_info    0x00013f03      0x188 src/bod.o
- .debug_info    0x0001408b      0x2ce src/clkctrl.o
- .debug_info    0x00014359       0x8d src/cpuint.o
- .debug_info    0x000143e6      0x1d3 src/dac_basic.o
- .debug_info    0x000145b9     0x13dc src/driver_init.o
- .debug_info    0x00015995      0xe15 src/nvmctrl_basic.o
- .debug_info    0x000167aa       0x90 src/protected_io.o
- .debug_info    0x0001683a      0x389 src/rtc.o
- .debug_info    0x00016bc3      0x136 src/slpctrl.o
- .debug_info    0x00016cf9      0x73a src/tca.o
- .debug_info    0x00017433      0x2ae src/tcb.o
- .debug_info    0x000176e1      0x257 src/usart.o
- .debug_info    0x00017938      0x4ff src/usart_basic.o
- .debug_info    0x00017e37      0x15d src/vref.o
+ .debug_info    0x00003843     0x1225 ep40_cfg.o
+ .debug_info    0x00004a68      0x9bf ep40_function_specification.o
+ .debug_info    0x00005427      0x3c1 hc595.o
+ .debug_info    0x000057e8      0x33d led.o
+ .debug_info    0x00005b25      0x6ef main.o
+ .debug_info    0x00006214      0x488 middleware/lin/coreapi/lin_common_api.o
+ .debug_info    0x0000669c     0x13da middleware/lin/coreapi/lin_common_proto.o
+ .debug_info    0x00007a76      0x345 middleware/lin/coreapi/lin_j2602_proto.o
+ .debug_info    0x00007dbb      0xd22 middleware/lin/coreapi/lin_lin21_proto.o
+ .debug_info    0x00008add     0x1c8e middleware/lin/diagnostic/lin_diagnostic_service.o
+ .debug_info    0x0000a76b      0x474 middleware/lin/lin1.o
+ .debug_info    0x0000abdf      0xb19 middleware/lin/lin_cfg.o
+ .debug_info    0x0000b6f8      0x250 middleware/lin/lin_common.o
+ .debug_info    0x0000b948     0x12c0 middleware/lin/lin_driver.o
+ .debug_info    0x0000cc08     0x1ca0 middleware/lin/lowlevel/lin.o
+ .debug_info    0x0000e8a8      0xff3 middleware/lin/transport/lin_commontl_api.o
+ .debug_info    0x0000f89b     0x162f middleware/lin/transport/lin_commontl_proto.o
+ .debug_info    0x00010eca     0x1f4b qtouch/touch.o
+ .debug_info    0x00012e15      0x19d soft_timer.o
+ .debug_info    0x00012fb2      0x6c9 src/adc_basic.o
+ .debug_info    0x0001367b      0x188 src/bod.o
+ .debug_info    0x00013803      0x2ce src/clkctrl.o
+ .debug_info    0x00013ad1       0x8d src/cpuint.o
+ .debug_info    0x00013b5e      0x1d3 src/dac_basic.o
+ .debug_info    0x00013d31     0x13dc src/driver_init.o
+ .debug_info    0x0001510d      0xe15 src/nvmctrl_basic.o
+ .debug_info    0x00015f22       0x90 src/protected_io.o
+ .debug_info    0x00015fb2      0x389 src/rtc.o
+ .debug_info    0x0001633b      0x136 src/slpctrl.o
+ .debug_info    0x00016471      0x73a src/tca.o
+ .debug_info    0x00016bab      0x2ae src/tcb.o
+ .debug_info    0x00016e59      0x257 src/usart.o
+ .debug_info    0x000170b0      0x4ff src/usart_basic.o
+ .debug_info    0x000175af      0x15d src/vref.o
 
-.debug_abbrev   0x00000000     0x6982
+.debug_abbrev   0x00000000     0x68d5
  *(.debug_abbrev)
  .debug_abbrev  0x00000000     0x2de2 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
  .debug_abbrev  0x00002de2       0x63 atmel_start.o
@@ -2038,78 +2026,78 @@ END GROUP
  .debug_abbrev  0x0000328f      0x2d4 ep40_function_specification.o
  .debug_abbrev  0x00003563      0x1a7 hc595.o
  .debug_abbrev  0x0000370a      0x1ba led.o
- .debug_abbrev  0x000038c4      0x27b main.o
- .debug_abbrev  0x00003b3f      0x193 middleware/lin/coreapi/lin_common_api.o
- .debug_abbrev  0x00003cd2      0x2b9 middleware/lin/coreapi/lin_common_proto.o
- .debug_abbrev  0x00003f8b      0x134 middleware/lin/coreapi/lin_j2602_proto.o
- .debug_abbrev  0x000040bf      0x1f2 middleware/lin/coreapi/lin_lin21_proto.o
- .debug_abbrev  0x000042b1      0x2cc middleware/lin/diagnostic/lin_diagnostic_service.o
- .debug_abbrev  0x0000457d       0xba middleware/lin/lin1.o
- .debug_abbrev  0x00004637      0x163 middleware/lin/lin_cfg.o
- .debug_abbrev  0x0000479a      0x113 middleware/lin/lin_common.o
- .debug_abbrev  0x000048ad      0x2fd middleware/lin/lin_driver.o
- .debug_abbrev  0x00004baa      0x353 middleware/lin/lowlevel/lin.o
- .debug_abbrev  0x00004efd      0x26e middleware/lin/transport/lin_commontl_api.o
- .debug_abbrev  0x0000516b      0x29e middleware/lin/transport/lin_commontl_proto.o
- .debug_abbrev  0x00005409      0x353 qtouch/touch.o
- .debug_abbrev  0x0000575c      0x111 soft_timer.o
- .debug_abbrev  0x0000586d      0x203 src/adc_basic.o
- .debug_abbrev  0x00005a70       0xaf src/bod.o
- .debug_abbrev  0x00005b1f      0x117 src/clkctrl.o
- .debug_abbrev  0x00005c36       0x51 src/cpuint.o
- .debug_abbrev  0x00005c87      0x10b src/dac_basic.o
- .debug_abbrev  0x00005d92      0x1d4 src/driver_init.o
- .debug_abbrev  0x00005f66      0x2c7 src/nvmctrl_basic.o
- .debug_abbrev  0x0000622d       0x14 src/protected_io.o
- .debug_abbrev  0x00006241       0xe6 src/rtc.o
- .debug_abbrev  0x00006327       0xc4 src/slpctrl.o
- .debug_abbrev  0x000063eb      0x102 src/tca.o
- .debug_abbrev  0x000064ed       0xf3 src/tcb.o
- .debug_abbrev  0x000065e0       0xe6 src/usart.o
- .debug_abbrev  0x000066c6      0x20d src/usart_basic.o
- .debug_abbrev  0x000068d3       0xaf src/vref.o
+ .debug_abbrev  0x000038c4      0x1ce main.o
+ .debug_abbrev  0x00003a92      0x193 middleware/lin/coreapi/lin_common_api.o
+ .debug_abbrev  0x00003c25      0x2b9 middleware/lin/coreapi/lin_common_proto.o
+ .debug_abbrev  0x00003ede      0x134 middleware/lin/coreapi/lin_j2602_proto.o
+ .debug_abbrev  0x00004012      0x1f2 middleware/lin/coreapi/lin_lin21_proto.o
+ .debug_abbrev  0x00004204      0x2cc middleware/lin/diagnostic/lin_diagnostic_service.o
+ .debug_abbrev  0x000044d0       0xba middleware/lin/lin1.o
+ .debug_abbrev  0x0000458a      0x163 middleware/lin/lin_cfg.o
+ .debug_abbrev  0x000046ed      0x113 middleware/lin/lin_common.o
+ .debug_abbrev  0x00004800      0x2fd middleware/lin/lin_driver.o
+ .debug_abbrev  0x00004afd      0x353 middleware/lin/lowlevel/lin.o
+ .debug_abbrev  0x00004e50      0x26e middleware/lin/transport/lin_commontl_api.o
+ .debug_abbrev  0x000050be      0x29e middleware/lin/transport/lin_commontl_proto.o
+ .debug_abbrev  0x0000535c      0x353 qtouch/touch.o
+ .debug_abbrev  0x000056af      0x111 soft_timer.o
+ .debug_abbrev  0x000057c0      0x203 src/adc_basic.o
+ .debug_abbrev  0x000059c3       0xaf src/bod.o
+ .debug_abbrev  0x00005a72      0x117 src/clkctrl.o
+ .debug_abbrev  0x00005b89       0x51 src/cpuint.o
+ .debug_abbrev  0x00005bda      0x10b src/dac_basic.o
+ .debug_abbrev  0x00005ce5      0x1d4 src/driver_init.o
+ .debug_abbrev  0x00005eb9      0x2c7 src/nvmctrl_basic.o
+ .debug_abbrev  0x00006180       0x14 src/protected_io.o
+ .debug_abbrev  0x00006194       0xe6 src/rtc.o
+ .debug_abbrev  0x0000627a       0xc4 src/slpctrl.o
+ .debug_abbrev  0x0000633e      0x102 src/tca.o
+ .debug_abbrev  0x00006440       0xf3 src/tcb.o
+ .debug_abbrev  0x00006533       0xe6 src/usart.o
+ .debug_abbrev  0x00006619      0x20d src/usart_basic.o
+ .debug_abbrev  0x00006826       0xaf src/vref.o
 
-.debug_line     0x00000000     0x7c4e
+.debug_line     0x00000000     0x79c7
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x217 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
  .debug_line    0x00000217       0x8b atmel_start.o
  .debug_line    0x000002a2      0x286 driver_isr.o
  .debug_line    0x00000528      0xa09 ep40_cfg.o
- .debug_line    0x00000f31      0x44a ep40_function_specification.o
- .debug_line    0x0000137b      0x1b7 hc595.o
- .debug_line    0x00001532      0x195 led.o
- .debug_line    0x000016c7      0x50a main.o
- .debug_line    0x00001bd1      0x1c0 middleware/lin/coreapi/lin_common_api.o
- .debug_line    0x00001d91      0x716 middleware/lin/coreapi/lin_common_proto.o
- .debug_line    0x000024a7       0xe8 middleware/lin/coreapi/lin_j2602_proto.o
- .debug_line    0x0000258f      0x2aa middleware/lin/coreapi/lin_lin21_proto.o
- .debug_line    0x00002839      0xfdc middleware/lin/diagnostic/lin_diagnostic_service.o
- .debug_line    0x00003815      0x126 middleware/lin/lin1.o
- .debug_line    0x0000393b      0x14f middleware/lin/lin_cfg.o
- .debug_line    0x00003a8a      0x15b middleware/lin/lin_common.o
- .debug_line    0x00003be5      0x8da middleware/lin/lin_driver.o
- .debug_line    0x000044bf      0x5a5 middleware/lin/lowlevel/lin.o
- .debug_line    0x00004a64      0x51d middleware/lin/transport/lin_commontl_api.o
- .debug_line    0x00004f81      0x9d1 middleware/lin/transport/lin_commontl_proto.o
- .debug_line    0x00005952      0x583 qtouch/touch.o
- .debug_line    0x00005ed5      0x133 soft_timer.o
- .debug_line    0x00006008      0x2cb src/adc_basic.o
- .debug_line    0x000062d3      0x10b src/bod.o
- .debug_line    0x000063de      0x139 src/clkctrl.o
- .debug_line    0x00006517       0xab src/cpuint.o
- .debug_line    0x000065c2      0x193 src/dac_basic.o
- .debug_line    0x00006755      0x4a4 src/driver_init.o
- .debug_line    0x00006bf9      0x605 src/nvmctrl_basic.o
- .debug_line    0x000071fe       0x5b src/protected_io.o
- .debug_line    0x00007259      0x121 src/rtc.o
- .debug_line    0x0000737a      0x11f src/slpctrl.o
- .debug_line    0x00007499      0x129 src/tca.o
- .debug_line    0x000075c2      0x158 src/tcb.o
- .debug_line    0x0000771a      0x119 src/usart.o
- .debug_line    0x00007833      0x309 src/usart_basic.o
- .debug_line    0x00007b3c      0x112 src/vref.o
+ .debug_line    0x00000f31      0x448 ep40_function_specification.o
+ .debug_line    0x00001379      0x1b7 hc595.o
+ .debug_line    0x00001530      0x195 led.o
+ .debug_line    0x000016c5      0x285 main.o
+ .debug_line    0x0000194a      0x1c0 middleware/lin/coreapi/lin_common_api.o
+ .debug_line    0x00001b0a      0x716 middleware/lin/coreapi/lin_common_proto.o
+ .debug_line    0x00002220       0xe8 middleware/lin/coreapi/lin_j2602_proto.o
+ .debug_line    0x00002308      0x2aa middleware/lin/coreapi/lin_lin21_proto.o
+ .debug_line    0x000025b2      0xfdc middleware/lin/diagnostic/lin_diagnostic_service.o
+ .debug_line    0x0000358e      0x126 middleware/lin/lin1.o
+ .debug_line    0x000036b4      0x14f middleware/lin/lin_cfg.o
+ .debug_line    0x00003803      0x15b middleware/lin/lin_common.o
+ .debug_line    0x0000395e      0x8da middleware/lin/lin_driver.o
+ .debug_line    0x00004238      0x5a5 middleware/lin/lowlevel/lin.o
+ .debug_line    0x000047dd      0x51d middleware/lin/transport/lin_commontl_api.o
+ .debug_line    0x00004cfa      0x9d1 middleware/lin/transport/lin_commontl_proto.o
+ .debug_line    0x000056cb      0x583 qtouch/touch.o
+ .debug_line    0x00005c4e      0x133 soft_timer.o
+ .debug_line    0x00005d81      0x2cb src/adc_basic.o
+ .debug_line    0x0000604c      0x10b src/bod.o
+ .debug_line    0x00006157      0x139 src/clkctrl.o
+ .debug_line    0x00006290       0xab src/cpuint.o
+ .debug_line    0x0000633b      0x193 src/dac_basic.o
+ .debug_line    0x000064ce      0x4a4 src/driver_init.o
+ .debug_line    0x00006972      0x605 src/nvmctrl_basic.o
+ .debug_line    0x00006f77       0x5b src/protected_io.o
+ .debug_line    0x00006fd2      0x121 src/rtc.o
+ .debug_line    0x000070f3      0x11f src/slpctrl.o
+ .debug_line    0x00007212      0x129 src/tca.o
+ .debug_line    0x0000733b      0x158 src/tcb.o
+ .debug_line    0x00007493      0x119 src/usart.o
+ .debug_line    0x000075ac      0x309 src/usart_basic.o
+ .debug_line    0x000078b5      0x112 src/vref.o
 
-.debug_frame    0x00000000     0x1a6c
+.debug_frame    0x00000000     0x19e4
  *(.debug_frame)
  .debug_frame   0x00000000       0x24 atmel_start.o
  .debug_frame   0x00000024      0x184 driver_isr.o
@@ -2117,36 +2105,36 @@ END GROUP
  .debug_frame   0x000002a4       0x70 ep40_function_specification.o
  .debug_frame   0x00000314       0x34 hc595.o
  .debug_frame   0x00000348       0x44 led.o
- .debug_frame   0x0000038c       0xac main.o
- .debug_frame   0x00000438       0x74 middleware/lin/coreapi/lin_common_api.o
- .debug_frame   0x000004ac      0x15c middleware/lin/coreapi/lin_common_proto.o
- .debug_frame   0x00000608       0x24 middleware/lin/coreapi/lin_j2602_proto.o
- .debug_frame   0x0000062c       0xa0 middleware/lin/coreapi/lin_lin21_proto.o
- .debug_frame   0x000006cc      0x32c middleware/lin/diagnostic/lin_diagnostic_service.o
- .debug_frame   0x000009f8       0x24 middleware/lin/lin_cfg.o
- .debug_frame   0x00000a1c       0x40 middleware/lin/lin_common.o
- .debug_frame   0x00000a5c      0x250 middleware/lin/lin_driver.o
- .debug_frame   0x00000cac      0x23c middleware/lin/lowlevel/lin.o
- .debug_frame   0x00000ee8       0xe8 middleware/lin/transport/lin_commontl_api.o
- .debug_frame   0x00000fd0      0x1d8 middleware/lin/transport/lin_commontl_proto.o
- .debug_frame   0x000011a8      0x1b4 qtouch/touch.o
- .debug_frame   0x0000135c       0x54 soft_timer.o
- .debug_frame   0x000013b0      0x12c src/adc_basic.o
- .debug_frame   0x000014dc       0x24 src/bod.o
- .debug_frame   0x00001500       0x24 src/clkctrl.o
- .debug_frame   0x00001524       0x24 src/cpuint.o
- .debug_frame   0x00001548       0x64 src/dac_basic.o
- .debug_frame   0x000015ac       0xa4 src/driver_init.o
- .debug_frame   0x00001650      0x230 src/nvmctrl_basic.o
- .debug_frame   0x00001880       0x24 src/rtc.o
- .debug_frame   0x000018a4       0x34 src/slpctrl.o
- .debug_frame   0x000018d8       0x24 src/tca.o
- .debug_frame   0x000018fc       0x34 src/tcb.o
- .debug_frame   0x00001930       0x24 src/usart.o
- .debug_frame   0x00001954       0xf4 src/usart_basic.o
- .debug_frame   0x00001a48       0x24 src/vref.o
+ .debug_frame   0x0000038c       0x24 main.o
+ .debug_frame   0x000003b0       0x74 middleware/lin/coreapi/lin_common_api.o
+ .debug_frame   0x00000424      0x15c middleware/lin/coreapi/lin_common_proto.o
+ .debug_frame   0x00000580       0x24 middleware/lin/coreapi/lin_j2602_proto.o
+ .debug_frame   0x000005a4       0xa0 middleware/lin/coreapi/lin_lin21_proto.o
+ .debug_frame   0x00000644      0x32c middleware/lin/diagnostic/lin_diagnostic_service.o
+ .debug_frame   0x00000970       0x24 middleware/lin/lin_cfg.o
+ .debug_frame   0x00000994       0x40 middleware/lin/lin_common.o
+ .debug_frame   0x000009d4      0x250 middleware/lin/lin_driver.o
+ .debug_frame   0x00000c24      0x23c middleware/lin/lowlevel/lin.o
+ .debug_frame   0x00000e60       0xe8 middleware/lin/transport/lin_commontl_api.o
+ .debug_frame   0x00000f48      0x1d8 middleware/lin/transport/lin_commontl_proto.o
+ .debug_frame   0x00001120      0x1b4 qtouch/touch.o
+ .debug_frame   0x000012d4       0x54 soft_timer.o
+ .debug_frame   0x00001328      0x12c src/adc_basic.o
+ .debug_frame   0x00001454       0x24 src/bod.o
+ .debug_frame   0x00001478       0x24 src/clkctrl.o
+ .debug_frame   0x0000149c       0x24 src/cpuint.o
+ .debug_frame   0x000014c0       0x64 src/dac_basic.o
+ .debug_frame   0x00001524       0xa4 src/driver_init.o
+ .debug_frame   0x000015c8      0x230 src/nvmctrl_basic.o
+ .debug_frame   0x000017f8       0x24 src/rtc.o
+ .debug_frame   0x0000181c       0x34 src/slpctrl.o
+ .debug_frame   0x00001850       0x24 src/tca.o
+ .debug_frame   0x00001874       0x34 src/tcb.o
+ .debug_frame   0x000018a8       0x24 src/usart.o
+ .debug_frame   0x000018cc       0xf4 src/usart_basic.o
+ .debug_frame   0x000019c0       0x24 src/vref.o
 
-.debug_str      0x00000000     0x7c90
+.debug_str      0x00000000     0x7ba4
  *(.debug_str)
  .debug_str     0x00000000     0x14e3 D:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/AVR-Dx_DFP/1.8.95/gcc/dev/avr64da64/avrxmega2/crtavr64da64.o
  .debug_str     0x000014e3      0x17b atmel_start.o
@@ -2154,100 +2142,100 @@ END GROUP
  .debug_str     0x0000165e      0x255 driver_isr.o
                                 0x405 (size before relaxing)
  .debug_str     0x000018b3      0x811 ep40_cfg.o
-                                0xad4 (size before relaxing)
+                                0xacf (size before relaxing)
  .debug_str     0x000020c4      0x23a ep40_function_specification.o
-                                0x6db (size before relaxing)
+                                0x6d6 (size before relaxing)
  .debug_str     0x000022fe       0x9a hc595.o
                                 0x260 (size before relaxing)
  .debug_str     0x00002398       0x65 led.o
                                 0x2c4 (size before relaxing)
- .debug_str     0x000023fd      0x7a5 main.o
-                                0xb14 (size before relaxing)
- .debug_str     0x00002ba2      0x2bb middleware/lin/coreapi/lin_common_api.o
+ .debug_str     0x000023fd      0x42f main.o
+                                0x699 (size before relaxing)
+ .debug_str     0x0000282c      0x2bb middleware/lin/coreapi/lin_common_api.o
                                 0x493 (size before relaxing)
- .debug_str     0x00002e5d      0xbcc middleware/lin/coreapi/lin_common_proto.o
+ .debug_str     0x00002ae7      0xbcc middleware/lin/coreapi/lin_common_proto.o
                                0x1170 (size before relaxing)
- .debug_str     0x00003a29       0x53 middleware/lin/coreapi/lin_j2602_proto.o
+ .debug_str     0x000036b3       0x53 middleware/lin/coreapi/lin_j2602_proto.o
                                 0x41f (size before relaxing)
- .debug_str     0x00003a7c       0x6e middleware/lin/coreapi/lin_lin21_proto.o
+ .debug_str     0x00003706       0x6e middleware/lin/coreapi/lin_lin21_proto.o
                                 0xf4a (size before relaxing)
- .debug_str     0x00003aea      0x7cb middleware/lin/diagnostic/lin_diagnostic_service.o
+ .debug_str     0x00003774      0x7cb middleware/lin/diagnostic/lin_diagnostic_service.o
                                0x159a (size before relaxing)
- .debug_str     0x000042b5      0x42d middleware/lin/lin1.o
+ .debug_str     0x00003f3f      0x42d middleware/lin/lin1.o
                                 0x657 (size before relaxing)
- .debug_str     0x000046e2      0x163 middleware/lin/lin_cfg.o
+ .debug_str     0x0000436c      0x163 middleware/lin/lin_cfg.o
                                 0xd1b (size before relaxing)
- .debug_str     0x00004845       0x6d middleware/lin/lin_common.o
+ .debug_str     0x000044cf       0x6d middleware/lin/lin_common.o
                                 0x214 (size before relaxing)
- .debug_str     0x000048b2      0xb52 middleware/lin/lin_driver.o
-                               0x122e (size before relaxing)
- .debug_str     0x00005404      0x13b middleware/lin/lowlevel/lin.o
+ .debug_str     0x0000453c      0xb52 middleware/lin/lin_driver.o
+                               0x1229 (size before relaxing)
+ .debug_str     0x0000508e      0x13b middleware/lin/lowlevel/lin.o
                                0x2007 (size before relaxing)
- .debug_str     0x0000553f       0xef middleware/lin/transport/lin_commontl_api.o
+ .debug_str     0x000051c9       0xef middleware/lin/transport/lin_commontl_api.o
                                0x1135 (size before relaxing)
- .debug_str     0x0000562e      0x1d5 middleware/lin/transport/lin_commontl_proto.o
+ .debug_str     0x000052b8      0x1d5 middleware/lin/transport/lin_commontl_proto.o
                                0x1567 (size before relaxing)
- .debug_str     0x00005803      0xf7f qtouch/touch.o
+ .debug_str     0x0000548d     0x11f2 qtouch/touch.o
                                0x15d0 (size before relaxing)
- .debug_str     0x00006782       0x5e soft_timer.o
+ .debug_str     0x0000667f       0x5e soft_timer.o
                                 0x21f (size before relaxing)
- .debug_str     0x000067e0      0x416 src/adc_basic.o
+ .debug_str     0x000066dd      0x42d src/adc_basic.o
                                 0x8aa (size before relaxing)
- .debug_str     0x00006bf6       0x7e src/bod.o
+ .debug_str     0x00006b0a       0x7e src/bod.o
                                 0x247 (size before relaxing)
- .debug_str     0x00006c74      0x169 src/clkctrl.o
+ .debug_str     0x00006b88      0x169 src/clkctrl.o
                                 0x387 (size before relaxing)
- .debug_str     0x00006ddd       0x1c src/cpuint.o
+ .debug_str     0x00006cf1       0x1c src/cpuint.o
                                 0x197 (size before relaxing)
- .debug_str     0x00006df9       0x70 src/dac_basic.o
+ .debug_str     0x00006d0d       0x70 src/dac_basic.o
                                 0x24e (size before relaxing)
- .debug_str     0x00006e69      0x354 src/driver_init.o
+ .debug_str     0x00006d7d      0x354 src/driver_init.o
                                 0x83d (size before relaxing)
- .debug_str     0x000071bd      0x3ba src/nvmctrl_basic.o
+ .debug_str     0x000070d1      0x3ba src/nvmctrl_basic.o
                                 0x68f (size before relaxing)
- .debug_str     0x00007577      0x201 src/rtc.o
+ .debug_str     0x0000748b      0x201 src/rtc.o
                                 0x46e (size before relaxing)
- .debug_str     0x00007778       0xb9 src/slpctrl.o
+ .debug_str     0x0000768c       0xb9 src/slpctrl.o
                                 0x25b (size before relaxing)
- .debug_str     0x00007831       0xf2 src/tca.o
+ .debug_str     0x00007745       0xf2 src/tca.o
                                 0x484 (size before relaxing)
- .debug_str     0x00007923      0x130 src/tcb.o
+ .debug_str     0x00007837      0x130 src/tcb.o
                                 0x369 (size before relaxing)
- .debug_str     0x00007a53       0x4d src/usart.o
+ .debug_str     0x00007967       0x4d src/usart.o
                                 0x2ff (size before relaxing)
- .debug_str     0x00007aa0      0x12c src/usart_basic.o
+ .debug_str     0x000079b4      0x12c src/usart_basic.o
                                 0x407 (size before relaxing)
- .debug_str     0x00007bcc       0xc4 src/vref.o
+ .debug_str     0x00007ae0       0xc4 src/vref.o
                                 0x275 (size before relaxing)
 
-.debug_loc      0x00000000     0x8a6a
+.debug_loc      0x00000000     0x8962
  *(.debug_loc)
  .debug_loc     0x00000000      0x352 driver_isr.o
  .debug_loc     0x00000352      0x25b ep40_cfg.o
  .debug_loc     0x000005ad      0x142 ep40_function_specification.o
  .debug_loc     0x000006ef      0x1f2 hc595.o
  .debug_loc     0x000008e1       0xb3 led.o
- .debug_loc     0x00000994      0x131 main.o
- .debug_loc     0x00000ac5       0xc6 middleware/lin/coreapi/lin_common_api.o
- .debug_loc     0x00000b8b      0xa35 middleware/lin/coreapi/lin_common_proto.o
- .debug_loc     0x000015c0       0x50 middleware/lin/coreapi/lin_j2602_proto.o
- .debug_loc     0x00001610      0x33b middleware/lin/coreapi/lin_lin21_proto.o
- .debug_loc     0x0000194b     0x1b19 middleware/lin/diagnostic/lin_diagnostic_service.o
- .debug_loc     0x00003464       0xbf middleware/lin/lin_cfg.o
- .debug_loc     0x00003523      0x2a7 middleware/lin/lin_common.o
- .debug_loc     0x000037ca      0xeee middleware/lin/lin_driver.o
- .debug_loc     0x000046b8      0xda2 middleware/lin/lowlevel/lin.o
- .debug_loc     0x0000545a      0x507 middleware/lin/transport/lin_commontl_api.o
- .debug_loc     0x00005961      0xc8a middleware/lin/transport/lin_commontl_proto.o
- .debug_loc     0x000065eb      0xcaf qtouch/touch.o
- .debug_loc     0x0000729a      0x130 soft_timer.o
- .debug_loc     0x000073ca      0x17c src/adc_basic.o
- .debug_loc     0x00007546       0x2a src/clkctrl.o
- .debug_loc     0x00007570       0x28 src/dac_basic.o
- .debug_loc     0x00007598      0x566 src/driver_init.o
- .debug_loc     0x00007afe      0xeb4 src/nvmctrl_basic.o
- .debug_loc     0x000089b2       0x21 src/slpctrl.o
- .debug_loc     0x000089d3       0x97 src/usart_basic.o
+ .debug_loc     0x00000994       0x29 main.o
+ .debug_loc     0x000009bd       0xc6 middleware/lin/coreapi/lin_common_api.o
+ .debug_loc     0x00000a83      0xa35 middleware/lin/coreapi/lin_common_proto.o
+ .debug_loc     0x000014b8       0x50 middleware/lin/coreapi/lin_j2602_proto.o
+ .debug_loc     0x00001508      0x33b middleware/lin/coreapi/lin_lin21_proto.o
+ .debug_loc     0x00001843     0x1b19 middleware/lin/diagnostic/lin_diagnostic_service.o
+ .debug_loc     0x0000335c       0xbf middleware/lin/lin_cfg.o
+ .debug_loc     0x0000341b      0x2a7 middleware/lin/lin_common.o
+ .debug_loc     0x000036c2      0xeee middleware/lin/lin_driver.o
+ .debug_loc     0x000045b0      0xda2 middleware/lin/lowlevel/lin.o
+ .debug_loc     0x00005352      0x507 middleware/lin/transport/lin_commontl_api.o
+ .debug_loc     0x00005859      0xc8a middleware/lin/transport/lin_commontl_proto.o
+ .debug_loc     0x000064e3      0xcaf qtouch/touch.o
+ .debug_loc     0x00007192      0x130 soft_timer.o
+ .debug_loc     0x000072c2      0x17c src/adc_basic.o
+ .debug_loc     0x0000743e       0x2a src/clkctrl.o
+ .debug_loc     0x00007468       0x28 src/dac_basic.o
+ .debug_loc     0x00007490      0x566 src/driver_init.o
+ .debug_loc     0x000079f6      0xeb4 src/nvmctrl_basic.o
+ .debug_loc     0x000088aa       0x21 src/slpctrl.o
+ .debug_loc     0x000088cb       0x97 src/usart_basic.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -2267,7 +2255,7 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x7e8
+.debug_ranges   0x00000000      0x7b8
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x10 atmel_start.o
  .debug_ranges  0x00000010       0x30 driver_isr.o
@@ -2275,34 +2263,34 @@ END GROUP
  .debug_ranges  0x000000b0       0x30 ep40_function_specification.o
  .debug_ranges  0x000000e0       0x10 hc595.o
  .debug_ranges  0x000000f0       0x20 led.o
- .debug_ranges  0x00000110       0x40 main.o
- .debug_ranges  0x00000150       0x38 middleware/lin/coreapi/lin_common_api.o
- .debug_ranges  0x00000188       0x50 middleware/lin/coreapi/lin_common_proto.o
- .debug_ranges  0x000001d8       0x10 middleware/lin/coreapi/lin_j2602_proto.o
- .debug_ranges  0x000001e8       0x28 middleware/lin/coreapi/lin_lin21_proto.o
- .debug_ranges  0x00000210       0x80 middleware/lin/diagnostic/lin_diagnostic_service.o
- .debug_ranges  0x00000290       0x10 middleware/lin/lin_cfg.o
- .debug_ranges  0x000002a0       0x18 middleware/lin/lin_common.o
- .debug_ranges  0x000002b8       0xb0 middleware/lin/lin_driver.o
- .debug_ranges  0x00000368       0x78 middleware/lin/lowlevel/lin.o
- .debug_ranges  0x000003e0       0x50 middleware/lin/transport/lin_commontl_api.o
- .debug_ranges  0x00000430       0x80 middleware/lin/transport/lin_commontl_proto.o
- .debug_ranges  0x000004b0       0xa8 qtouch/touch.o
- .debug_ranges  0x00000558       0x18 soft_timer.o
- .debug_ranges  0x00000570       0x70 src/adc_basic.o
- .debug_ranges  0x000005e0       0x10 src/bod.o
- .debug_ranges  0x000005f0       0x10 src/clkctrl.o
- .debug_ranges  0x00000600       0x10 src/cpuint.o
- .debug_ranges  0x00000610       0x30 src/dac_basic.o
- .debug_ranges  0x00000640       0x50 src/driver_init.o
- .debug_ranges  0x00000690       0x70 src/nvmctrl_basic.o
- .debug_ranges  0x00000700       0x10 src/rtc.o
- .debug_ranges  0x00000710       0x18 src/slpctrl.o
- .debug_ranges  0x00000728       0x10 src/tca.o
- .debug_ranges  0x00000738       0x18 src/tcb.o
- .debug_ranges  0x00000750       0x10 src/usart.o
- .debug_ranges  0x00000760       0x78 src/usart_basic.o
- .debug_ranges  0x000007d8       0x10 src/vref.o
+ .debug_ranges  0x00000110       0x10 main.o
+ .debug_ranges  0x00000120       0x38 middleware/lin/coreapi/lin_common_api.o
+ .debug_ranges  0x00000158       0x50 middleware/lin/coreapi/lin_common_proto.o
+ .debug_ranges  0x000001a8       0x10 middleware/lin/coreapi/lin_j2602_proto.o
+ .debug_ranges  0x000001b8       0x28 middleware/lin/coreapi/lin_lin21_proto.o
+ .debug_ranges  0x000001e0       0x80 middleware/lin/diagnostic/lin_diagnostic_service.o
+ .debug_ranges  0x00000260       0x10 middleware/lin/lin_cfg.o
+ .debug_ranges  0x00000270       0x18 middleware/lin/lin_common.o
+ .debug_ranges  0x00000288       0xb0 middleware/lin/lin_driver.o
+ .debug_ranges  0x00000338       0x78 middleware/lin/lowlevel/lin.o
+ .debug_ranges  0x000003b0       0x50 middleware/lin/transport/lin_commontl_api.o
+ .debug_ranges  0x00000400       0x80 middleware/lin/transport/lin_commontl_proto.o
+ .debug_ranges  0x00000480       0xa8 qtouch/touch.o
+ .debug_ranges  0x00000528       0x18 soft_timer.o
+ .debug_ranges  0x00000540       0x70 src/adc_basic.o
+ .debug_ranges  0x000005b0       0x10 src/bod.o
+ .debug_ranges  0x000005c0       0x10 src/clkctrl.o
+ .debug_ranges  0x000005d0       0x10 src/cpuint.o
+ .debug_ranges  0x000005e0       0x30 src/dac_basic.o
+ .debug_ranges  0x00000610       0x50 src/driver_init.o
+ .debug_ranges  0x00000660       0x70 src/nvmctrl_basic.o
+ .debug_ranges  0x000006d0       0x10 src/rtc.o
+ .debug_ranges  0x000006e0       0x18 src/slpctrl.o
+ .debug_ranges  0x000006f8       0x10 src/tca.o
+ .debug_ranges  0x00000708       0x18 src/tcb.o
+ .debug_ranges  0x00000720       0x10 src/usart.o
+ .debug_ranges  0x00000730       0x78 src/usart_basic.o
+ .debug_ranges  0x000007a8       0x10 src/vref.o
 
 .debug_macro
  *(.debug_macro)

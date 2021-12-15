@@ -2,13 +2,6 @@
 #include "ep40_cfg.h"
 #include "atmel_start_pins.h"
 
-// DFGLS 主开关
-
-/* V01-3.1.5.1 */
-/* 反转按键任务，需要放在定时器中，TIMEOUT_REAR_UNIT_S配置定时器任务的时间 */
-/* 外部输入:cap_trig_flg\press_trig_flg */
-/* 判断电容触发标志，压力触发标志 */
-/* 输出:反转LED控制回调函数 */
 void btn_rear_tick_task(void)
 {
     btn_rear_t *btn_rear_ptr = &g_btn_rear;
@@ -317,10 +310,5 @@ void lin_go_to_sleep(void)
 
     /* LIN TX设置低电平 */
     PE0_set_dir(PORT_DIR_OUT);
-    PE0_set_level(
-        // <y> Initial level
-        // <id> pad_initial_level
-        // <false"> Low
-        // <true"> High
-        false);
+    PE0_set_level(false);
 }

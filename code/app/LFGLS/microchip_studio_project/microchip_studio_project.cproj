@@ -265,6 +265,11 @@
       <Value>../qtouch/lib/gcc</Value>
     </ListValues>
   </avrgcc.linker.libraries.LibrarySearchPaths>
+  <avrgcc.linker.memorysettings.Flash>
+    <ListValues>
+      <Value>.text=0x2400</Value>
+    </ListValues>
+  </avrgcc.linker.memorysettings.Flash>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.8.95\include\</Value>

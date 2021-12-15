@@ -34,15 +34,6 @@
 #define SIGNAL_VAL_SLEEP 0x00
 #define SIGNAL_VAL_WAKE_UP 0x01
 
-
-
-typedef struct
-{
-    char *name;
-    uint8_t id;
-    uint8_t pid;
-} DFGLS_frame_t;
-
 typedef struct
 {
     uint8_t backlight_brightness : 4;

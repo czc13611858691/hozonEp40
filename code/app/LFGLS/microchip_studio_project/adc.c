@@ -1,9 +1,3 @@
-/**
- * @file adc.c
- * @author 曹志成
- * @brief 获取霍尔传感器的值，在软件定时器中10ms开启一次转换，转换完成触发中断，中断完成切换通道
- * @date 2021-10-20
- */
 #include "adc.h"
 
 adc_result_t ADC_0_measurement[2];

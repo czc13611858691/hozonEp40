@@ -112,7 +112,6 @@ void soft_timer_window_lock_task(void)
 
 void window_lock_signal_cb(void)
 {
-    // lin_signal_x_shot_wr(DFGLS_0X21_CONTROL_WINDOW_LOCK_SW, 1, 3);
     lin_signal_send_x_times(LI0_DFGLS_ControlWindowLockSw, 3, 1);
 }
 
@@ -347,12 +346,10 @@ void left_window_signal_out_cb(uint8_t signal)
 
     if (rear_status == 0)
     {
-        // lin_signal_x_shot_wr(DFGLS_0X21_FL_WINDOW_CONTROL, signal, 3);
         lin_signal_send_x_times(LI0_DFGLS_FLWindowControl, 3, signal);
     }
     else
     {
-        // lin_signal_x_shot_wr(DFGLS_0X21_RL_WINDOW_CONTROL, signal, 3);
         lin_signal_send_x_times(LI0_DFGLS_RLWindowControl, 3, signal);
     }
 }

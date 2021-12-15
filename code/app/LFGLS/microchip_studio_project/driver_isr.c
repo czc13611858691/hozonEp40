@@ -68,7 +68,6 @@ ISR(USART4_RXC_vect)
 /* RTC时钟定时器中断用于触摸时基 */
 ISR(RTC_CNT_vect)
 {
-
 	/* Insert your RTC Compare interrupt handling code */
 	touch_timer_handler();
 
