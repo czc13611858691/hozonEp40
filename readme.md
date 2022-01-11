@@ -4,6 +4,12 @@ e3样件
 
 
 
+软硬件版本号
+
+![image-20211217090406944](D:\02_Projects\HOZON_EP40\Software\E3\readme.assets\image-20211217090406944.png)
+
+
+
 原理图
 
 左前
@@ -128,7 +134,7 @@ app工程 [AVR128DA28_FR_RR.atsln](code\app\RFGLS\AVR128DA28_FR_RR.atsln)
 
 ![image-20211214150941271](D:\02_Projects\HOZON_EP40\Software\E3\readme.assets\image-20211214150941271.png)
 
-![image-20211214151053584](D:\02_Projects\HOZON_EP40\Software\E3\readme.assets\image-20211214151053584.png)
+![test](D:\02_Projects\HOZON_EP40\Software\E3\readme.assets\image-20211214151053584.png)
 
 执行读取版本命令
 
