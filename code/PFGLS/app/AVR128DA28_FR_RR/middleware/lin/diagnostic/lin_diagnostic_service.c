@@ -1012,7 +1012,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     {
 #if 1
         //TODO: 根据不同主机需求更改相应的功能 0x10--PCI FF 0x0b--数据长度12    RSID sid+0x40   0xF1+0x88-->数据标识符
-    case 0xF188: //应用软件版本号(升级版本)  F188   03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
+    case 0xF188: //应用软件版本号(升级版本)  F188   03.00.01  -->  30 33 2e 30 30 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
         lin_tl_pdu[2] = 0x0A;
@@ -1032,12 +1032,12 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x30;
+        lin_tl_pdu[7] = 0x31;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
-    case 0xF1B0: //应用软件版本号(固定版本）F1B0    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
+    case 0xF1B0: //应用软件版本号(固定版本）F1B0    03.00.01  -->  30 33 2e 30 30 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
         lin_tl_pdu[2] = 0x0A;
@@ -1057,12 +1057,12 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x30;
+        lin_tl_pdu[7] = 0x31;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
-    case 0xF1A2: //ECU标定软件号     F1A2      03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
+    case 0xF1A2: //ECU标定软件号     F1A2      03.00.01  -->  30 33 2e 30 30 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
         lin_tl_pdu[2] = 0x0A;
@@ -1082,13 +1082,13 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x30;
+        lin_tl_pdu[7] = 0x31;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
 
-    case 0xF180: //boot版本    F180    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
+    case 0xF180: //boot版本    F180    03.00.00  -->  30 33 2e 30 30 2e 30 30      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
         lin_tl_pdu[2] = 0x0A;
@@ -1415,7 +1415,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
-    case 0xF1C0: //软件总成    F1C0    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
+    case 0xF1C0: //软件总成    F1C0    03.00.01  -->  30 33 2e 30 30 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
         lin_tl_pdu[2] = 0x0A;
@@ -1435,7 +1435,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x30;
+        lin_tl_pdu[7] = 0x31;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
