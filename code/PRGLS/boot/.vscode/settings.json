@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "nvmctrl_basic.h": "c",
-        "lin1.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "Disabled"
-}
