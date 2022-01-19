@@ -427,6 +427,24 @@ void LIN_DRV_IRQHandler(uint32_t instance, int8_t event)
         }
         (void)LIN_DRV_GotoIdleState(instance);
     }
+    else if (event == -2)
+    {
+        linCurrentState->currentEventId = LIN_READBACK_ERROR;
+        if (linCurrentState->Callback != NULL)
+        {
+            linCurrentState->Callback(instance, linCurrentState);
+        }
+
+                /* Check if the transmission is non-blocking */
+        if (linCurrentState->isTxBlocking == false)
+        {
+            /* Clear Tx busy flag */
+            linCurrentState->isTxBusy = false;
+
+            /* Change node's current state to IDLE */
+            (void)LIN_DRV_GotoIdleState(instance);
+        }
+    }
 }
 
 static void LIN_DRV_ProcessFrameHeader(uint32_t instance, uint8_t tmpbyte)

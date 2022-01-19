@@ -61,6 +61,13 @@ ISR(USART4_RXC_vect)
       return;
    }
 
+   index = (USART4.RXDATAH & USART_FERR_bm) >> USART_FERR_bp;
+   if (index == 1)
+   {
+      // g_lin_protocol_state_array[0].error_in_response = 1;
+      LIN_DRV_IRQHandler(0, -2);
+   }
+
    LIN_DRV_IRQHandler(0, 0);
    USART4.STATUS |= USART_ISFIF_bm;
 }
