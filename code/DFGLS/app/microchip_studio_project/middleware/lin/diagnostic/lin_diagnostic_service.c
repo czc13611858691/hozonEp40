@@ -1032,7 +1032,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x30;
+        lin_tl_pdu[7] = 0x32;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
@@ -1057,7 +1057,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x30;
+        lin_tl_pdu[7] = 0x32;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
@@ -1082,7 +1082,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x30;
+        lin_tl_pdu[7] = 0x32;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
@@ -1391,6 +1391,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[7] = 0x00;
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
+        break;
     case 0xF1BF: //硬件版本    F1BF    H1.01-->  48 31 2E 30 31                5Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
@@ -1415,6 +1416,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
+        break;
     case 0xF1C0: //软件总成    F1C0    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
@@ -1435,7 +1437,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x30;
+        lin_tl_pdu[7] = 0x32;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
@@ -1472,6 +1474,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         ld_put_raw(iii, lin_tl_pdu);
 
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
+        break;
     default:
         ld_make_slave_response_pdu(iii, SERVICE_READ_DATA_BY_IDENTIFY, NEGATIVE, 0U);
         break;

@@ -34,7 +34,7 @@ default  BREAK
 
 ![image-20220119093858371](D:\02_Projects\HOZON_EP40\Software\hozonEp40\doc\客户反馈诊断问题2022-1-19\readme.assets\image-20220119093858371.png)
 
-![image-20220119094246104](D:\02_Projects\HOZON_EP40\Software\hozonEp40\doc\客户反馈诊断问题2022-1-19\readme.assets\image-20220119094246104.png)
+![image-20220119102254019](D:\02_Projects\HOZON_EP40\Software\hozonEp40\doc\客户反馈诊断问题2022-1-19\readme.assets\image-20220119102254019.png)
 
 ![image-20220119094423989](D:\02_Projects\HOZON_EP40\Software\hozonEp40\doc\客户反馈诊断问题2022-1-19\readme.assets\image-20220119094423989.png)
 
@@ -46,6 +46,33 @@ default  BREAK
 
 0x3D:	50	21	12	26	00	00	00	00
 
-
+**pos**
 
 62	F1	9D	20	21	12
+
+
+
+**实际上我们想返回的数据**
+
+10	PCI FF 首帧
+
+06	数据长度为6
+
+62	RSID	SID+0x40=0x22+0x40=0x62
+
+
+
+21	PCI CF 续帧 计数值为1
+
+
+
+F19D	数据标识符
+
+
+
+![image-20220119101344248](D:\02_Projects\HOZON_EP40\Software\hozonEp40\doc\客户反馈诊断问题2022-1-19\readme.assets\image-20220119101344248.png)
+
+返回的数据为:
+
+20 21 12 26   //2021年12月26日
+
