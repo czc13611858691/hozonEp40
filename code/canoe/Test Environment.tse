@@ -1,25 +1,25 @@
-;CANoe Version |4|11|0|58225 Test Environment 
+;CANoe Version |4|11|0|58212 Test Environment 
 Version: 11.0.81 Build 81
 32 PRO
 25
-APPDIR Vector.CANoe.SignalGenerators.DLL
-Vector.CANoe.SignalGenerators, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
-Vector.CANoe.SignalGenerators.ComponentWrapper
-1
-1.0.1
-APPDIR Vector.CANalyzer.LIN.NMWindow.DLL
-Vector.CANalyzer.LIN.NMWindow, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
-Vector.CANalyzer.LIN.NMWindow.NMWindow
-2
-1.0.0
 APPDIR Vector.CANalyzer.LIN.NetworkMonitor.DLL
 Vector.CANalyzer.LIN.NetworkMonitor, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
 Vector.CANalyzer.LIN.NetworkMonitor.NetworkMonitor
-3
+1
 1.0.1
 APPDIR Vector.CANalyzer.LIN.InteractiveScheduler.DLL
 Vector.CANalyzer.LIN.InteractiveScheduler, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
 Vector.CANalyzer.LIN.InteractiveScheduler.Controller.CANwinGateway
+2
+1.0.0
+APPDIR Vector.CANoe.SignalGenerators.DLL
+Vector.CANoe.SignalGenerators, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANoe.SignalGenerators.ComponentWrapper
+3
+1.0.1
+APPDIR Vector.CANalyzer.LIN.NMWindow.DLL
+Vector.CANalyzer.LIN.NMWindow, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
+Vector.CANalyzer.LIN.NMWindow.NMWindow
 4
 1.0.0
 APPDIR Vector.CANoe.LIN.StressIG.DLL
@@ -33,34 +33,13 @@ VTSPersistentRoot 1 Begin_Of_Object
 TS_PERSISTENT_ROOT_ID_STRING_0x792341fe
 1
 3
-VTSFolder 2 Begin_Of_Object
-1
-VTSItem 3 Begin_Of_Object
-1
-3 4199757173 0
-1
-END_OF_ITEM_DATA
-End_Of_Object VTSItem 3
-4
-Test Environment
-2
-4206533029
-4206540229
-<VFileName V7 QL> 1 "report.xml" 
-END_OF_FILE_NAME
-<VFileName V7 QL> 1 "" 
-END_OF_FILE_NAME
-2
-1
-END_OF_FOLDER_DATA
-End_Of_Object VTSFolder 2
 VTSNetControlBlock 2 Begin_Of_Object
 1
 VTSWrapper<class_VNETSimControlConfiguration> 3 Begin_Of_Object
 2
 VTSItem 4 Begin_Of_Object
 1
-3 4206533029 0
+3 1679602731 0
 1
 END_OF_ITEM_DATA
 End_Of_Object VTSItem 4
@@ -113,7 +92,7 @@ END_OF_DESKTOP_DATA
 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
 END_OF_DOCK_INFO
 0
-3
+4
 0
 0
 0
@@ -124,7 +103,7 @@ END_OF_DESKTOP_DATA
 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
 END_OF_DOCK_INFO
 0
-3
+0
 0
 0
 0
@@ -793,7 +772,7 @@ VTSWrapper<class_VNETSimControlConfiguration> 3 Begin_Of_Object
 2
 VTSItem 4 Begin_Of_Object
 1
-3 4206540229 0
+3 1679605547 0
 1
 END_OF_ITEM_DATA
 End_Of_Object VTSItem 4
@@ -812,7 +791,7 @@ VUniqueBox 7 Begin_Of_Object
 VBoxRoot 8 Begin_Of_Object
 1
 1
-1 2 0 1 -1 -1 -1 -1 882 119 1931 529
+1 1 0 1 -1 -1 -1 -1 882 119 1931 529
 LIN Disturbance Block
 1
 
@@ -835,7 +814,7 @@ END_OF_DESKTOP_DATA
 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 -1 32767 0 0 0 0 0 0 0 0 0 0 -1 -1 0 0 0 0 0 0 
 END_OF_DOCK_INFO
 1
-2
+1
 0
 0
 1
@@ -1024,7 +1003,7 @@ TypeRef:6
 8
 Int32
 mDistAfterId
-33
+34
 APPDIR Vector.CANoe.LIN.DisturbanceBlock.DLL
 Vector.CANoe.LIN.DisturbanceBlock, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null
 Vector.CANoe.LIN.DisturbanceBlock.DistByteType
@@ -1033,7 +1012,7 @@ mDistByteType
 9
 Int32
 value__
-15
+11
 --TextFormatter: End of Object--
 Int32
 mChannelIndex
@@ -1232,7 +1211,7 @@ ArrayElement
 27
 Int32
 value__
-0
+1
 --TextFormatter: End of Object--
 TypeRef:15
 ArrayElement
@@ -1253,7 +1232,7 @@ ArrayElement
 30
 Int32
 value__
-1
+0
 --TextFormatter: End of Object--
 Array
 mBitValues
@@ -1502,18 +1481,39 @@ End_Of_Object VTSWrapper<class_VNETSimControlConfiguration> 3
 1
 TS_NET_CONTROL_BLOCK_END
 End_Of_Object VTSNetControlBlock 2
+VTSFolder 2 Begin_Of_Object
 1
-4199757173
+VTSItem 3 Begin_Of_Object
+1
+3 1680036747 0
+1
+END_OF_ITEM_DATA
+End_Of_Object VTSItem 3
+4
+Test Environment
+2
+1679602731
+1679605547
+<VFileName V7 QL> 1 "report.xml" 
+END_OF_FILE_NAME
+<VFileName V7 QL> 1 "" 
+END_OF_FILE_NAME
+2
+1
+END_OF_FOLDER_DATA
+End_Of_Object VTSFolder 2
+1
+1680036747
 3
 1
-4199757173
+1679602731
+0
+1
+1679605547
+0
+1
+1680036747
 2
-4206533029
-4206540229
-1
-4206533029
-0
-1
-4206540229
-0
+1679602731
+1679605547
 End_Of_Object VTSPersistentRoot 1

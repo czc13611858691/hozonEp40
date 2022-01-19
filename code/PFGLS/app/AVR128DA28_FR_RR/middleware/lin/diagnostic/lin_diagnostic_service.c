@@ -1012,10 +1012,10 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     {
 #if 1
         //TODO: 根据不同主机需求更改相应的功能 0x10--PCI FF 0x0b--数据长度12    RSID sid+0x40   0xF1+0x88-->数据标识符
-    case 0xF188: //应用软件版本号(升级版本)  F188   03.00.01  -->  30 33 2e 30 30 2e 30 31      8Byte
+    case 0xF188: //应用软件版本号(升级版本)  F188   03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
-        lin_tl_pdu[2] = 0x0A;
+        lin_tl_pdu[2] = 0x0B;
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
         lin_tl_pdu[4] = 0xF1;
         lin_tl_pdu[5] = 0x88;
@@ -1032,15 +1032,15 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x32;
+        lin_tl_pdu[7] = 0x31;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
-    case 0xF1B0: //应用软件版本号(固定版本）F1B0    03.00.01  -->  30 33 2e 30 30 2e 30 31      8Byte
+    case 0xF1B0: //应用软件版本号(固定版本）F1B0    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
-        lin_tl_pdu[2] = 0x0A;
+        lin_tl_pdu[2] = 0x0B;
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
         lin_tl_pdu[4] = 0xF1;
         lin_tl_pdu[5] = 0x88;
@@ -1057,15 +1057,15 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x32;
+        lin_tl_pdu[7] = 0x31;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
-    case 0xF1A2: //ECU标定软件号     F1A2      03.00.01  -->  30 33 2e 30 30 2e 30 31      8Byte
+    case 0xF1A2: //ECU标定软件号     F1A2      03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
-        lin_tl_pdu[2] = 0x0A;
+        lin_tl_pdu[2] = 0x0B;
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
         lin_tl_pdu[4] = 0xF1;
         lin_tl_pdu[5] = 0x88;
@@ -1082,16 +1082,16 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x32;
+        lin_tl_pdu[7] = 0x31;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
 
-    case 0xF180: //boot版本    F180    03.00.00  -->  30 33 2e 30 30 2e 30 30      8Byte
+    case 0xF180: //boot版本    F180    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
-        lin_tl_pdu[2] = 0x0A;
+        lin_tl_pdu[2] = 0x0B;
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
         lin_tl_pdu[4] = 0xF1;
         lin_tl_pdu[5] = 0x80;
@@ -1116,7 +1116,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF191: //ECU硬件版本号    H1.01
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
-        lin_tl_pdu[2] = 0x07;
+        lin_tl_pdu[2] = 0x08;
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
         lin_tl_pdu[4] = 0xF1;
         lin_tl_pdu[5] = 0x91;
@@ -1141,7 +1141,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF186: //当前诊断任务模式      F186  --> 01      1Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x03;                       //LEN F186+DATA=3Bytes
+        lin_tl_pdu[2] = 0x04;                       //LEN F186+DATA=3Bytes
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0x86;
@@ -1154,7 +1154,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF18A: //系统供应商代码   F18A   -->              3Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x05;                       //LEN F18A+DATA=5Bytes
+        lin_tl_pdu[2] = 0x06;                       //LEN F18A+DATA=5Bytes
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0x8A;
@@ -1177,7 +1177,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF18B: //ECU生产日期   F18B  2021年12月26日 -->    20 21 12 26   4Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x06;                       //LEN F18A+DATA=5Bytes
+        lin_tl_pdu[2] = 0x07;                       //LEN F18A+DATA=5Bytes
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0x8B;
@@ -1200,11 +1200,11 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF18C: //控制器序列号   F18C   -->                    18Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x10;                       //LEN F18A+DATA=5Bytes
-        lin_tl_pdu[3] = 0x14;                       //RSID
-        lin_tl_pdu[4] = (l_u8)(sid + RES_POSITIVE); //data
-        lin_tl_pdu[5] = 0xF1;
-        lin_tl_pdu[6] = 0x8C;
+        lin_tl_pdu[2] = 0x15;                       //LEN F18A+DATA=5Bytes
+        lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);                
+        lin_tl_pdu[4] = 0xF1; 
+        lin_tl_pdu[5] = 0x8C;
+        lin_tl_pdu[6] = 0x30;
         lin_tl_pdu[7] = 0x30;
         ld_put_raw(iii, lin_tl_pdu);
 
@@ -1234,7 +1234,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[3] = 0x30;
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x30;
-        lin_tl_pdu[6] = 0x30;
+        lin_tl_pdu[6] = 0x00;
         lin_tl_pdu[7] = 0x00;
         ld_put_raw(iii, lin_tl_pdu);
 
@@ -1243,7 +1243,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF187: //整车零部件号     F187   -->                  13Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x0F;                       //LEN F187+DATA=15Bytes
+        lin_tl_pdu[2] = 0x10;                       //LEN F187+DATA=15Bytes
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0x87;
@@ -1276,11 +1276,11 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF190: //整车   VINF190        -->                    17Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x10;                       //LEN F18A+DATA=5Bytes
-        lin_tl_pdu[3] = 0x13;                       //RSID
-        lin_tl_pdu[4] = (l_u8)(sid + RES_POSITIVE); //data
-        lin_tl_pdu[5] = 0xF1;
-        lin_tl_pdu[6] = 0x90;
+        lin_tl_pdu[2] = 0x14;                       //LEN F18A+DATA=5Bytes
+        lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);                       //RSID
+        lin_tl_pdu[4] = 0xF1; //data
+        lin_tl_pdu[5] = 0x90;
+        lin_tl_pdu[6] = 0x30;
         lin_tl_pdu[7] = 0x30;
         ld_put_raw(iii, lin_tl_pdu);
 
@@ -1309,7 +1309,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[2] = 0x30;
         lin_tl_pdu[3] = 0x30;
         lin_tl_pdu[4] = 0x30;
-        lin_tl_pdu[5] = 0x30;
+        lin_tl_pdu[5] = 0x00;
         lin_tl_pdu[6] = 0x00;
         lin_tl_pdu[7] = 0x00;
         ld_put_raw(iii, lin_tl_pdu);
@@ -1319,7 +1319,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF198: //测试串口序列   F198  -->                           10Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x0C;                       //LEN F187+DATA=15Bytes
+        lin_tl_pdu[2] = 0x0D;                       //LEN F187+DATA=15Bytes
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0x98;
@@ -1351,7 +1351,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF199: //刷新日期    F199  2021年12月26日 -->    20 21 12 26   4Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x06;                       //LEN F18A+DATA=5Bytes
+        lin_tl_pdu[2] = 0x07;                       //LEN F18A+DATA=5Bytes
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0x99;
@@ -1373,7 +1373,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF19D: //ECU专配日期   F19D  2021年12月26日 -->    20 21 12 26   4Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x06;                       //LEN F18A+DATA=5Bytes
+        lin_tl_pdu[2] = 0x07;                       //LEN F18A+DATA=5Bytes
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0x9D;
@@ -1395,7 +1395,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF1BF: //硬件版本    F1BF    H1.01-->  48 31 2E 30 31                5Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
-        lin_tl_pdu[2] = 0x07;
+        lin_tl_pdu[2] = 0x08;
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
         lin_tl_pdu[4] = 0xF1;
         lin_tl_pdu[5] = 0xBF;
@@ -1417,10 +1417,10 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
-    case 0xF1C0: //软件总成    F1C0    03.00.01  -->  30 33 2e 30 30 2e 30 31      8Byte
+    case 0xF1C0: //软件总成    F1C0    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
-        lin_tl_pdu[2] = 0x0A;
+        lin_tl_pdu[2] = 0x0B;
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
         lin_tl_pdu[4] = 0xF1;
         lin_tl_pdu[5] = 0xC0;
@@ -1437,7 +1437,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x32;
+        lin_tl_pdu[7] = 0x31;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
@@ -1445,7 +1445,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     case 0xF1D0: //软件总成零件号   F1D0  -->          13Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
-        lin_tl_pdu[2] = 0x0F;                       //LEN F187+DATA=15Bytes
+        lin_tl_pdu[2] = 0x10;                       //LEN F187+DATA=15Bytes
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0xD0;
