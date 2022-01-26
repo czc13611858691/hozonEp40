@@ -46,17 +46,17 @@
 
 #include "lin.h"
 
-static const l_u8 LI0_lin_diag_services_supported[LI0_DIAG_NUMBER_OF_SERVICES] = {0xB2,0xB3,0xB6,0xB7,0x22,0x31,0x10,0x2F,0x19,0x14};
-static l_u8 LI0_lin_diag_services_flag[LI0_DIAG_NUMBER_OF_SERVICES] = {0,0,0,0,0,0,0,0,0,0};
+static const l_u8 LI0_lin_diag_services_supported[LI0_DIAG_NUMBER_OF_SERVICES] = { 0x10,0x11,0x27,0x28,0x3E,0x22,0x2E,0x14,0x31,0x34,0x36,0x37,0x85 };
+static l_u8 LI0_lin_diag_services_flag[LI0_DIAG_NUMBER_OF_SERVICES] = { 0,0,0,0,0,0,0,0,0,0 };
 
 #if (SUPPORT_TRANSPORT_LAYER == 1U)
 static lin_tl_pdu_data_t      LI0_tl_tx_queue_data[12];
 static lin_tl_pdu_data_t      LI0_tl_rx_queue_data[12];
 #endif /* end (SUPPORT_TRANSPORT_LAYER == 1U) */
 
-const l_ifc_handle g_lin_hardware_ifc[HARDWARE_INSTANCE_COUNT] = {LI0, INVALID_IFC};
-const l_u32 g_lin_virtual_ifc[LIN_NUM_OF_IFCS] = {0};
-volatile l_u8 g_buffer_backup_data[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+const l_ifc_handle g_lin_hardware_ifc[HARDWARE_INSTANCE_COUNT] = { LI0, INVALID_IFC };
+const l_u32 g_lin_virtual_ifc[LIN_NUM_OF_IFCS] = { 0 };
+volatile l_u8 g_buffer_backup_data[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 /* definition and initialization of signal array */
 volatile l_u8    g_lin_frame_data_buffer[LIN_FRAME_BUF_SIZE] =
@@ -103,40 +103,40 @@ volatile l_u8    g_lin_flag_handle_tbl[LIN_FLAG_BUF_SIZE] =
 };
 
 /* definition and initialization for flag of frame */
-volatile l_bool g_lin_frame_flag_handle_tbl[LIN_NUM_OF_FRMS] = {false, false, false, false};
+volatile l_bool g_lin_frame_flag_handle_tbl[LIN_NUM_OF_FRMS] = { false, false, false, false };
 
 /*************************** Frame flag for updating signal in frame ****************/
-volatile l_u8 g_lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0};
+volatile l_u8 g_lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = { 0, 0, 0, 0 };
 
 
 
 /**********************************  Frame table **********************************/
-static const lin_frame_t lin_frame_tbl[LIN_NUM_OF_FRMS] ={
+static const lin_frame_t lin_frame_tbl[LIN_NUM_OF_FRMS] = {
 
     { LIN_FRM_UNCD, 8, LIN_RES_SUB, 0, 0, 1   , (lin_associate_frame_t*)0 }
 
    ,{ LIN_FRM_UNCD, 8, LIN_RES_PUB, 8, 1, 1 , (lin_associate_frame_t*)0 }
-  
+
    ,{ LIN_FRM_DIAG, 8, LIN_RES_SUB, 0, 0, 0 , (lin_associate_frame_t*)0 }
-  
+
    ,{ LIN_FRM_DIAG, 8, LIN_RES_PUB, 0, 0, 0 , (lin_associate_frame_t*)0 }
-  
+
 };
 
-static l_u8 LI0_lin_configuration_RAM[LI0_LIN_SIZE_OF_CFG]= {0x00, 0x10, 0x21, 0x3C, 0x3D ,0xFF};
+static l_u8 LI0_lin_configuration_RAM[LI0_LIN_SIZE_OF_CFG] = { 0x00, 0x10, 0x21, 0x3C, 0x3D ,0xFF };
 
-static const l_u16  LI0_lin_configuration_ROM[LI0_LIN_SIZE_OF_CFG]= {0x0000, 0x10, 0x21, 0x3C, 0x3D ,0xFFFF};
+static const l_u16  LI0_lin_configuration_ROM[LI0_LIN_SIZE_OF_CFG] = { 0x0000, 0x10, 0x21, 0x3C, 0x3D ,0xFFFF };
 
 static l_u8 LI0_lin_configured_NAD = 0x60;
 
-static l_u8 LI0_lin_frm_err_resp_sig[1] = {0x21};
+static l_u8 LI0_lin_frm_err_resp_sig[1] = { 0x21 };
 
-static l_u16 LI0_lin_response_error_byte_offset[1] = {LIN_LI0_PFGLS_ResponseError_BYTE_OFFSET};
+static l_u16 LI0_lin_response_error_byte_offset[1] = { LIN_LI0_PFGLS_ResponseError_BYTE_OFFSET };
 
-static l_u8 LI0_lin_response_error_bit_offset[1] = {LIN_LI0_PFGLS_ResponseError_BIT_OFFSET};
+static l_u8 LI0_lin_response_error_bit_offset[1] = { LIN_LI0_PFGLS_ResponseError_BIT_OFFSET };
 
 /**************** Node attributes Initialization  ****************************/
-const lin_node_attribute_t      g_lin_node_attribute_array[LIN_NUM_OF_SLAVE_IFCS]= {
+const lin_node_attribute_t      g_lin_node_attribute_array[LIN_NUM_OF_SLAVE_IFCS] = {
     /** LI0 **/
     {
         .configured_NAD_ptr = &LI0_lin_configured_NAD,        /*configured_NAD*/
@@ -146,7 +146,7 @@ const lin_node_attribute_t      g_lin_node_attribute_array[LIN_NUM_OF_SLAVE_IFCS
         .resp_err_frm_id_ptr = LI0_lin_frm_err_resp_sig,                         /*list index of frame error*/
         .num_frame_have_esignal = 1,                                 /*number of frame contain error signal*/
         .response_error = LI0_PFGLS_ResponseError,                  /*<interface_name>_< response_error>*/
-        .response_error_byte_offset_ptr =  (l_u16 *)LI0_lin_response_error_byte_offset,                  /*<interface_name>_< response_error>*/
+        .response_error_byte_offset_ptr = (l_u16*)LI0_lin_response_error_byte_offset,                  /*<interface_name>_< response_error>*/
         .response_error_bit_offset_ptr = LI0_lin_response_error_bit_offset,                  /*<interface_name>_< response_error>*/
 
         .P2_min = 100,     /*<P2_min>*/
@@ -177,10 +177,10 @@ const lin_protocol_user_config_t g_lin_protocol_user_cfg_array[LIN_NUM_OF_IFCS] 
 
         .list_identifiers_ROM_ptr = LI0_lin_configuration_ROM,       /*  *configuration_ROM */
         .list_identifiers_RAM_ptr = LI0_lin_configuration_RAM,       /*  *configuration_RAM */
-        .max_idle_timeout_cnt =  4000,     /* Max Idle Timeout Count */
+        .max_idle_timeout_cnt = 4000,     /* Max Idle Timeout Count */
         .num_of_schedules = 0,                                  /*  num_of_schedules */
         .schedule_start = 0,                                  /*  schedule_start */
-        .schedule_tbl = (const lin_schedule_t *)0,             /* schedule_tbl */
+        .schedule_tbl = (const lin_schedule_t*)0,             /* schedule_tbl */
 
         .slave_ifc_handle = LI0_Slave,
         .master_ifc_handle = INVALID_MASTER_INDEX,
@@ -202,12 +202,12 @@ const lin_protocol_user_config_t g_lin_protocol_user_cfg_array[LIN_NUM_OF_IFCS] 
  * Implements    : ld_read_by_id_callout_Activity
  *END**************************************************************************/
 
-l_u8 ld_read_by_id_callout(l_ifc_handle iii, l_u8 id, l_u8 *data)
+l_u8 ld_read_by_id_callout(l_ifc_handle iii, l_u8 id, l_u8* data)
 {
     l_u8 retval = LD_NEGATIVE_RESPONSE;
 
     /* Get the current configuration */
-    const lin_protocol_user_config_t  *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if (prot_user_config_ptr->function == (bool)LIN_SLAVE)
     {
@@ -220,11 +220,11 @@ l_u8 ld_read_by_id_callout(l_ifc_handle iii, l_u8 id, l_u8 *data)
             * id received is user defined 32
             */
             /* A positive response is ready to be sent to the user defined request */
-            data[0] = (l_u8) (id + 1U);    /* Data user define */
-            data[1] = (l_u8) (id + 2U);    /* Data user define */
-            data[2] = (l_u8) (id + 3U);    /* Data user define */
-            data[3] = (l_u8) (id + 4U);    /* Data user define */
-            data[4] = (l_u8) (id + 5U);    /* Data user define */
+            data[0] = (l_u8)(id + 1U);    /* Data user define */
+            data[1] = (l_u8)(id + 2U);    /* Data user define */
+            data[2] = (l_u8)(id + 3U);    /* Data user define */
+            data[3] = (l_u8)(id + 4U);    /* Data user define */
+            data[4] = (l_u8)(id + 5U);    /* Data user define */
             retval = LD_POSITIVE_RESPONSE;
         }
         else
@@ -234,6 +234,6 @@ l_u8 ld_read_by_id_callout(l_ifc_handle iii, l_u8 id, l_u8 *data)
             */
         }
     } /* End (conf->function == _SLAVE_) */
-   return retval;
+    return retval;
 }
 
