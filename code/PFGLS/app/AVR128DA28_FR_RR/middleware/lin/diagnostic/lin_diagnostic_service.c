@@ -1496,7 +1496,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         break;
 #endif
     default:
-        /* DID不支持返回错误码NRC-32 */
+        /* DID不支持返回错误码NRC-31 */
         ld_make_slave_response_pdu(iii, SERVICE_READ_DATA_BY_IDENTIFY, NEGATIVE, 0x31U);
         break;
 #endif
