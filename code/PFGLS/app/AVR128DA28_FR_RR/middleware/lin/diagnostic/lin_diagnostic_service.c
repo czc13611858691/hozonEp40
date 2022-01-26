@@ -1,32 +1,33 @@
 /*
  *
- * 
- * 
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
+ *
+ *
  */
-/*!
- * @file lin_diagnostic_service.c
- *
- * @page misra_violations MISRA-C:2012 violations
- *
- * @section [global]
- * Violates MISRA 2012 Required Rule 1.3,  Taking address of near auto variable.
- * The code is not dynamically linked. An absolute stack address is obtained
- * when taking the address of the near auto variable.
- *
- * @section [global]
- * Violates MISRA 2012 Advisory Rule 8.7, Could be made static.
- * Functions are APIs, so they shall not be made static.
- */
+ /*!
+  * @file lin_diagnostic_service.c
+  *
+  * @page misra_violations MISRA-C:2012 violations
+  *
+  * @section [global]
+  * Violates MISRA 2012 Required Rule 1.3,  Taking address of near auto variable.
+  * The code is not dynamically linked. An absolute stack address is obtained
+  * when taking the address of the near auto variable.
+  *
+  * @section [global]
+  * Violates MISRA 2012 Advisory Rule 8.7, Could be made static.
+  * Functions are APIs, so they shall not be made static.
+  */
 
 #include "lin_commontl_api.h"
 #include "lin_diagnostic_service.h"
 #include "app_config.h"
 
 l_u8 sub_func_id;
+l_u8 g_sessionStatus;
 
 #if (1U == SUPPORT_TRANSPORT_LAYER)
 #if (1U == SUPPORT_DIAG_SERVICE)
@@ -49,14 +50,14 @@ static void lin_diagservice_assign_frame_id_range(l_ifc_handle iii);
 static void lin_diagservice_read_by_identifier(l_ifc_handle iii);
 
 static void ld_make_slave_response_pdu(l_ifc_handle iii,
-                                       l_u8 sid,
-                                       l_u8 res_type,
-                                       l_u8 error_code);
+    l_u8 sid,
+    l_u8 res_type,
+    l_u8 error_code);
 
 #if ((1U == SUPPORT_PROTOCOL_J2602) || (1U == SUPPORT_PROTOCOL_20))
 static l_bool ld_change_msg_id(l_ifc_handle iii,
-                               l_u8 dnn,
-                               l_u8 frame_id_change);
+    l_u8 dnn,
+    l_u8 frame_id_change);
 
 static void lin_diagservice_assign_frame_id(l_ifc_handle iii);
 
@@ -72,13 +73,13 @@ static void lin_diagservice_target_reset(l_ifc_handle iii);
  ******************************************************************************/
 #if ((1U == SUPPORT_PROTOCOL_21) || (1U == SUPPORT_PROTOCOL_20))
 #if (1U == SUPPORT_MASTER_MODE)
-/*FUNCTION**********************************************************************
- *
- * Function Name : ld_is_ready
- * Description   : This call returns the status of the last requested configuration service
- *
- * Implements    : ld_is_ready_Activity
- *END**************************************************************************/
+ /*FUNCTION**********************************************************************
+  *
+  * Function Name : ld_is_ready
+  * Description   : This call returns the status of the last requested configuration service
+  *
+  * Implements    : ld_is_ready_Activity
+  *END**************************************************************************/
 l_u8 ld_is_ready(l_ifc_handle iii)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
@@ -106,13 +107,13 @@ l_u8 ld_is_ready(l_ifc_handle iii)
  * Implements    : ld_check_response_Activity
  *END**************************************************************************/
 void ld_check_response(l_ifc_handle iii,
-                       l_u8 *const RSID,
-                       l_u8 *const error_code)
+    l_u8* const RSID,
+    l_u8* const error_code)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(RSID != NULL);
     DEV_ASSERT(error_code != NULL);
-    const lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
 
     if (g_lin_protocol_user_cfg_array[iii].function == (bool)LIN_MASTER)
     {
@@ -137,13 +138,13 @@ void ld_check_response(l_ifc_handle iii,
  * Implements    : ld_assign_frame_id_range_Activity
  *END**************************************************************************/
 void ld_assign_frame_id_range(l_ifc_handle iii,
-                              l_u8 NAD,
-                              l_u8 start_index,
-                              const l_u8 *const PIDs)
+    l_u8 NAD,
+    l_u8 start_index,
+    const l_u8* const PIDs)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(PIDs != NULL);
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
     l_u8 buff[6];
 
     /* Check if this interface is a LIN Master */
@@ -179,12 +180,12 @@ void ld_assign_frame_id_range(l_ifc_handle iii,
  * Implements    : ld_save_configuration_Activity
  *END**************************************************************************/
 void ld_save_configuration(l_ifc_handle iii,
-                           l_u8 NAD)
+    l_u8 NAD)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u8 data[6];
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
 
     /* Check if this interface is a LIN Master */
     if (g_lin_protocol_user_cfg_array[iii].function == (bool)LIN_MASTER)
@@ -226,8 +227,8 @@ static void lin_condittional_change_nad(l_ifc_handle iii)
     l_u8 mask;
     l_u8 invert;
     l_bool give_positive_flg = (bool)0U;
-    const lin_node_attribute_t *node_attr_ptr = &g_lin_node_attribute_array[g_lin_protocol_user_cfg_array[iii].slave_ifc_handle];
-    const lin_transport_layer_queue_t *rx_queue;
+    const lin_node_attribute_t* node_attr_ptr = &g_lin_node_attribute_array[g_lin_protocol_user_cfg_array[iii].slave_ifc_handle];
+    const lin_transport_layer_queue_t* rx_queue;
     lin_product_id_t product_id = node_attr_ptr->product_id;
     lin_serial_number_t serial_number = node_attr_ptr->serial_number;
 
@@ -325,10 +326,10 @@ static void lin_assign_nad(l_ifc_handle iii)
     lin_tl_pdu_data_t lin_tl_pdu;
     l_u16 supid;
     l_u16 fid;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     lin_product_id_t product_id = g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle].product_id;
-    const lin_transport_layer_queue_t *rx_queue = &(tl_desc_ptr->tl_rx_queue);
+    const lin_transport_layer_queue_t* rx_queue = &(tl_desc_ptr->tl_rx_queue);
     l_u8 i;
     for (i = 0; i < 8U; i++)
     {
@@ -372,8 +373,8 @@ static void lin_diagservice_assign_frame_id_range(l_ifc_handle iii)
     l_u8 start_index;
     l_u8 cfg_frame_num = 0U;
     lin_tl_pdu_data_t lin_tl_pdu;
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_transport_layer_queue_t *rx_queue = &(g_lin_tl_descriptor_array[iii].tl_rx_queue);
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_transport_layer_queue_t* rx_queue = &(g_lin_tl_descriptor_array[iii].tl_rx_queue);
     l_u8 storePID = 1U;
     for (i = 0; i < 8U; i++)
     {
@@ -440,16 +441,16 @@ static void lin_diagservice_assign_frame_id_range(l_ifc_handle iii)
  * Implements    : ld_read_configuration_Activity
  *END**************************************************************************/
 l_u8 ld_read_configuration(l_ifc_handle iii,
-                           l_u8 *const data,
-                           l_u8 *const length)
+    l_u8* const data,
+    l_u8* const length)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(data != NULL);
     DEV_ASSERT(length != NULL);
 
     l_u8 i, temp;
-    const lin_node_attribute_t *node_attr_ptr;
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     /* Set the default returned value to LD_READ_OK */
     l_u8 retval = (l_u8)LD_READ_OK;
     /** Set the expected length value to
@@ -505,8 +506,8 @@ l_u8 ld_read_configuration(l_ifc_handle iii,
  * Implements    : ld_set_configuration_Activity
  *END**************************************************************************/
 l_u8 ld_set_configuration(l_ifc_handle iii,
-                          const l_u8 *const data,
-                          l_u16 length)
+    const l_u8* const data,
+    l_u16 length)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(data != NULL);
@@ -514,8 +515,8 @@ l_u8 ld_set_configuration(l_ifc_handle iii,
     l_u8 i;
     /* Set the default returned value to LD_DATA_ERROR */
     l_u8 retval = LD_DATA_ERROR;
-    const lin_node_attribute_t *node_attr_ptr;
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     /** Set the expected length value to
      * EXP = NN + NF, where :
      * NN = the number of NAD.
@@ -575,9 +576,9 @@ l_u8 ld_set_configuration(l_ifc_handle iii,
  * Implements    : diag_read_data_by_identifier_Activity
  *END**************************************************************************/
 void diag_read_data_by_identifier(l_ifc_handle iii,
-                                  const l_u8 NAD,
-                                  const l_u8 number_of_id,
-                                  const l_u16 *const list_of_id)
+    const l_u8 NAD,
+    const l_u8 number_of_id,
+    const l_u16* const list_of_id)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(list_of_id != NULL);
@@ -585,8 +586,8 @@ void diag_read_data_by_identifier(l_ifc_handle iii,
     l_u8 buff[MAX_LENGTH_SERVICE];
     l_u8 i;
     l_u16 count = 0U;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     l_u16 length = g_lin_protocol_user_cfg_array[iii].max_message_length;
 
     if ((bool)LIN_MASTER == prot_user_config_ptr->function)
@@ -625,17 +626,17 @@ void diag_read_data_by_identifier(l_ifc_handle iii,
  * Implements    : diag_write_data_by_identifier_Activity
  *END**************************************************************************/
 void diag_write_data_by_identifier(l_ifc_handle iii,
-                                   const l_u8 NAD,
-                                   l_u16 data_length,
-                                   const l_u8 *const data)
+    const l_u8 NAD,
+    l_u16 data_length,
+    const l_u8* const data)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(data != NULL);
 
     l_u8 buff[MAX_LENGTH_SERVICE];
     l_u8 i;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     l_u16 length = g_lin_protocol_user_cfg_array[iii].max_message_length;
 
     if ((bool)LIN_MASTER == prot_user_config_ptr->function)
@@ -678,14 +679,14 @@ void diag_write_data_by_identifier(l_ifc_handle iii,
  * Implements    : diag_session_control_Activity
  *END**************************************************************************/
 void diag_session_control(l_ifc_handle iii,
-                          const l_u8 NAD,
-                          const l_u8 session_type)
+    const l_u8 NAD,
+    const l_u8 session_type)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u8 buff[2];
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if ((bool)LIN_MASTER == prot_user_config_ptr->function)
     {
@@ -713,18 +714,18 @@ void diag_session_control(l_ifc_handle iii,
  * Implements    : diag_fault_memory_read_Activity
  *END**************************************************************************/
 void diag_fault_memory_read(l_ifc_handle iii,
-                            const l_u8 NAD,
-                            l_u16 data_length,
-                            const l_u8 *const data)
+    const l_u8 NAD,
+    l_u16 data_length,
+    const l_u8* const data)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(data != NULL);
 
     l_u8 buff[MAX_LENGTH_SERVICE];
     l_u8 i;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
     l_u16 length = g_lin_protocol_user_cfg_array[iii].max_message_length;
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if ((bool)LIN_MASTER == prot_user_config_ptr->function)
     {
@@ -760,15 +761,15 @@ void diag_fault_memory_read(l_ifc_handle iii,
  * Implements    : diag_fault_memory_clear_Activity
  *END**************************************************************************/
 void diag_fault_memory_clear(l_ifc_handle iii,
-                             const l_u8 NAD,
-                             const l_u8 *const groupOfDTC)
+    const l_u8 NAD,
+    const l_u8* const groupOfDTC)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(groupOfDTC != NULL);
 
     l_u8 buff[4];
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     if ((bool)LIN_MASTER == prot_user_config_ptr->function)
     {
         /* check whether service status is idle or not */
@@ -797,18 +798,18 @@ void diag_fault_memory_clear(l_ifc_handle iii,
  * Implements    : diag_IO_control_Activity
  *END**************************************************************************/
 void diag_IO_control(l_ifc_handle iii,
-                     const l_u8 NAD,
-                     l_u16 data_length,
-                     const l_u8 *const data)
+    const l_u8 NAD,
+    l_u16 data_length,
+    const l_u8* const data)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(data != NULL);
 
     l_u8 buff[MAX_LENGTH_SERVICE];
     l_u8 i;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
     l_u16 length = g_lin_protocol_user_cfg_array[iii].max_message_length;
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     if ((bool)LIN_MASTER == prot_user_config_ptr->function)
     {
         /* Check if length of data is lower than length maximum */
@@ -848,16 +849,16 @@ void diag_IO_control(l_ifc_handle iii,
  * Implements    : ld_assign_NAD_Activity
  *END**************************************************************************/
 void ld_assign_NAD(l_ifc_handle iii,
-                   l_u8 initial_NAD,
-                   l_u16 supplier_id,
-                   l_u16 function_id,
-                   l_u8 new_NAD)
+    l_u8 initial_NAD,
+    l_u16 supplier_id,
+    l_u16 function_id,
+    l_u8 new_NAD)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u8 data[6];
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if ((bool)LIN_MASTER == prot_user_config_ptr->function)
     {
@@ -890,18 +891,18 @@ void ld_assign_NAD(l_ifc_handle iii,
  * Implements    : ld_conditional_change_NAD_Activity
  *END**************************************************************************/
 void ld_conditional_change_NAD(l_ifc_handle iii,
-                               l_u8 NAD,
-                               l_u8 id,
-                               l_u8 byte_data,
-                               l_u8 mask,
-                               l_u8 invert,
-                               l_u8 new_NAD)
+    l_u8 NAD,
+    l_u8 id,
+    l_u8 byte_data,
+    l_u8 mask,
+    l_u8 invert,
+    l_u8 new_NAD)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u8 data[6];
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     /* Check input parameters are in accepted range*/
     if ((id < 32U) && ((0U < byte_data) && (byte_data < 6U)))
@@ -938,19 +939,19 @@ void ld_conditional_change_NAD(l_ifc_handle iii,
  * Implements    : ld_read_by_id_Activity
  *END**************************************************************************/
 void ld_read_by_id(l_ifc_handle iii,
-                   l_u8 NAD,
-                   l_u16 supplier_id,
-                   l_u16 function_id,
-                   l_u8 id,
-                   lin_product_id_t *const data)
+    l_u8 NAD,
+    l_u16 supplier_id,
+    l_u16 function_id,
+    l_u8 id,
+    lin_product_id_t* const data)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
     DEV_ASSERT(data != NULL);
 
     /* Multi frame support */
     l_u8 buff[6];
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if ((bool)LIN_MASTER == prot_user_config_ptr->function)
     {
@@ -992,11 +993,11 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     lin_tl_pdu_data_t lin_tl_pdu;
     l_u16 did;
     l_u8 sid;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_node_attribute_t *node_attr_ptr;
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
     node_attr_ptr = &g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle];
-    const lin_transport_layer_queue_t *rx_queue = &(tl_desc_ptr->tl_rx_queue);
+    const lin_transport_layer_queue_t* rx_queue = &(tl_desc_ptr->tl_rx_queue);
     l_u8 i;
     for (i = 0; i < 8U; i++)
     {
@@ -1012,6 +1013,8 @@ void lin_read_data_by_identify(l_ifc_handle iii)
     {
 #if 1
         //TODO: 根据不同主机需求更改相应的功能 0x10--PCI FF 0x0b--数据长度12    RSID sid+0x40   0xF1+0x88-->数据标识符
+
+#if 0
     case 0xF188: //应用软件版本号(升级版本)  F188   03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
@@ -1037,6 +1040,8 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
+#if 0
     case 0xF1B0: //应用软件版本号(固定版本）F1B0    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
@@ -1062,6 +1067,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
     case 0xF1A2: //ECU标定软件号     F1A2      03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
@@ -1145,12 +1151,13 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE); //RSID
         lin_tl_pdu[4] = 0xF1;                       //data
         lin_tl_pdu[5] = 0x86;
-        lin_tl_pdu[6] = sub_func_id;
+        lin_tl_pdu[6] = g_sessionStatus;
         lin_tl_pdu[7] = 0x00;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#if 0
     case 0xF18A: //系统供应商代码   F18A   -->              3Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
@@ -1174,6 +1181,8 @@ void lin_read_data_by_identify(l_ifc_handle iii)
 
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
+#if 0
     case 0xF18B: //ECU生产日期   F18B  2021年12月26日 -->    20 21 12 26   4Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
@@ -1197,12 +1206,14 @@ void lin_read_data_by_identify(l_ifc_handle iii)
 
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
+#if 0
     case 0xF18C: //控制器序列号   F18C   -->                    18Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
         lin_tl_pdu[2] = 0x15;                       //LEN F18A+DATA=5Bytes
-        lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);                
-        lin_tl_pdu[4] = 0xF1; 
+        lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
+        lin_tl_pdu[4] = 0xF1;
         lin_tl_pdu[5] = 0x8C;
         lin_tl_pdu[6] = 0x30;
         lin_tl_pdu[7] = 0x30;
@@ -1240,6 +1251,8 @@ void lin_read_data_by_identify(l_ifc_handle iii)
 
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
+#if 0
     case 0xF187: //整车零部件号     F187   -->                  13Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
@@ -1273,6 +1286,8 @@ void lin_read_data_by_identify(l_ifc_handle iii)
 
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
+#if 0
     case 0xF190: //整车   VINF190        -->                    17Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
@@ -1316,6 +1331,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
 
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
     case 0xF198: //测试串口序列   F198  -->                           10Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
@@ -1417,6 +1433,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#if 0
     case 0xF1C0: //软件总成    F1C0    03.01.01  -->  30 33 2e 30 31 2e 30 31      8Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;
@@ -1442,6 +1459,8 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
+#if 0
     case 0xF1D0: //软件总成零件号   F1D0  -->          13Byte
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x10;                       //PCI FF
@@ -1475,8 +1494,10 @@ void lin_read_data_by_identify(l_ifc_handle iii)
 
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
         break;
+#endif
     default:
-        ld_make_slave_response_pdu(iii, SERVICE_READ_DATA_BY_IDENTIFY, NEGATIVE, 0U);
+        /* DID不支持返回错误码NRC-32 */
+        ld_make_slave_response_pdu(iii, SERVICE_READ_DATA_BY_IDENTIFY, NEGATIVE, 0x31U);
         break;
 #endif
     }
@@ -1487,11 +1508,11 @@ void lin_slave_session_ctr(l_ifc_handle iii)
     lin_tl_pdu_data_t lin_tl_pdu;
 
     l_u8 d_len;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_node_attribute_t *node_attr_ptr;
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
     node_attr_ptr = &g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle];
-    const lin_transport_layer_queue_t *rx_queue = &(tl_desc_ptr->tl_rx_queue);
+    const lin_transport_layer_queue_t* rx_queue = &(tl_desc_ptr->tl_rx_queue);
 
     sub_func_id = rx_queue->tl_pdu_ptr[rx_queue->queue_header][3]; //获取到子功能的id
     d_len = (rx_queue->tl_pdu_ptr[rx_queue->queue_header][1]) & 0x0F;
@@ -1502,6 +1523,7 @@ void lin_slave_session_ctr(l_ifc_handle iii)
         {
         case 1:
             /* code */
+            g_sessionStatus = 1;
             //TODO: 切换到默认会话,在切换之前先判断是否满足切换的条件
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x02; //TODO:可能附带参数信息,数据长度信息\帧类型会变动
@@ -1516,6 +1538,7 @@ void lin_slave_session_ctr(l_ifc_handle iii)
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
         case 2:
+            g_sessionStatus = 2;
             //TODO: 切换到编程会话,在切换之前先判断是否满足切换的条件
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x02; //TODO:可能附带参数信息,数据长度信息\帧类型会变动
@@ -1530,6 +1553,7 @@ void lin_slave_session_ctr(l_ifc_handle iii)
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
         case 3:
+            g_sessionStatus = 3;
             //TODO: 切换到扩展会话,在切换之前先判断是否满足切换的条件
 
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
@@ -1563,11 +1587,11 @@ void lin_routine_control(l_ifc_handle iii)
     l_u8 routine_type;
     l_u16 state_id;
     l_u8 pci_type;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_node_attribute_t *node_attr_ptr;
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
     node_attr_ptr = &g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle];
-    const lin_transport_layer_queue_t *rx_queue = &(tl_desc_ptr->tl_rx_queue);
+    const lin_transport_layer_queue_t* rx_queue = &(tl_desc_ptr->tl_rx_queue);
 
     pci_type = (l_u8)((rx_queue->tl_pdu_ptr[rx_queue->queue_header][1] & 0xF0) >> 4); //PCI帧类型
 
@@ -1637,11 +1661,11 @@ void control_dtc_setting(l_ifc_handle iii)
 {
     lin_tl_pdu_data_t lin_tl_pdu;
     l_u8 code_type;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_node_attribute_t *node_attr_ptr;
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
     node_attr_ptr = &g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle];
-    const lin_transport_layer_queue_t *rx_queue = &(tl_desc_ptr->tl_rx_queue);
+    const lin_transport_layer_queue_t* rx_queue = &(tl_desc_ptr->tl_rx_queue);
 
     code_type = rx_queue->tl_pdu_ptr[rx_queue->queue_header][3];
     if (code_type == 0x1U) //检验刷新安全条件请求信息
@@ -1683,11 +1707,11 @@ void lin_transfer_data(l_ifc_handle iii)
     l_u8 byte_cnt = 0;
     l_u16 buf_cnt = update_cnt;
     l_u16 index = 0;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_node_attribute_t *node_attr_ptr;
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
     node_attr_ptr = &g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle];
-    const lin_transport_layer_queue_t *rx_queue = &(tl_desc_ptr->tl_rx_queue);
+    const lin_transport_layer_queue_t* rx_queue = &(tl_desc_ptr->tl_rx_queue);
 
     pci_type = (l_u8)((rx_queue->tl_pdu_ptr[rx_queue->queue_header][1] & 0xF0) >> 4); //PCI帧类型
 
@@ -1810,13 +1834,13 @@ void lin_transfer_data(l_ifc_handle iii)
  * Implements    : diag_get_flag_Activity
  *END**************************************************************************/
 l_u8 diag_get_flag(l_ifc_handle iii,
-                   l_u8 flag_order)
+    l_u8 flag_order)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
-    const l_u8 *service_flag;
+    const l_u8* service_flag;
     l_u8 ret_val = 0xFFU;
-    const lin_node_attribute_t *node_attr_ptr;
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if (prot_user_config_ptr->function == (bool)LIN_SLAVE)
     {
@@ -1841,12 +1865,12 @@ l_u8 diag_get_flag(l_ifc_handle iii,
  * Implements    : diag_clear_flag_Activity
  *END**************************************************************************/
 void diag_clear_flag(l_ifc_handle iii,
-                     l_u8 flag_order)
+    l_u8 flag_order)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
-    l_u8 *service_flag;
-    const lin_node_attribute_t *node_attr_ptr;
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    l_u8* service_flag;
+    const lin_node_attribute_t* node_attr_ptr;
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if (prot_user_config_ptr->function == (bool)LIN_SLAVE)
     {
@@ -1869,16 +1893,16 @@ void diag_clear_flag(l_ifc_handle iii,
  * Implements    : lin_diag_service_callback_Activity
  *END**************************************************************************/
 void lin_diag_service_callback(l_ifc_handle iii,
-                               l_u8 sid)
+    l_u8 sid)
 {
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_node_attribute_t *node_attr_ptr;
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
     node_attr_ptr = &g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle];
     l_bool sid_supported_flg = (bool)0U;
     l_u8 i;
-    const l_u8 *service_supported_ptr;
-    l_u8 *service_flag_ptr;
+    const l_u8* service_supported_ptr;
+    l_u8* service_flag_ptr;
     /* Get support sid */
     service_supported_ptr = node_attr_ptr->service_supported_ptr;
     /* Get service flag */
@@ -1999,11 +2023,11 @@ static void lin_diagservice_read_by_identifier(l_ifc_handle iii)
     l_u8 id;
     l_u16 supid;
     l_u16 fid;
-    const lin_node_attribute_t *node_attr_ptr;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     node_attr_ptr = &g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle];
-    const lin_transport_layer_queue_t *rx_queue = &(tl_desc_ptr->tl_rx_queue);
+    const lin_transport_layer_queue_t* rx_queue = &(tl_desc_ptr->tl_rx_queue);
     l_u8 i;
     for (i = 0; i < 8U; i++)
     {
@@ -2043,7 +2067,7 @@ static void lin_diagservice_read_by_identifier(l_ifc_handle iii)
             /* For ID from 32 to 63, call user defined ld_read_by_id_callout */
             if ((id >= LIN_READ_USR_DEF_MIN) && (id <= LIN_READ_USR_DEF_MAX))
             {
-                l_u8 data_callout[5] = {0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
+                l_u8 data_callout[5] = { 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU };
                 l_u8 retval = ld_read_by_id_callout(iii, id, data_callout);
                 /*If the User ID is supported, make positive response*/
                 if (retval == LD_POSITIVE_RESPONSE)
@@ -2098,20 +2122,20 @@ static void lin_diagservice_read_by_identifier(l_ifc_handle iii)
  * Implements    : ld_make_slave_response_pdu_Activity
  *END**************************************************************************/
 static void ld_make_slave_response_pdu(l_ifc_handle iii,
-                                       l_u8 sid,
-                                       l_u8 res_type,
-                                       l_u8 error_code)
+    l_u8 sid,
+    l_u8 res_type,
+    l_u8 error_code)
 {
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_node_attribute_t *node_attr_ptr;
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
     node_attr_ptr = &g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle];
-    const lin_product_id_t *ident;
-    const lin_serial_number_t *serial_number;
+    const lin_product_id_t* ident;
+    const lin_serial_number_t* serial_number;
     l_u8 i = 0U;
     l_u8 NAD;
     lin_tl_pdu_data_t lin_tl_pdu;
-    const lin_transport_layer_queue_t *rx_queue;
+    const lin_transport_layer_queue_t* rx_queue;
 
     /* Get receive queue */
     rx_queue = &(tl_desc_ptr->tl_rx_queue);
@@ -2141,7 +2165,7 @@ static void ld_make_slave_response_pdu(l_ifc_handle iii,
                 if (error_code == LIN_PRODUCT_ID)
                 {
                     /* Get Identifier info */
-                    ident = (const lin_product_id_t *)(&node_attr_ptr->product_id);
+                    ident = (const lin_product_id_t*)(&node_attr_ptr->product_id);
                     lin_tl_pdu[3] = (l_u8)(ident->supplier_id & 0xFFU);
                     lin_tl_pdu[4] = (l_u8)(ident->supplier_id >> 8);
                     lin_tl_pdu[5] = (l_u8)(ident->function_id & 0xFFU);
@@ -2150,7 +2174,7 @@ static void ld_make_slave_response_pdu(l_ifc_handle iii,
                 }
                 else if (error_code == LIN_SERIAL_NUMBER)
                 {
-                    serial_number = (const lin_serial_number_t *)(&node_attr_ptr->serial_number);
+                    serial_number = (const lin_serial_number_t*)(&node_attr_ptr->serial_number);
                     lin_tl_pdu[3] = serial_number->serial_0;
                     lin_tl_pdu[4] = serial_number->serial_1;
                     lin_tl_pdu[5] = serial_number->serial_2;
@@ -2160,7 +2184,7 @@ static void ld_make_slave_response_pdu(l_ifc_handle iii,
                 }
                 else
                 {
-                    l_u8 data_callout[5] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+                    l_u8 data_callout[5] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
                     (void)ld_read_by_id_callout(iii, error_code, data_callout);
                     /* packing user defined pdu */
                     lin_tl_pdu[3] = data_callout[0];
@@ -2232,7 +2256,7 @@ static void ld_make_slave_response_pdu(l_ifc_handle iii,
         case SERVICE_TARGET_RESET:
             lin_tl_pdu[1] = 0x06U;
             lin_tl_pdu[2] = (l_u8)(RES_POSITIVE + sid);
-            ident = (lin_product_id_t *)&node_attr_ptr->product_id;
+            ident = (lin_product_id_t*)&node_attr_ptr->product_id;
             lin_tl_pdu[3] = (l_u8)(ident->supplier_id & 0xFFU);
             lin_tl_pdu[4] = (l_u8)(ident->supplier_id >> 8U);
             lin_tl_pdu[5] = (l_u8)(ident->function_id & 0xFFU);
@@ -2267,16 +2291,16 @@ static void ld_make_slave_response_pdu(l_ifc_handle iii,
  * Implements    : ld_assign_frame_id_Activity
  *END**************************************************************************/
 void ld_assign_frame_id(l_ifc_handle iii,
-                        l_u8 NAD,
-                        l_u16 supplier_id,
-                        l_u16 message_id,
-                        l_u8 PID)
+    l_u8 NAD,
+    l_u16 supplier_id,
+    l_u16 message_id,
+    l_u8 PID)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u8 data[6];
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if (prot_user_config_ptr->function == (bool)LIN_MASTER)
     {
@@ -2313,8 +2337,8 @@ l_bool ld_is_ready_j2602(l_ifc_handle iii)
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_bool retVal = false;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if (prot_user_config_ptr->function == (bool)LIN_MASTER)
     {
@@ -2336,15 +2360,15 @@ l_bool ld_is_ready_j2602(l_ifc_handle iii)
  * Implements    : ld_check_response_j2602_Activity
  *END**************************************************************************/
 l_u8 ld_check_response_j2602(l_ifc_handle iii,
-                             l_u8 *const RSID,
-                             l_u8 *const error_code)
+    l_u8* const RSID,
+    l_u8* const error_code)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u8 retval = 0xFFU;
     lin_last_cfg_result_t temp;
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
 
     if (prot_user_config_ptr->function == (bool)LIN_MASTER)
     {
@@ -2389,8 +2413,8 @@ static void lin_diagservice_assign_frame_id(l_ifc_handle iii)
     l_u16 supplier_id;
     l_u16 message_id;
     lin_tl_pdu_data_t lin_tl_pdu;
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_transport_layer_queue_t *rx_queue = &(g_lin_tl_descriptor_array[iii].tl_rx_queue);
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_transport_layer_queue_t* rx_queue = &(g_lin_tl_descriptor_array[iii].tl_rx_queue);
     l_u16 slave_supplier_id = g_lin_node_attribute_array[prot_user_config_ptr->slave_ifc_handle].product_id.supplier_id;
 
     /* Get data from queue */
@@ -2431,10 +2455,10 @@ static void lin_diagservice_assign_frame_id(l_ifc_handle iii)
  * Implements    : ld_reconfig_msg_ID_Activity
  *END**************************************************************************/
 l_bool ld_reconfig_msg_ID(l_ifc_handle iii,
-                          l_u8 dnn)
+    l_u8 dnn)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     l_u8 i;
     l_bool ret_val = 1U;
     /* Get number of unconditional frames not calculate id 0x3C and 0x3D */
@@ -2503,10 +2527,10 @@ l_bool ld_reconfig_msg_ID(l_ifc_handle iii,
  * Implements    : ld_change_msg_id_Activity
  *END**************************************************************************/
 static l_bool ld_change_msg_id(l_ifc_handle iii,
-                               l_u8 dnn,
-                               l_u8 frame_id_change)
+    l_u8 dnn,
+    l_u8 frame_id_change)
 {
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     l_u8 number_of_configurable_frames = prot_user_config_ptr->number_of_configurable_frames;
     l_u8 i;
     l_u8 id_origin;
@@ -2529,7 +2553,7 @@ static l_bool ld_change_msg_id(l_ifc_handle iii,
                 prot_user_config_ptr->list_identifiers_RAM_ptr[i] += 1U;
             }
             else if ((dnn < 8U) &&
-                     ((prot_user_config_ptr->list_identifiers_RAM_ptr[i] == 0x39U) || (prot_user_config_ptr->list_identifiers_RAM_ptr[i] == 0x3BU)))
+                ((prot_user_config_ptr->list_identifiers_RAM_ptr[i] == 0x39U) || (prot_user_config_ptr->list_identifiers_RAM_ptr[i] == 0x3BU)))
             {
                 prot_user_config_ptr->list_identifiers_RAM_ptr[i] -= 1U;
             }
@@ -2549,11 +2573,11 @@ static l_bool ld_change_msg_id(l_ifc_handle iii,
  * Implements    : ld_assign_NAD_j2602_Activity
  *END**************************************************************************/
 l_bool ld_assign_NAD_j2602(l_ifc_handle iii,
-                           l_u8 dnn)
+    l_u8 dnn)
 {
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
-    const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
-    const lin_node_attribute_t *node_attr_ptr;
+    const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
+    const lin_node_attribute_t* node_attr_ptr;
     l_bool ret_val = 1U;
 
     if ((prot_user_config_ptr->function == (bool)LIN_SLAVE) && (prot_user_config_ptr->protocol_version == LIN_PROTOCOL_J2602))
@@ -2579,12 +2603,12 @@ l_bool ld_assign_NAD_j2602(l_ifc_handle iii,
  *END**************************************************************************/
 static void lin_diagservice_target_reset(l_ifc_handle iii)
 {
-    lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
-    const lin_node_attribute_t *node_attr_ptr = &g_lin_node_attribute_array[g_lin_protocol_user_cfg_array[iii].slave_ifc_handle];
-    l_u16 *byte_offset_temp_ptr;
-    l_u8 *bit_offset_temp_ptr;
+    lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
+    const lin_node_attribute_t* node_attr_ptr = &g_lin_node_attribute_array[g_lin_protocol_user_cfg_array[iii].slave_ifc_handle];
+    l_u16* byte_offset_temp_ptr;
+    l_u8* bit_offset_temp_ptr;
     l_u8 i;
-    const lin_transport_layer_queue_t *rx_queue = &(tl_desc_ptr->tl_rx_queue);
+    const lin_transport_layer_queue_t* rx_queue = &(tl_desc_ptr->tl_rx_queue);
 
     for (i = 0; i < node_attr_ptr->num_frame_have_esignal; i++)
     {
@@ -2593,7 +2617,7 @@ static void lin_diagservice_target_reset(l_ifc_handle iii)
         bit_offset_temp_ptr = node_attr_ptr->response_error_bit_offset_ptr + i;
         /* Set error signal to 0x01 means "Reset" */
         g_lin_frame_data_buffer[*byte_offset_temp_ptr] = (l_u8)((g_lin_frame_data_buffer[*byte_offset_temp_ptr] & (~(0x07U << (*bit_offset_temp_ptr)))) |
-                                                                (0x01U << (*bit_offset_temp_ptr)));
+            (0x01U << (*bit_offset_temp_ptr)));
     }
     /* check if pdu[0] - NAD is different from LD_BROADCAST */
     if (LD_BROADCAST != rx_queue->tl_pdu_ptr[(rx_queue->queue_header)][0])
