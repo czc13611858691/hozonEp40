@@ -1500,7 +1500,7 @@ void lin_slave_session_ctr(l_ifc_handle iii)
     {
         switch (sub_func_id)
         {
-        case 0:
+        case 1:
             /* code */
             //TODO: 切换到默认会话,在切换之前先判断是否满足切换的条件
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
@@ -1515,7 +1515,7 @@ void lin_slave_session_ctr(l_ifc_handle iii)
             ld_put_raw(iii, lin_tl_pdu);
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
-        case 1:
+        case 2:
             //TODO: 切换到编程会话,在切换之前先判断是否满足切换的条件
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x02; //TODO:可能附带参数信息,数据长度信息\帧类型会变动
@@ -1529,7 +1529,7 @@ void lin_slave_session_ctr(l_ifc_handle iii)
             ld_put_raw(iii, lin_tl_pdu);
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
-        case 2:
+        case 3:
             //TODO: 切换到扩展会话,在切换之前先判断是否满足切换的条件
 
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
