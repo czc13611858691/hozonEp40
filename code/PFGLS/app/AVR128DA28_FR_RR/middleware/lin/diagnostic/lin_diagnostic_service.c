@@ -1088,7 +1088,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         lin_tl_pdu[4] = 0x30;
         lin_tl_pdu[5] = 0x2e;
         lin_tl_pdu[6] = 0x30;
-        lin_tl_pdu[7] = 0x31;
+        lin_tl_pdu[7] = 0x32;
 
         ld_put_raw(iii, lin_tl_pdu);
         tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
