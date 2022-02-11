@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<parseerrors xmlns="http://www.vector-informatik.de/TestAutomationEditor/XMLTestModuleErrors/1.0">
+  <error>
+    <message>XML parser error: invalid byte '?' at position 1 of a 1-byte sequence</message>
+    <location line="1"></location>
+  </error>
+</parseerrors>
