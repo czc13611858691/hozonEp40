@@ -68,13 +68,23 @@ remove '#if' directive if needed it also when transport layer is enabled */
 #define SERVICE_SAVE_CONFIGURATION        0xB6U      /*!< Save configuration service */
 #define SERVICE_ASSIGN_FRAME_ID_RANGE     0xB7U      /*!< Assign frame id range service */
 
-#define SERVICE_READ_DATA_BY_IDENTIFY     0x22U      /*!< Service read data by identifier */
 #define SERVICE_WRITE_DATA_BY_IDENTIFY    0x2EU      /*!< Service write data by identifier */
-#define SERVICE_SESSION_CONTROL           0x10U      /*!< Service session control */
 #define SERVICE_IO_CONTROL_BY_IDENTIFY    0x2FU      /*!< Service I/O control */
 #define SERVICE_FAULT_MEMORY_READ         0x19U      /*!< Service fault memory read */
-#define SERIVCE_FAULT_MEMORY_CLEAR        0x14U      /*!< Service fault memory clear */
-#define SERIVCE_ROUTINE_CONTROL           0x31U      /*!< Service routine control */
+
+#define SERVICE_SESSION_CONTROL           0x10U
+#define SERVICE_ECU_RESET                 0x11U
+#define SERVICE_SECURITY_ACCESS           0x27U
+#define SERVICE_COMMUNICATION_CTRL        0x28U
+#define SERVICE_TESTER_PRESENT            0x3EU
+#define SERVICE_READ_DATA_BY_IDENTIFY     0x22U
+#define SERVICE_WRITE_DATA_BY_IDENTIFY    0x2EU
+#define SERVICE_CLEAR_DIAG_INFO           0x14U     
+#define SERVICE_ROUTINE_CONTROL           0x31U
+#define SERVICE_REQUEST_DOWNLOAD          0x34U
+#define SERVICE_TRANSFER_DATA             0x36U
+#define SERVICE_REQUEST_TRANSEFER_EXIT    0x37U
+#define SERVICE_CTRL_DTC_SETTING          0x85U
 
 /* Define PCI request services */
 #define PCI_SAVE_CONFIGURATION            0x01U      /*!< PCI value save configuration */

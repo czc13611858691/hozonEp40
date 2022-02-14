@@ -271,7 +271,7 @@
   </avrgcc.linker.libraries.LibrarySearchPaths>
   <avrgcc.linker.memorysettings.Flash>
     <ListValues>
-      <Value>.text=0x2400</Value>
+      <Value>.text=0x3200</Value>
     </ListValues>
   </avrgcc.linker.memorysettings.Flash>
   <avrgcc.assembler.general.IncludePaths>

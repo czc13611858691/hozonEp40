@@ -7,6 +7,39 @@
 #include "ccp.h"
 #include "rstctrl.h"
 #include <atomic.h>
+
+const eeprom_did_data_t VINDataIdentifier_eeprom = {
+	.start = 10,
+	.len = 17,
+};
+
+uint8_t gVINDataIdentifier[17] = { 0 };
+uint8_t gVINDataIdentifier_update_flg = 0;
+
+const eeprom_did_data_t TesterSerialNumberDataIdentifier_eeprom = {
+	.start = 30,
+	.len = 10,
+};
+
+uint8_t gTesterSerialNumberDataIdentifier[10] = { 0 };
+uint8_t gTesterSerialNumberDataIdentifier_update_flg = 0;
+
+const eeprom_did_data_t ProgrammingDataDataIdentifier_eeprom = {
+	.start = 40,
+	.len = 4,
+};
+
+uint8_t gProgrammingDataDataIdentifier[4] = { 0 };
+uint8_t gProgrammingDataDataIdentifier_update_flg = 0;
+
+const eeprom_did_data_t ECUInstallationDateDataIdentifier_eeprom = {
+	.start = 50,
+	.len = 4,
+};
+
+uint8_t gECUInstallationDateDataIdentifier[4] = { 0 };
+uint8_t gECUInstallationDateDataIdentifier_update_flg = 0;
+
 /*
 *  bootloader 仅支持诊断功能中的刷新会话$02, LIN通信相关功能将被移除
 *
@@ -17,21 +50,23 @@ int flash_flag = 0;
 int reset_flag = 0;
 uint16_t rb;
 
-uint8_t program_buffer[FLASH_PAGE_SIZE] = {0};
+uint8_t program_buffer[FLASH_PAGE_SIZE] = { 0 };
 uint8_t history_blcok_count;
 uint16_t update_cnt = 0;
-uint32_t bin_size_cnt=0;
-flash_adr_t page_addr = 0x4800; 
+uint32_t bin_size_cnt = 0;
+flash_adr_t page_addr = 6400;
 
 uint8_t session_mode = 2;	   //当前所处的会话模式
 uint8_t security_checked = 0;  //安全授权
-uint8_t security_seed[SECURITY_SEED_LEN]={1,2,3,4};
+uint8_t security_seed[SECURITY_SEED_LEN] = { 1,2,3,4 };
 uint32_t update_mem_size = 0;
 uint32_t update_mem_addr = 0;
 uint16_t crc16_code;
 uint32_t check_program_size = 0;
 uint8_t  check_program_flag = 0u;
 uint8_t download_request_flag = 0;
+uint8_t ecu_rst_flg = 0;
+uint8_t program_check_flg = 0;
 
 //CRC运算符
 const uint16_t crctab[256] = {
@@ -68,104 +103,194 @@ const uint16_t crctab[256] = {
 0xEF1F, 0xFF3E, 0xCF5D, 0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8,
 0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0
 };
-	
+
+#define PROGRAM_REQUEST_EEPROM_POS 0
+#define APPLICATION_VALID_EEPROM_POS 1
+#define PRAOGRAM_CHECK_EEPROM_POS 2
+
 int main(void)
 {
 	int i;
 	uint8_t tmp_crc;
 	uint16_t crc_seed;
 	uint8_t update_flash_flag;
-	
+
+	/* 外部刷新请求 */
+	uint8_t programming_request_flg;
+
+	/* 应用程序是否有效 */
+	uint8_t application_valid_flg;
+
 	DISABLE_INTERRUPTS();
-	/* 中断向量表切换到boot区 */
-	ccp_write_io((void*)&(CPUINT.CTRLA),(CPUINT_IVSEL_bm|CPUINT.CTRLA)); 
-	/* Initializes MCU, drivers and middleware */	
+	ccp_write_io((void*)&(CPUINT.CTRLA), (CPUINT_IVSEL_bm | CPUINT.CTRLA));
 	atmel_start_init();
-	update_flash_flag = FLASH_0_read_eeprom_byte(0); //读取eeprom的标志位
-	if(update_flash_flag == 0x55)                    //如果标志位是55，则不更新程序,跳转app
+
+	programming_request_flg = FLASH_0_read_eeprom_byte(PROGRAM_REQUEST_EEPROM_POS); //读取eeprom的标志位
+	application_valid_flg = FLASH_0_read_eeprom_byte(APPLICATION_VALID_EEPROM_POS); //读取eeprom的标志位
+	program_check_flg = FLASH_0_read_eeprom_byte(PRAOGRAM_CHECK_EEPROM_POS);
+
+#if 1
+	/* 如果检测到外部刷写请求标志位置位，保持在bootloader程序中，同时设置会话模式为编程模式 */
+	if (programming_request_flg == 1)
 	{
-		/* 中断向量表切换到app区 */
-		ccp_write_io((void*)&(CPUINT.CTRLA),0);
-		/* Enable Boot Section Lock */
-		//NVMCTRL.CTRLB = NVMCTRL_BOOTRP_bm;
-		asm volatile("JMP 0x4800"::);
+		FLASH_0_write_eeprom_byte(PROGRAM_REQUEST_EEPROM_POS, 0);
+
+		g_sessionStatus = SESSION_PROGRAM;
 	}
+	else /* 如果没有外部刷写请求:若应用程序合理，则跳转application程序空间;若是应用程序不合理，则保持在bootloader程序中，同时设置会话模式为默认模式 */
+	{
+		/* 检查应用程序是否有效标志位，如果应用程序有效 */
+		if (application_valid_flg == 1)
+		{
+			ccp_write_io((void*)&(CPUINT.CTRLA), 0);
+			asm volatile("JMP 0x6400"::);
+		}
+		else {
+			g_sessionStatus = SESSION_DEFAULT;
+		}
+	}
+#endif
+
 	/* 初始化外设，会开启中断的外设 */
 	USART_0_initialization();
 	TIMER_0_initialization();
 	ENABLE_INTERRUPTS();
 
-
-	/* 以下开始执行bootloader程序 */		
 	l_sys_init();
 	l_ifc_init(LI0);
 	ld_init(LI0);
 
+
+	/* 从EEPROM中读取数据 */
+	for (uint8_t i = 0;i < VINDataIdentifier_eeprom.len;i++)
+	{
+		gVINDataIdentifier[i] = FLASH_0_read_eeprom_byte(VINDataIdentifier_eeprom.start + i);
+	}
+	for (uint8_t i = 0;i < TesterSerialNumberDataIdentifier_eeprom.len;i++)
+	{
+		gTesterSerialNumberDataIdentifier[i] = FLASH_0_read_eeprom_byte(TesterSerialNumberDataIdentifier_eeprom.start + i);
+	}
+	for (uint8_t i = 0;i < ProgrammingDataDataIdentifier_eeprom.len;i++)
+	{
+		gProgrammingDataDataIdentifier[i] = FLASH_0_read_eeprom_byte(ProgrammingDataDataIdentifier_eeprom.start + i);
+	}
+	for (uint8_t i = 0;i < ECUInstallationDateDataIdentifier_eeprom.len;i++)
+	{
+		gECUInstallationDateDataIdentifier[i] = FLASH_0_read_eeprom_byte(ECUInstallationDateDataIdentifier_eeprom.start + i);
+	}
+
 	while (1) {
-		if(erase_flag == 1)
-		{	
-			//FLASH_0_test_nvmctrl_basic();
-			FLASH_0_erase_flash_page(0x2400);
-			rb = FLASH_0_read_flash_byte(0x6255);
-			if (rb == 0xff) 
-				erase_flag = 255;
-			erase_flag = 2;
-		}
-		if(flash_flag == 1)
+		if (erase_flag == 1)
 		{
-			FLASH_0_write_flash_page(page_addr,program_buffer);
+			erase_flag = 0;
+			FLASH_0_write_eeprom_byte(APPLICATION_VALID_EEPROM_POS, 0);
+		}
+
+		if (flash_flag == 1)
+		{
+			FLASH_0_write_flash_page(page_addr, program_buffer);
 			page_addr = page_addr + FLASH_PAGE_SIZE;
 			flash_flag = 0;
-		}else if(flash_flag == 2u)
+		}
+		else if (flash_flag == 2u)
 		{
-			for(i=update_cnt;i<FLASH_PAGE_SIZE;i++) {program_buffer[i] = 0xff;}
-			FLASH_0_write_flash_page(page_addr,program_buffer);
+			for (i = update_cnt;i < FLASH_PAGE_SIZE;i++) { program_buffer[i] = 0xff; }
+			FLASH_0_write_flash_page(page_addr, program_buffer);
 			flash_flag = 0;
 			update_cnt = 0;
-			page_addr = 0x4800; //复位
+			page_addr = 0x6400; //复位
 		}
 
 		//执行内存校验,由UDS置写1u
-		if(check_program_flag == 1u)
+		if (check_program_flag == 1u)
 		{
-			page_addr = 0x4800;
+			page_addr = 0x6400;
 			crc_seed = 0xffff;
-			while(check_program_size >= 512)
+			while (check_program_size >= 512)
 			{
-				for(i=0;i<FLASH_PAGE_SIZE;i++)
+				for (i = 0;i < FLASH_PAGE_SIZE;i++)
 				{
-					tmp_crc = (crc_seed >> 8) ^ FLASH_0_read_flash_byte(page_addr+i);
+					tmp_crc = (crc_seed >> 8) ^ FLASH_0_read_flash_byte(page_addr + i);
 					crc_seed = (crc_seed << 8) ^ crctab[tmp_crc];
 				}
 				page_addr += FLASH_PAGE_SIZE;
 				check_program_size -= FLASH_PAGE_SIZE;
 			}
-			if(check_program_size > 0)
+			if (check_program_size > 0)
 			{
-				for(i=0;i<check_program_size;i++)
+				for (i = 0;i < check_program_size;i++)
 				{
-					tmp_crc = (crc_seed >> 8) ^ FLASH_0_read_flash_byte(page_addr+i);
+					tmp_crc = (crc_seed >> 8) ^ FLASH_0_read_flash_byte(page_addr + i);
 					crc_seed = (crc_seed << 8) ^ crctab[tmp_crc];
 				}
 			}
-			page_addr = 0x4800;
-			if((crc_seed == crc16_code)&&(crc16_code != 0u))
+			page_addr = 0x6400;
+			if ((crc_seed == crc16_code) && (crc16_code != 0u))
 			{
 				//校验正确写2u，并反馈
 				check_program_flag = 2u;
-				FLASH_0_write_eeprom_byte(0, 0x55); //写0x55表示更新完成
-			}else
+				FLASH_0_write_eeprom_byte(APPLICATION_VALID_EEPROM_POS, 1);
+			}
+			else
 			{
 				//校验失败写3u
 				check_program_flag = 3u;
-			} 	
+			}
 		}
 
-		if(reset_flag == 1u)
+		if (ecu_rst_flg == 1)
 		{
-			FLASH_0_write_eeprom_byte(1, 0x55); //写0x55表示bootloader中执行复位
-			reset_flag = 0;
-			RSTCTRL_reset();
+			/* 清零编程请求EEPROM变量 */
+			FLASH_0_write_eeprom_byte(PROGRAM_REQUEST_EEPROM_POS, 0);
+			while (NVMCTRL.STATUS & (NVMCTRL_EEBUSY_bm | NVMCTRL_FBUSY_bm))
+				;
+
+			/* 发送完肯定响应信息，才能复位 */
+			if (ld_raw_tx_status(0) == LD_QUEUE_EMPTY)
+			{
+				if (LIN_DRV_GetCurrentNodeState(0) == LIN_NODE_STATE_IDLE)
+				{
+					RSTCTRL_reset();
+				}
+			}
+		}
+
+
+		if (gVINDataIdentifier_update_flg == 1)
+		{
+			gVINDataIdentifier_update_flg = 0;
+			for (uint8_t i = 0;i < VINDataIdentifier_eeprom.len;i++)
+			{
+				FLASH_0_write_eeprom_byte(VINDataIdentifier_eeprom.start + i, gVINDataIdentifier[i]);
+			}
+		}
+
+		if (gTesterSerialNumberDataIdentifier_update_flg == 1)
+		{
+			gTesterSerialNumberDataIdentifier_update_flg = 0;
+			for (uint8_t i = 0;i < TesterSerialNumberDataIdentifier_eeprom.len;i++)
+			{
+				FLASH_0_write_eeprom_byte(TesterSerialNumberDataIdentifier_eeprom.start + i, gTesterSerialNumberDataIdentifier[i]);
+			}
+		}
+
+		if (gProgrammingDataDataIdentifier_update_flg == 1)
+		{
+			gProgrammingDataDataIdentifier_update_flg = 0;
+
+			for (uint8_t i = 0;i < ProgrammingDataDataIdentifier_eeprom.len;i++)
+			{
+				FLASH_0_write_eeprom_byte(ProgrammingDataDataIdentifier_eeprom.start + i, gProgrammingDataDataIdentifier[i]);
+			}
+		}
+
+		if (gECUInstallationDateDataIdentifier_update_flg == 1)
+		{
+			gECUInstallationDateDataIdentifier_update_flg = 0;
+			for (uint8_t i = 0;i < ECUInstallationDateDataIdentifier_eeprom.len;i++)
+			{
+				FLASH_0_write_eeprom_byte(ECUInstallationDateDataIdentifier_eeprom.start + i, gECUInstallationDateDataIdentifier[i]);
+			}
 		}
 	}
 }

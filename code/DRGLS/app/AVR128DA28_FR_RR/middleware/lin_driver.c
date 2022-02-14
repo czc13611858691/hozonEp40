@@ -2,13 +2,12 @@
 #include "lin1.h"
 #include "ep40_cfg.h"
 
-
 /*  用来保存LIN 驱动状态的表 */
-lin_state_t * g_linStatePtr[LIN_COM_NUM] = {NULL};  // LIN_COM_NUM 取决于芯片自身支持的外设数目 一般LIN用两个就够了，再多会影响其他功能
+lin_state_t *g_linStatePtr[LIN_COM_NUM] = {NULL}; // LIN_COM_NUM 取决于芯片自身支持的外设数目 一般LIN用两个就够了，再多会影响其他功能
 /*  用来保存LIN（串口）状态的表 */
-lin_user_config_t * g_linUserconfigPtr[LIN_COM_NUM] = {NULL};
+lin_user_config_t *g_linUserconfigPtr[LIN_COM_NUM] = {NULL};
 
-lin_func_callback_t * g_linFuncCallbackPtr[LIN_COM_NUM] = {NULL};
+lin_func_callback_t *g_linFuncCallbackPtr[LIN_COM_NUM] = {NULL};
 
 static void LIN_DRV_ProcessFrameHeader(uint32_t instance, uint8_t tmpbyte);
 
@@ -16,7 +15,7 @@ static void LIN_DRV_ProcessSendFrameData(uint32_t instance, uint8_t tmpByte);
 
 static void LIN_DRV_ProcessReceiveFrameData(uint32_t instance, uint8_t tmpByte);
 
-status_t LIN_DRV_Init(uint32_t instance, lin_user_config_t * linUserConfig, lin_state_t * linCurrentState)
+status_t LIN_DRV_Init(uint32_t instance, lin_user_config_t *linUserConfig, lin_state_t *linCurrentState)
 {
 
     DEV_ASSERT(instance < LIN_COM_NUM);
@@ -40,10 +39,10 @@ status_t LIN_DRV_Init(uint32_t instance, lin_user_config_t * linUserConfig, lin_
     linCurrentState->isTxBlocking = false;
     linCurrentState->timeoutCounterFlag = false;
     linCurrentState->timeoutCounter = 0U;
-    
+
     /****************这部分需要自己实现匹配不同的端口*****************/
 
-    if(instance == 0U)
+    if (instance == 0U)
     {
         // 必备
         // SERCOM3_USART_ReadNotificationEnable(true, true);
@@ -61,7 +60,6 @@ void LIN_DRV_Deinit(uint32_t instance)
     //TODO:
 }
 
-
 /*FUNCTION**********************************************************************
  *
  * Function Name : LIN_LPUART_DRV_GetCurrentNodeState
@@ -76,7 +74,7 @@ lin_node_state_t LIN_DRV_GetCurrentNodeState(uint32_t instance)
 
     lin_node_state_t retVal = LIN_NODE_STATE_UNINIT;
     /* Get the current LIN state of this LPUART instance. */
-    const lin_state_t * linCurrentState = g_linStatePtr[instance];
+    const lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     if (linCurrentState != NULL)
     {
@@ -100,7 +98,7 @@ status_t LIN_DRV_SendWakeupSignal(uint32_t instance)
     DEV_ASSERT(instance < LIN_COM_NUM);
 
     /* Get the current LIN state of this LPUART instance. */
-    const lin_state_t * linCurrentState = g_linStatePtr[instance];
+    const lin_state_t *linCurrentState = g_linStatePtr[instance];
     status_t retVal = STATUS_SUCCESS;
 
     /* Check if bus is not busy */
@@ -140,13 +138,13 @@ status_t LIN_DRV_MasterSendHeader(uint32_t instance, uint8_t id)
     status_t retVal = STATUS_SUCCESS;
 
     /* Get the current LIN user config structure of this LPUART instance. */
-    const lin_user_config_t * linUserConfig = g_linUserconfigPtr[instance];
+    const lin_user_config_t *linUserConfig = g_linUserconfigPtr[instance];
 
     /* Get base address of the LPUART instance. */
     //LPUART_Type * base = g_linLpuartBase[instance];
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     /* Check whether current mode is sleep mode */
     bool checkSleepMode = (LIN_NODE_STATE_SLEEP_MODE == linCurrentState->currentNodeState);
@@ -212,7 +210,7 @@ status_t LIN_DRV_EnableIRQ(uint32_t instance)
 status_t LIN_DRV_GotoIdleState(uint32_t instance)
 {
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     linCurrentState->currentEventId = LIN_NO_EVENT;
 
@@ -242,20 +240,18 @@ status_t LIN_DRV_DisableIRQ(uint32_t instance)
     status_t retVal = STATUS_SUCCESS;
 
     /* Get the current LIN state of this LPUART instance. */
-    const lin_state_t * linCurrentState = g_linStatePtr[instance];
+    const lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     if (linCurrentState->currentNodeState == LIN_NODE_STATE_SLEEP_MODE)
     {
-
     }
     else
     {
-
     }
 
     /* Disable LPUART interrupts. */
     //TODO:
-    
+
     return retVal;
 }
 
@@ -273,7 +269,7 @@ status_t LIN_DRV_GoToSleepMode(uint32_t instance)
     DEV_ASSERT(instance < LPUART_INSTANCE_COUNT);
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     /* Update node's current state to SLEEP_MODE. */
     linCurrentState->currentNodeState = LIN_NODE_STATE_SLEEP_MODE;
@@ -282,7 +278,6 @@ status_t LIN_DRV_GoToSleepMode(uint32_t instance)
 
     return STATUS_SUCCESS;
 }
-
 
 /*FUNCTION**********************************************************************
  *
@@ -301,7 +296,7 @@ status_t LIN_DRV_AbortTransferData(uint32_t instance)
     status_t retVal = STATUS_SUCCESS;
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     /* Change node's current state to IDLE */
     (void)LIN_DRV_GotoIdleState(instance);
@@ -313,15 +308,14 @@ status_t LIN_DRV_AbortTransferData(uint32_t instance)
     return retVal;
 }
 
-
 lin_callback_t LIN_DRV_InstallCallback(uint32_t instance,
-                                              lin_callback_t function)
+                                       lin_callback_t function)
 {
     /* Assert parameters. */
     DEV_ASSERT(instance < LPUART_INSTANCE_COUNT);
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     /* Get the current callback function. */
     lin_callback_t currentCallback = linCurrentState->Callback;
@@ -338,19 +332,20 @@ lin_callback_t LIN_DRV_InstallCallback(uint32_t instance,
 void LIN_DRV_IRQHandler(uint32_t instance, int8_t event)
 {
     /* 一下功能实现只针对AVRxxDA系列8位单片机 */
-    uint8_t temp_buf; 
+    uint8_t temp_buf;
     /************/
-    const lin_user_config_t * linUserConfig = g_linUserconfigPtr[instance];
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
-    const lin_func_callback_t * linFuncCallback = g_linFuncCallbackPtr[instance];
+    const lin_user_config_t *linUserConfig = g_linUserconfigPtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
+    const lin_func_callback_t *linFuncCallback = g_linFuncCallbackPtr[instance];
 
-    if(event == 1) // 检测到PID
+    if (event == 1) // 检测到PID
     {
         //AVR系列单片机特殊的地方 BREAK SYNC PID 一起识别触发
-        if(linUserConfig->nodeFunction == (bool)MASTER)
+        if (linUserConfig->nodeFunction == (bool)MASTER)
         {
             //TODO:主机模式后续更新，AVR 8位机无法实现主机模式
-        }else
+        }
+        else
         {
             /* Set flag LIN bus busy */
             linCurrentState->isBusBusy = true;
@@ -362,49 +357,49 @@ void LIN_DRV_IRQHandler(uint32_t instance, int8_t event)
             linFuncCallback->ReadByte(&temp_buf);
             /* 判断PID是否合理，有错误 */
             LIN_DRV_ProcessFrameHeader(instance, temp_buf);
-            /* Callback function */  //不需要回调
+            /* Callback function */ //不需要回调
             // if(linCurrentState->Callback != NULL)
             // {
             //     linCurrentState->Callback(instance, linCurrentState);
             // }
         }
     }
-    else if(event == 0) //处理帧数据
+    else if (event == 0) //处理帧数据
     {
         /* Check node's current state */
         switch (linCurrentState->currentNodeState)
         {
-            /* if current state is RECEIVE SYNC FIELD */
-            case LIN_NODE_STATE_RECV_SYNC:
+        /* if current state is RECEIVE SYNC FIELD */
+        case LIN_NODE_STATE_RECV_SYNC:
 
-            /* if current state is MASTER SENDING PID */
-            case LIN_NODE_STATE_SEND_PID:
+        /* if current state is MASTER SENDING PID */
+        case LIN_NODE_STATE_SEND_PID:
 
-            /* if current state is RECEIVE PID */
-            case LIN_NODE_STATE_RECV_PID:
-                break;
-            /* if current state is RECEIVE DATA */
-            case LIN_NODE_STATE_RECV_DATA:
-                linFuncCallback->ReadByte(&temp_buf);
-                LIN_DRV_ProcessReceiveFrameData(instance, temp_buf);
-                break;
-            /* if current state is SENDING DATA */
-            case LIN_NODE_STATE_SEND_DATA:
-                /* 发送时会回显数据 读上次发送的回显数据 */
-                linFuncCallback->ReadByte(&temp_buf);
-                LIN_DRV_ProcessSendFrameData(instance, temp_buf);
-                break;
+        /* if current state is RECEIVE PID */
+        case LIN_NODE_STATE_RECV_PID:
+            break;
+        /* if current state is RECEIVE DATA */
+        case LIN_NODE_STATE_RECV_DATA:
+            linFuncCallback->ReadByte(&temp_buf);
+            LIN_DRV_ProcessReceiveFrameData(instance, temp_buf);
+            break;
+        /* if current state is SENDING DATA */
+        case LIN_NODE_STATE_SEND_DATA:
+            /* 发送时会回显数据 读上次发送的回显数据 */
+            linFuncCallback->ReadByte(&temp_buf);
+            LIN_DRV_ProcessSendFrameData(instance, temp_buf);
+            break;
 
-            default:
-                /* Other node state */
-				linFuncCallback->ReadByte(&temp_buf);
-                break;
+        default:
+            /* Other node state */
+            linFuncCallback->ReadByte(&temp_buf);
+            break;
         }
     }
-    else if(event == -1) //报错
+    else if (event == -1) //报错
     {
         // TODO: break 或者 sync 报错
-        // USART_ERROR err = USART_ERROR_NONE; 
+        // USART_ERROR err = USART_ERROR_NONE;
         // err = linFuncCallback->GetError();
         // if(err == SERCOM_USART_INT_STATUS_ISF_Msk)  // SYNC错误，0x55有问题
         // {
@@ -421,7 +416,7 @@ void LIN_DRV_IRQHandler(uint32_t instance, int8_t event)
         // }
         // AVRXXDA系列的型号
         linCurrentState->currentEventId = LIN_SYNC_ERROR;
-        if(linCurrentState->Callback != NULL)
+        if (linCurrentState->Callback != NULL)
         {
             linCurrentState->Callback(instance, linCurrentState);
         }
@@ -450,17 +445,17 @@ void LIN_DRV_IRQHandler(uint32_t instance, int8_t event)
 static void LIN_DRV_ProcessFrameHeader(uint32_t instance, uint8_t tmpbyte)
 {
     /* Get the current LIN user config structure of this LPUART instance. */
-    const lin_user_config_t * linUserConfig = g_linUserconfigPtr[instance];
+    const lin_user_config_t *linUserConfig = g_linUserconfigPtr[instance];
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     switch (linCurrentState->currentNodeState)
     {
     case LIN_NODE_STATE_RECV_SYNC:
         break;
     case LIN_NODE_STATE_SEND_PID:
-        break;   
+        break;
     case LIN_NODE_STATE_RECV_PID:
         /* If the node is MASTER */
         if (linUserConfig->nodeFunction == (bool)MASTER)
@@ -472,14 +467,14 @@ static void LIN_DRV_ProcessFrameHeader(uint32_t instance, uint8_t tmpbyte)
         {
             linCurrentState->currentId = LIN_DRV_ProcessParity(tmpbyte, CHECK_PARITY);
             linCurrentState->currentPid = tmpbyte;
-            if(linCurrentState->currentId != 0xFFU)
+            if (linCurrentState->currentId != 0xFFU)
             {
                 /* Set current event ID to PID correct */
                 linCurrentState->currentEventId = LIN_PID_OK;
-                if(linCurrentState->isRxBlocking == true)
+                if (linCurrentState->isRxBlocking == true)
                 {
                     /* Starting receive data blocking */
-                    linCurrentState->currentNodeState = LIN_NODE_STATE_RECV_DATA;             
+                    linCurrentState->currentNodeState = LIN_NODE_STATE_RECV_DATA;
                     linCurrentState->isBusBusy = true;
                     linCurrentState->isRxBusy = true;
                 }
@@ -487,7 +482,7 @@ static void LIN_DRV_ProcessFrameHeader(uint32_t instance, uint8_t tmpbyte)
                 {
                     linCurrentState->isBusBusy = false;
 
-                    if(linCurrentState->Callback != NULL)
+                    if (linCurrentState->Callback != NULL)
                     {
                         linCurrentState->Callback(instance, linCurrentState);
                     }
@@ -505,11 +500,10 @@ static void LIN_DRV_ProcessFrameHeader(uint32_t instance, uint8_t tmpbyte)
     }
 }
 
-
 static uint8_t LIN_COM_DRV_MakeChecksumByte(uint32_t instance,
-                                               const uint8_t * buffer,
-                                               uint8_t sizeBuffer,
-                                               uint8_t PID)
+                                            const uint8_t *buffer,
+                                            uint8_t sizeBuffer,
+                                            uint8_t PID)
 {
     /* Get list of PIDs use classic checksum. */
     const uint8_t *classicPID = g_linUserconfigPtr[instance]->classicPID;
@@ -517,18 +511,18 @@ static uint8_t LIN_COM_DRV_MakeChecksumByte(uint32_t instance,
     uint8_t checkSum = PID;
     uint8_t retVal = 0U;
 
-    if(numOfClassicPID == 255U)
+    if (numOfClassicPID == 255U)
     {
         /*all frame use enhanced checksum */
         checkSum = 0U;
     }
     else
     {
-        if(classicPID != NULL)
+        if (classicPID != NULL)
         {
             for (retVal = 0U; retVal < numOfClassicPID; retVal++)
             {
-                if(checkSum == classicPID[retVal])
+                if (checkSum == classicPID[retVal])
                 {
                     checkSum = 0U;
                     break;
@@ -552,7 +546,7 @@ static uint8_t LIN_COM_DRV_MakeChecksumByte(uint32_t instance,
  * 非阻塞模式下发送数据,该函数会计算校验字节，并发送帧数据，立即返回
  * Implements    : LIN_LPUART_DRV_SendFrameData_Activity
  * */
-status_t LIN_DRV_SendFrameData(uint32_t instance, const uint8_t * txBuff, uint8_t txSize)
+status_t LIN_DRV_SendFrameData(uint32_t instance, const uint8_t *txBuff, uint8_t txSize)
 {
     /* Assert parameters. */
     DEV_ASSERT(txBuff != NULL);
@@ -561,9 +555,9 @@ status_t LIN_DRV_SendFrameData(uint32_t instance, const uint8_t * txBuff, uint8_
     status_t retVal = STATUS_SUCCESS;
 
     /* Get the current LIN state of instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
-    const lin_func_callback_t * linFuncCallback = g_linFuncCallbackPtr[instance];
+    const lin_func_callback_t *linFuncCallback = g_linFuncCallbackPtr[instance];
 
     /* 判断节点是否处于睡眠状态 */
     bool checkSleepMode = (LIN_NODE_STATE_SLEEP_MODE == linCurrentState->currentNodeState);
@@ -583,7 +577,7 @@ status_t LIN_DRV_SendFrameData(uint32_t instance, const uint8_t * txBuff, uint8_
         }
         else
         {
-            /* Make the checksum byte. */           
+            /* Make the checksum byte. */
             linCurrentState->checkSum = LIN_COM_DRV_MakeChecksumByte(instance, txBuff, txSize, linCurrentState->currentPid);
 
             /* Update the LIN state structure. */
@@ -597,7 +591,7 @@ status_t LIN_DRV_SendFrameData(uint32_t instance, const uint8_t * txBuff, uint8_
             linCurrentState->isTxBusy = true;
 
             /* Set Break char detect length as 10 bits minimum */
-            //LPUART_SetBreakCharDetectLength(base, LPUART_BREAK_CHAR_10_BIT_MINIMUM);  
+            //LPUART_SetBreakCharDetectLength(base, LPUART_BREAK_CHAR_10_BIT_MINIMUM);
 
             /* Start sending data */
             linFuncCallback->SendByte((uint8_t *)linCurrentState->txBuff);
@@ -615,7 +609,7 @@ status_t LIN_DRV_SendFrameData(uint32_t instance, const uint8_t * txBuff, uint8_
  * Implements    : LIN_LPUART_DRV_ProcessSendFrameData_Activity
  *END**************************************************************************/
 static void LIN_DRV_ProcessSendFrameData(uint32_t instance,
-                                                uint8_t tmpByte)
+                                         uint8_t tmpByte)
 {
     bool sendFlag = true;
     uint8_t tmpSize;
@@ -623,9 +617,9 @@ static void LIN_DRV_ProcessSendFrameData(uint32_t instance,
     bool tmpBuffAndSize;
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
-    const lin_func_callback_t * linFuncCallback = g_linFuncCallbackPtr[instance];
+    const lin_func_callback_t *linFuncCallback = g_linFuncCallbackPtr[instance];
 
     // /* Check if Tx data register empty flag is false */
     // if (LPUART_GetStatusFlag(base, LPUART_TX_DATA_REG_EMPTY) == false)
@@ -651,36 +645,36 @@ static void LIN_DRV_ProcessSendFrameData(uint32_t instance,
     // }
     // else
     // {
-        tmpSize = (uint8_t)(linCurrentState->txSize - linCurrentState->cntByte);
-        tmpCheckSumAndSize = (tmpSize == 1U) && (linCurrentState->checkSum != tmpByte);
-        tmpBuffAndSize = (*linCurrentState->txBuff != tmpByte) && (tmpSize != 1U);
-        if (tmpBuffAndSize || tmpCheckSumAndSize)
+    tmpSize = (uint8_t)(linCurrentState->txSize - linCurrentState->cntByte);
+    tmpCheckSumAndSize = (tmpSize == 1U) && (linCurrentState->checkSum != tmpByte);
+    tmpBuffAndSize = (*linCurrentState->txBuff != tmpByte) && (tmpSize != 1U);
+    if (tmpBuffAndSize || tmpCheckSumAndSize)
+    {
+        linCurrentState->currentEventId = LIN_READBACK_ERROR;
+
+        /* callback function to handle Readback error */
+        if (linCurrentState->Callback != NULL)
         {
-            linCurrentState->currentEventId = LIN_READBACK_ERROR;
-
-            /* callback function to handle Readback error */
-            if (linCurrentState->Callback != NULL)
-            {
-                linCurrentState->Callback(instance, linCurrentState);
-            }
-
-            /* Check if the transmission is non-blocking */
-            if (linCurrentState->isTxBlocking == false)
-            {
-                /* Clear Tx busy flag */
-                linCurrentState->isTxBusy = false;
-
-                /* Change node's current state to IDLE */
-                (void)LIN_DRV_GotoIdleState(instance);
-            }
-
-            sendFlag = false;
+            linCurrentState->Callback(instance, linCurrentState);
         }
-        else
+
+        /* Check if the transmission is non-blocking */
+        if (linCurrentState->isTxBlocking == false)
         {
-            linCurrentState->txBuff++;
-            linCurrentState->cntByte++;
+            /* Clear Tx busy flag */
+            linCurrentState->isTxBusy = false;
+
+            /* Change node's current state to IDLE */
+            (void)LIN_DRV_GotoIdleState(instance);
         }
+
+        sendFlag = false;
+    }
+    else
+    {
+        linCurrentState->txBuff++;
+        linCurrentState->cntByte++;
+    }
     // }
 
     if (sendFlag)
@@ -734,8 +728,6 @@ static void LIN_DRV_ProcessSendFrameData(uint32_t instance,
     }
 }
 
-
-
 /*FUNCTION**********************************************************************
  *
  * Function Name : LIN_LPUART_DRV_RecvFrmData
@@ -754,7 +746,7 @@ static void LIN_DRV_ProcessSendFrameData(uint32_t instance,
  *
  * Implements    : LIN_LPUART_DRV_RecvFrmData_Activity
  *END**************************************************************************/
-status_t LIN_DRV_ReceiveFrameData(uint32_t instance, uint8_t * rxBuff, uint8_t rxSize)
+status_t LIN_DRV_ReceiveFrameData(uint32_t instance, uint8_t *rxBuff, uint8_t rxSize)
 {
     /* Assert parameters. */
     DEV_ASSERT(rxBuff != NULL);
@@ -763,7 +755,7 @@ status_t LIN_DRV_ReceiveFrameData(uint32_t instance, uint8_t * rxBuff, uint8_t r
     status_t retVal = STATUS_SUCCESS;
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     /* Check whether current mode is sleep mode */
     bool checkSleepMode = (LIN_NODE_STATE_SLEEP_MODE == linCurrentState->currentNodeState);
@@ -801,7 +793,6 @@ status_t LIN_DRV_ReceiveFrameData(uint32_t instance, uint8_t * rxBuff, uint8_t r
     return retVal;
 }
 
-
 /*FUNCTION**********************************************************************
  *
  * Function Name : LIN_LPUART_DRV_ProcessReceiveFrameData
@@ -812,7 +803,7 @@ status_t LIN_DRV_ReceiveFrameData(uint32_t instance, uint8_t * rxBuff, uint8_t r
 static void LIN_DRV_ProcessReceiveFrameData(uint32_t instance, uint8_t tmpByte)
 {
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     if (linCurrentState->rxSize > (linCurrentState->cntByte + 1U))
     {
@@ -900,75 +891,75 @@ void LIN_DRV_TimeoutService(uint32_t instance)
     DEV_ASSERT(instance < LPUART_INSTANCE_COUNT);
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     /* Get LIN node's current state */
     lin_node_state_t state = linCurrentState->currentNodeState;
 
     switch (state)
     {
-        /* If the node is SENDING DATA */
-        case LIN_NODE_STATE_SEND_DATA:
-            /* Check if timeout Counter is 0 */
-            if (linCurrentState->timeoutCounter == 0U)
-            {
-                /* Set timeout Counter flag */
-                linCurrentState->timeoutCounterFlag = true;
+    /* If the node is SENDING DATA */
+    case LIN_NODE_STATE_SEND_DATA:
+        /* Check if timeout Counter is 0 */
+        if (linCurrentState->timeoutCounter == 0U)
+        {
+            /* Set timeout Counter flag */
+            linCurrentState->timeoutCounterFlag = true;
 
-                if (linCurrentState->isTxBlocking == false)
+            if (linCurrentState->isTxBlocking == false)
+            {
+                /* Callback to handle timeout Counter flag */
+                if (linCurrentState->Callback != NULL)
                 {
-                    /* Callback to handle timeout Counter flag */
-                    if (linCurrentState->Callback != NULL)
-                    {
-                        linCurrentState->Callback(instance, linCurrentState);
-                    }
-
-                    /* Clear Tx busy flag */
-                    linCurrentState->isTxBusy = false;
-
-                    /* Change the node's current state to IDLE */
-                    (void)LIN_DRV_GotoIdleState(instance);
+                    linCurrentState->Callback(instance, linCurrentState);
                 }
-            }
-            else /* If timeout Counter is not 0, then decrease timeout Counter by one */
-            {
-                linCurrentState->timeoutCounter--;
-            }
 
-            break;
-        /* If the node is RECEIVING DATA */
-        case LIN_NODE_STATE_RECV_DATA:
-            /* Check if timeout Counter is 0 */
-            if (linCurrentState->timeoutCounter == 0U)
-            {
-                /* Set timeout Counter flag */
-                linCurrentState->timeoutCounterFlag = true;
+                /* Clear Tx busy flag */
+                linCurrentState->isTxBusy = false;
 
-                /* Check if the reception is non-blocking */
-                if (linCurrentState->isRxBlocking == false)
+                /* Change the node's current state to IDLE */
+                (void)LIN_DRV_GotoIdleState(instance);
+            }
+        }
+        else /* If timeout Counter is not 0, then decrease timeout Counter by one */
+        {
+            linCurrentState->timeoutCounter--;
+        }
+
+        break;
+    /* If the node is RECEIVING DATA */
+    case LIN_NODE_STATE_RECV_DATA:
+        /* Check if timeout Counter is 0 */
+        if (linCurrentState->timeoutCounter == 0U)
+        {
+            /* Set timeout Counter flag */
+            linCurrentState->timeoutCounterFlag = true;
+
+            /* Check if the reception is non-blocking */
+            if (linCurrentState->isRxBlocking == false)
+            {
+                /* Callback to handle timeout Counter flag */
+                if (linCurrentState->Callback != NULL)
                 {
-                    /* Callback to handle timeout Counter flag */
-                    if (linCurrentState->Callback != NULL)
-                    {
-                        linCurrentState->Callback(instance, linCurrentState);
-                    }
-
-                    /* Clear Rx busy flag */
-                    linCurrentState->isRxBusy = false;
-
-                    /* Change the node's current state to IDLE */
-                    (void)LIN_DRV_GotoIdleState(instance);
+                    linCurrentState->Callback(instance, linCurrentState);
                 }
+
+                /* Clear Rx busy flag */
+                linCurrentState->isRxBusy = false;
+
+                /* Change the node's current state to IDLE */
+                (void)LIN_DRV_GotoIdleState(instance);
             }
-            /* If timeout Counter is not 0, then decrease timeout Counter by one */
-            else
-            {
-                linCurrentState->timeoutCounter--;
-            }
-            break;
-        default:
-            /* The node state is not SENDING nor RECEIVING data */
-            break;
+        }
+        /* If timeout Counter is not 0, then decrease timeout Counter by one */
+        else
+        {
+            linCurrentState->timeoutCounter--;
+        }
+        break;
+    default:
+        /* The node state is not SENDING nor RECEIVING data */
+        break;
     }
 }
 
@@ -986,7 +977,7 @@ void LIN_DRV_SetTimeoutCounter(uint32_t instance, uint32_t timeoutValue)
     //DEV_ASSERT(instance < LPUART_INSTANCE_COUNT);
 
     /* Get the current LIN state of this LPUART instance. */
-    lin_state_t * linCurrentState = g_linStatePtr[instance];
+    lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     /* Clear Timeout Counter Flag */
     linCurrentState->timeoutCounterFlag = false;
@@ -1006,7 +997,7 @@ void LIN_DRV_SetTimeoutCounter(uint32_t instance, uint32_t timeoutValue)
  *
  * Implements    : LIN_DRV_GetReceiveStatus_Activity
  *END**************************************************************************/
-status_t LIN_DRV_GetReceiveStatus(uint32_t instance, uint8_t * bytesRemaining)
+status_t LIN_DRV_GetReceiveStatus(uint32_t instance, uint8_t *bytesRemaining)
 {
     /* Assert parameters. */
     DEV_ASSERT(instance < LPUART_INSTANCE_COUNT);
@@ -1014,7 +1005,7 @@ status_t LIN_DRV_GetReceiveStatus(uint32_t instance, uint8_t * bytesRemaining)
     status_t retVal = STATUS_SUCCESS;
 
     /* Get the current LIN state of this LPUART instance. */
-    const lin_state_t * linCurrentState = g_linStatePtr[instance];
+    const lin_state_t *linCurrentState = g_linStatePtr[instance];
 
     /* Get the number of bytes that is still needed to receive */
     *bytesRemaining = (uint8_t)(linCurrentState->rxSize - linCurrentState->cntByte);

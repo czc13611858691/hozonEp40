@@ -47,7 +47,7 @@
 #include "lin.h"
 
 // bootloader支持 服务SID  $10 $11 $27 $2E $31 $34 $36 $37 $3E
-static const l_u8 LI0_lin_diag_services_supported[LI0_DIAG_NUMBER_OF_SERVICES] = {0x10,0x11,0x27,0x2e,0x31,0x34,0x36,0x37,0x3e};
+static const l_u8 LI0_lin_diag_services_supported[LI0_DIAG_NUMBER_OF_SERVICES] = { 0x10,0x11,0x27,0x28,0x3E,0x22,0x2E,0x14,0x31,0x34,0x36,0x37,0x85 };
 static l_u8 LI0_lin_diag_services_flag[LI0_DIAG_NUMBER_OF_SERVICES] = {0,0,0,0,0,0,0,0,0,0};
 
 #if (SUPPORT_TRANSPORT_LAYER == 1U)

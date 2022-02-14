@@ -1,6 +1,8 @@
 [NStatePersistence]
 Signature=VectorStatePersistence
 [VGlobalMeasurementIndex]
-mMeasurementIndex=507
+mMeasurementIndex=525
 [VTestConfigurationConfigData]
 Test_Configuration_1_NextTestRun=1
+[VTestExecutable]
+Test_Configuration_1_LastReportFile=C:\Users\Administrator\AppData\Local\Temp

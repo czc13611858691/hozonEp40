@@ -23,28 +23,28 @@ Nodes {
 }
 
 Signals {
-  DDCU_BDCS1_Backlight_brightness_fb: 4, 4, DDCU, DFGLS, DRGLS;//��������ȵ��ڷ���
-  DDCU_ControlWindowLockSwInd: 1, 0, DDCU, DFGLS;//����״ָ̬ʾ��
-  DDCU_BDCS1_BacklightStatus: 1, 0, DDCU, DFGLS, DRGLS;//���������״̬�ź� ���졢ҹ��ģʽ
-  DFGLS_ResponseError: 1, 0, DFGLS, DDCU;//ͨ�Ŵ���״̬�����ź�
-  DFGLS_FLWindowControl: 3, 0, DFGLS, DDCU;//��ǰ�������ƿ���
-  DFGLS_FRWindowControl: 3, 0, DFGLS, DDCU;//��ǰ�������ƿ���
-  DFGLS_ControlWindowLockSw: 1, 0, DFGLS, DDCU;//������ֹ���ƿ���
-  DFGLS_ErrorSts: 1, 0, DFGLS, DDCU;//DFGLS����״̬
-  DFGLS_RLWindowControl: 3, 0, DFGLS, DDCU;//��󳵴����ƿ���
-  DFGLS_RRWindowControl: 3, 0, DFGLS, DDCU;//�Һ󳵴����ƿ���
-  DFGLS_ButtonSoundRequest: 1, 0, DFGLS, DDCU;//����������ʾ
-  DFGLS_Voltage_errorCode: 1, 0, DFGLS, DDCU;//����ź�
-  DFGLS_Capsense_errorCode: 1, 0, DFGLS, DDCU;//����ź�
-  DFGLS_Motor_errorCode: 1, 0, DFGLS, DDCU;//����ź�
-  DRGLS_ResponseError: 1, 0, DRGLS, DDCU;//ͨ�Ŵ���״̬�����ź�
-  DRGLS_FRWindowControl: 3, 0, DRGLS, DDCU;//��󳵴����ƿ���
-  DRGLS_CustomSignal: 1, 0, DRGLS, DDCU;//�Զ����ź�
-  DRGLS_ButtonSoundRequest: 1, 0, DRGLS, DDCU;//����������ʾ
-  DRGLS_ErrorSts: 1, 0, DRGLS, DDCU;//DRGLS����״̬
-  DRGLS_Voltage_errorCode: 1, 0, DRGLS, DDCU;//����ź�
-  DRGLS_Capsense_errorCode: 1, 0, DRGLS, DDCU;//����ź�
-  DRGLS_Motor_errorCode: 1, 0, DRGLS, DDCU;//����ź�
+  DDCU_BDCS1_Backlight_brightness_fb: 4, 4, DDCU, DFGLS, DRGLS ;
+  DDCU_ControlWindowLockSwInd: 1, 0, DDCU, DFGLS ;
+  DDCU_BDCS1_BacklightStatus: 1, 0, DDCU, DFGLS, DRGLS ;
+  DFGLS_ResponseError: 1, 0, DFGLS, DDCU ;
+  DFGLS_FLWindowControl: 3, 0, DFGLS, DDCU ;
+  DFGLS_FRWindowControl: 3, 0, DFGLS, DDCU ;
+  DFGLS_ControlWindowLockSw: 1, 0, DFGLS, DDCU ;
+  DFGLS_ErrorSts: 1, 0, DFGLS, DDCU ;
+  DFGLS_RLWindowControl: 3, 0, DFGLS, DDCU ;
+  DFGLS_RRWindowControl: 3, 0, DFGLS, DDCU ;
+  DFGLS_ButtonSoundRequest: 1, 0, DFGLS, DDCU ;
+  DFGLS_Voltage_errorCode: 1, 0, DFGLS, DDCU ;
+  DFGLS_Capsense_errorCode: 1, 0, DFGLS, DDCU ;
+  DFGLS_Motor_errorCode: 1, 0, DFGLS, DDCU ;
+  DRGLS_ResponseError: 1, 0, DRGLS, DDCU ;
+  DRGLS_FRWindowControl: 3, 0, DRGLS, DDCU ;
+  DRGLS_CustomSignal: 1, 0, DRGLS, DDCU ;
+  DRGLS_ButtonSoundRequest: 1, 0, DRGLS, DDCU ;
+  DRGLS_ErrorSts: 1, 0, DRGLS, DDCU ;
+  DRGLS_Voltage_errorCode: 1, 0, DRGLS, DDCU ;
+  DRGLS_Capsense_errorCode: 1, 0, DRGLS, DDCU ;
+  DRGLS_Motor_errorCode: 1, 0, DRGLS, DDCU ;
 }
 
 Diagnostic_signals {
@@ -65,6 +65,9 @@ Diagnostic_signals {
   SlaveRespB6: 8, 0 ;
   SlaveRespB7: 8, 0 ;
 }
+
+
+
 Frames {
   DDCU_Lin1Fr1: 16, DDCU, 8 {
     DDCU_BDCS1_Backlight_brightness_fb, 36 ;
@@ -96,6 +99,8 @@ Frames {
   }
 }
 
+
+
 Diagnostic_frames {
   MasterReq: 0x3c {
     MasterReqB0, 0 ;
@@ -118,38 +123,49 @@ Diagnostic_frames {
     SlaveRespB7, 56 ;
   }
 }
+
 Node_attributes {
   DFGLS{
     LIN_protocol = "2.1" ;
-    configured_NAD = 80 ;
-    initial_NAD = 80 ;
+    configured_NAD = 0x50 ;
+    initial_NAD = 0x50 ;
     product_id = 0x0, 0x0, 0 ;
     response_error = DFGLS_ResponseError ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
     configurable_frames {
       DFGLS_Lin1Fr1 ;
-	  DDCU_Lin1Fr1 ;
+      DDCU_Lin1Fr1 ;
     }
   }
   DRGLS{
     LIN_protocol = "2.1" ;
-    configured_NAD = 81 ;
-    initial_NAD = 81 ;
+    configured_NAD = 0x51 ;
+    initial_NAD = 0x51 ;
     product_id = 0x0, 0x0, 0 ;
     response_error = DRGLS_ResponseError ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
     configurable_frames {
       DRGLS_Lin1Fr1 ;
-	  DDCU_Lin1Fr1 ;
+      DDCU_Lin1Fr1 ;
     }
   }
 }
 
 Schedule_tables {
  Dynamic {
+    SlaveResp delay 10 ms ;
     DDCU_Lin1Fr1 delay 10 ms ;
     DFGLS_Lin1Fr1 delay 20 ms ;
     DRGLS_Lin1Fr1 delay 20 ms ;
   }
 }
+
 
 Signal_encoding_types {
   Enc_DDCU_Lin1Fr1_DDCU_BDCS1_Backlight_brightness_fb {
@@ -286,27 +302,26 @@ Signal_encoding_types {
 }
 
 Signal_representation {
+  Enc_DDCU_Lin1Fr1_DDCU_BDCS1_BacklightStatus: DDCU_BDCS1_BacklightStatus ;
   Enc_DDCU_Lin1Fr1_DDCU_BDCS1_Backlight_brightness_fb: DDCU_BDCS1_Backlight_brightness_fb ;
   Enc_DDCU_Lin1Fr1_DDCU_ControlWindowLockSwInd: DDCU_ControlWindowLockSwInd ;
-  Enc_DDCU_Lin1Fr1_DDCU_BDCS1_BacklightStatus: DDCU_BDCS1_BacklightStatus ;
-  Enc_DFGLS_Lin1Fr1_DFGLS_ResponseError: DFGLS_ResponseError ;
-  Enc_DFGLS_Lin1Fr1_DFGLS_FLWindowControl: DFGLS_FLWindowControl ;
-  Enc_DFGLS_Lin1Fr1_DFGLS_FRWindowControl: DFGLS_FRWindowControl ;
+  Enc_DFGLS_Lin1Fr1_DFGLS_ButtonSoundRequest: DFGLS_ButtonSoundRequest ;
+  Enc_DFGLS_Lin1Fr1_DFGLS_Capsense_errorCode: DFGLS_Capsense_errorCode ;
   Enc_DFGLS_Lin1Fr1_DFGLS_ControlWindowLockSw: DFGLS_ControlWindowLockSw ;
   Enc_DFGLS_Lin1Fr1_DFGLS_ErrorSts: DFGLS_ErrorSts ;
+  Enc_DFGLS_Lin1Fr1_DFGLS_FLWindowControl: DFGLS_FLWindowControl ;
+  Enc_DFGLS_Lin1Fr1_DFGLS_FRWindowControl: DFGLS_FRWindowControl ;
+  Enc_DFGLS_Lin1Fr1_DFGLS_Motor_errorCode: DFGLS_Motor_errorCode ;
   Enc_DFGLS_Lin1Fr1_DFGLS_RLWindowControl: DFGLS_RLWindowControl ;
   Enc_DFGLS_Lin1Fr1_DFGLS_RRWindowControl: DFGLS_RRWindowControl ;
-  Enc_DFGLS_Lin1Fr1_DFGLS_ButtonSoundRequest: DFGLS_ButtonSoundRequest ;
+  Enc_DFGLS_Lin1Fr1_DFGLS_ResponseError: DFGLS_ResponseError ;
   Enc_DFGLS_Lin1Fr1_DFGLS_Voltage_errorCode: DFGLS_Voltage_errorCode ;
-  Enc_DFGLS_Lin1Fr1_DFGLS_Capsense_errorCode: DFGLS_Capsense_errorCode ;
-  Enc_DFGLS_Lin1Fr1_DFGLS_Motor_errorCode: DFGLS_Motor_errorCode ;
-  Enc_DRGLS_Lin1Fr1_DRGLS_ResponseError: DRGLS_ResponseError ;
-  Enc_DRGLS_Lin1Fr1_DRGLS_FRWindowControl: DRGLS_FRWindowControl ;
-  Enc_DRGLS_Lin1Fr1_DRGLS_CustomSignal: DRGLS_CustomSignal ;
   Enc_DRGLS_Lin1Fr1_DRGLS_ButtonSoundRequest: DRGLS_ButtonSoundRequest ;
-  Enc_DRGLS_Lin1Fr1_DRGLS_ErrorSts: DRGLS_ErrorSts ;
-  Enc_DRGLS_Lin1Fr1_DRGLS_Voltage_errorCode: DRGLS_Voltage_errorCode ;
   Enc_DRGLS_Lin1Fr1_DRGLS_Capsense_errorCode: DRGLS_Capsense_errorCode ;
+  Enc_DRGLS_Lin1Fr1_DRGLS_CustomSignal: DRGLS_CustomSignal ;
+  Enc_DRGLS_Lin1Fr1_DRGLS_ErrorSts: DRGLS_ErrorSts ;
+  Enc_DRGLS_Lin1Fr1_DRGLS_FRWindowControl: DRGLS_FRWindowControl ;
   Enc_DRGLS_Lin1Fr1_DRGLS_Motor_errorCode: DRGLS_Motor_errorCode ;
+  Enc_DRGLS_Lin1Fr1_DRGLS_ResponseError: DRGLS_ResponseError ;
+  Enc_DRGLS_Lin1Fr1_DRGLS_Voltage_errorCode: DRGLS_Voltage_errorCode ;
 }
-

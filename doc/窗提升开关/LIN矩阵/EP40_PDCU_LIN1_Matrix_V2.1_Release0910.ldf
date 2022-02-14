@@ -23,34 +23,34 @@ Nodes {
 }
 
 Signals {
-  PDCU_BDCS1_Backlight_brightness_fb: 4, 1, PDCU, PFGLS, PRGLS;//��������ȵ��ڷ���
-  BDCS1_BacklightStatus: 1, 0, PDCU, PFGLS, PRGLS;//���������״̬�ź����ڵ������ر��⼰�жϿ��ذ��졢ҹ��ģʽ
-  PDCU_CPAL_NodeSwitch: 1, 0, PDCU, CPAL;//���ڷ�Χ�ƿ���
-  PDCU_CPAL_ColorNum: 4, 0, PDCU, CPAL;//ɫ��
-  PDCU_CPAL_Brightness: 4, 0, PDCU, CPAL;//����
-  PDCU_CPAL_FadeTime: 8, 0, PDCU, CPAL;//����ʱ�� ��ֵͬ��ʾ��ͬ�Ľ���ʱ�䣨�ֱ���20ms������0x32��ʾ50*20ms=1000ms���ƴӵ�ǰ���Ƚ��䵽Ŀ�����ȵĽ���ʱ��Ϊ1s;0x00���ʾû�н��䣬ֱ�����䣩
-  PFGLS_ResponseError: 1, 0, PFGLS, PDCU;//ͨ�Ŵ���״̬�����ź�
-  PFGLS_RLWindowControl: 3, 0, PFGLS, PDCU;//��ǰ�������ƿ���
-  PFGLS_CustomSignal: 1, 0, PFGLS, PDCU;//�Զ����ź�
-  PFGLS_ButtonSoundRequest: 1, 0, PFGLS, PDCU;//����������ʾ
-  PFGLS_ErrorSts: 1, 0, PFGLS, PDCU;//PFGLS����״̬
-  PFGLS_Voltage_errorCode: 1, 0, PFGLS, PDCU;//����ź�
-  PFGLS__Capsense_errorCode: 1, 0, PFGLS, PDCU;//����ź�
-  PFGLS__Motor_errorCode: 1, 0, PFGLS, PDCU;//����ź�
-  PRGLS_ResponseError: 1, 0, PRGLS, PDCU;//ͨ�Ŵ���״̬�����ź�
-  PRGLS_RRWindowControl: 3, 0, PRGLS, PDCU;//�Һ󳵴����ƿ���
-  PRGLS_CustomSignal: 1, 0, PRGLS, PDCU;//�Զ����ź�
-  PRGLS_ButtonSoundRequest: 1, 0, PRGLS, PDCU;//����������ʾ
-  PRGLS_ErrorSts: 1, 0, PRGLS, PDCU;//PRGLS����״̬
-  PRGLS_Voltage_errorCode: 1, 0, PRGLS, PDCU;//����ź�
-  PRGLS_Capsense_errorCode: 1, 0, PRGLS, PDCU;//����ź�
-  PRGLS_Motor_errorCode: 1, 0, PRGLS, PDCU;//����ź�
-  CPAL_ResponseError: 1, 0, CPAL, PDCU;//ͨ�Ŵ���״̬�����ź�
-  CPAL_DCU_SwitchSta: 1, 0, CPAL, PDCU;//����״̬
-  CPAL_DCU_ColorSta: 4, 0, CPAL, PDCU;//ɫ��״̬
-  CPAL_DCU_BrightnessSta: 4, 0, CPAL, PDCU;//Ŀ������״̬
-  CPAL_DCU_TimeSta: 8, 0, CPAL, PDCU;//����ʱ�� ��ֵͬ��ʾ��ͬ�Ľ���ʱ�䣨�ֱ���20ms������0x32��ʾ50*20ms=1000ms���ƴӵ�ǰ���Ƚ��䵽Ŀ�����ȵĽ���ʱ��Ϊ1s;0x00���ʾû�н��䣬ֱ�����䣩
-  CPAL_DCU_FadeSta: 1, 0, CPAL, PDCU;//����״̬
+  PDCU_BDCS1_Backlight_brightness_fb: 4, 1, PDCU, PFGLS, PRGLS ;
+  BDCS1_BacklightStatus: 1, 0, PDCU, PFGLS, PRGLS ;
+  PDCU_CPAL_NodeSwitch: 1, 0, PDCU, CPAL ;
+  PDCU_CPAL_ColorNum: 4, 0, PDCU, CPAL ;
+  PDCU_CPAL_Brightness: 4, 0, PDCU, CPAL ;
+  PDCU_CPAL_FadeTime: 8, 0, PDCU, CPAL ;
+  PFGLS_ResponseError: 1, 0, PFGLS, PDCU ;
+  PFGLS_RLWindowControl: 3, 0, PFGLS, PDCU ;
+  PFGLS_CustomSignal: 1, 0, PFGLS, PDCU ;
+  PFGLS_ButtonSoundRequest: 1, 0, PFGLS, PDCU ;
+  PFGLS_ErrorSts: 1, 0, PFGLS, PDCU ;
+  PFGLS_Voltage_errorCode: 1, 0, PFGLS, PDCU ;
+  PFGLS__Capsense_errorCode: 1, 0, PFGLS, PDCU ;
+  PFGLS__Motor_errorCode: 1, 0, PFGLS, PDCU ;
+  PRGLS_ResponseError: 1, 0, PRGLS, PDCU ;
+  PRGLS_RRWindowControl: 3, 0, PRGLS, PDCU ;
+  PRGLS_CustomSignal: 1, 0, PRGLS, PDCU ;
+  PRGLS_ButtonSoundRequest: 1, 0, PRGLS, PDCU ;
+  PRGLS_ErrorSts: 1, 0, PRGLS, PDCU ;
+  PRGLS_Voltage_errorCode: 1, 0, PRGLS, PDCU ;
+  PRGLS_Capsense_errorCode: 1, 0, PRGLS, PDCU ;
+  PRGLS_Motor_errorCode: 1, 0, PRGLS, PDCU ;
+  CPAL_ResponseError: 1, 0, CPAL, PDCU ;
+  CPAL_DCU_SwitchSta: 1, 0, CPAL, PDCU ;
+  CPAL_DCU_ColorSta: 4, 0, CPAL, PDCU ;
+  CPAL_DCU_BrightnessSta: 4, 0, CPAL, PDCU ;
+  CPAL_DCU_TimeSta: 8, 0, CPAL, PDCU ;
+  CPAL_DCU_FadeSta: 1, 0, CPAL, PDCU ;
 }
 
 Diagnostic_signals {
@@ -71,6 +71,9 @@ Diagnostic_signals {
   SlaveRespB6: 8, 0 ;
   SlaveRespB7: 8, 0 ;
 }
+
+
+
 Frames {
   PDCU_Lin1Fr1: 16, PDCU, 8 {
     PDCU_BDCS1_Backlight_brightness_fb, 36 ;
@@ -110,6 +113,8 @@ Frames {
   }
 }
 
+
+
 Diagnostic_frames {
   MasterReq: 0x3c {
     MasterReqB0, 0 ;
@@ -132,13 +137,18 @@ Diagnostic_frames {
     SlaveRespB7, 56 ;
   }
 }
+
 Node_attributes {
   PFGLS{
     LIN_protocol = "2.1" ;
-    configured_NAD = 96 ;
-    initial_NAD = 96 ;
+    configured_NAD = 0x60 ;
+    initial_NAD = 0x60 ;
     product_id = 0x0, 0x0, 0 ;
     response_error = PFGLS_ResponseError ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
     configurable_frames {
       PDCU_Lin1Fr1 ;
       PFGLS_Lin1Fr1 ;
@@ -146,10 +156,14 @@ Node_attributes {
   }
   PRGLS{
     LIN_protocol = "2.1" ;
-    configured_NAD = 97 ;
-    initial_NAD = 97 ;
+    configured_NAD = 0x61 ;
+    initial_NAD = 0x61 ;
     product_id = 0x0, 0x0, 0 ;
     response_error = PRGLS_ResponseError ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
     configurable_frames {
       PDCU_Lin1Fr1 ;
       PRGLS_Lin1Fr1 ;
@@ -157,10 +171,14 @@ Node_attributes {
   }
   CPAL{
     LIN_protocol = "2.1" ;
-    configured_NAD = 98 ;
-    initial_NAD = 98 ;
+    configured_NAD = 0x62 ;
+    initial_NAD = 0x62 ;
     product_id = 0x0, 0x0, 0 ;
     response_error = CPAL_ResponseError ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
     configurable_frames {
       PDCU_Lin1Fr1 ;
       CPAL_Lin1Fr1 ;
@@ -170,12 +188,14 @@ Node_attributes {
 
 Schedule_tables {
  Dynamic {
+    SlaveResp delay 10 ms ;
     PDCU_Lin1Fr1 delay 10 ms ;
     PFGLS_Lin1Fr1 delay 10 ms ;
     PRGLS_Lin1Fr1 delay 10 ms ;
     CPAL_Lin1Fr1 delay 20 ms ;
   }
 }
+
 
 Signal_encoding_types {
   Enc_PDCU_Lin1Fr1_PDCU_BDCS1_Backlight_brightness_fb {
@@ -196,17 +216,17 @@ Signal_encoding_types {
   }
   Enc_PDCU_Lin1Fr1_PDCU_CPAL_NodeSwitch {
     physical_value, 0, 1, 1, 0, "NoUnit" ;
-    logical_value, 0, "���" ;
-    logical_value, 1, "����" ;
+    logical_value, 0, "?????" ;
+    logical_value, 1, "??????" ;
   }
   Enc_PDCU_Lin1Fr1_PDCU_CPAL_ColorNum {
     physical_value, 0, 15, 1, 0, "NoUnit" ;
-    logical_value, 0, "��" ;
-    logical_value, 1, "��" ;
-    logical_value, 2, "��" ;
-    logical_value, 3, "��" ;
-    logical_value, 4, "��" ;
-    logical_value, 5, "��" ;
+    logical_value, 0, "???" ;
+    logical_value, 1, "???" ;
+    logical_value, 2, "???" ;
+    logical_value, 3, "???" ;
+    logical_value, 4, "???" ;
+    logical_value, 5, "???" ;
   }
   Enc_PDCU_Lin1Fr1_PDCU_CPAL_Brightness {
     physical_value, 0, 15, 1, 0, "NoUnit" ;
@@ -316,17 +336,17 @@ Signal_encoding_types {
   }
   Enc_CPAL_Lin1Fr1_CPAL_DCU_SwitchSta {
     physical_value, 0, 1, 1, 0, "NoUnit" ;
-    logical_value, 0, "���" ;
-    logical_value, 1, "����" ;
+    logical_value, 0, "?????" ;
+    logical_value, 1, "??????" ;
   }
   Enc_CPAL_Lin1Fr1_CPAL_DCU_ColorSta {
     physical_value, 0, 15, 1, 0, "NoUnit" ;
-    logical_value, 0, "��" ;
-    logical_value, 1, "��" ;
-    logical_value, 2, "��" ;
-    logical_value, 3, "��" ;
-    logical_value, 4, "��" ;
-    logical_value, 5, "��" ;
+    logical_value, 0, "???" ;
+    logical_value, 1, "???" ;
+    logical_value, 2, "???" ;
+    logical_value, 3, "???" ;
+    logical_value, 4, "???" ;
+    logical_value, 5, "???" ;
   }
   Enc_CPAL_Lin1Fr1_CPAL_DCU_BrightnessSta {
     physical_value, 0, 15, 1, 0, "NoUnit" ;
@@ -347,39 +367,38 @@ Signal_encoding_types {
   }
   Enc_CPAL_Lin1Fr1_CPAL_DCU_FadeSta {
     physical_value, 0, 1, 1, 0, "NoUnit" ;
-    logical_value, 0, "�޽�����߽������" ;
-    logical_value, 1, "���ڽ���" ;
+    logical_value, 0, "????????????????????" ;
+    logical_value, 1, "??????????" ;
   }
 }
 
 Signal_representation {
-  Enc_PDCU_Lin1Fr1_PDCU_BDCS1_Backlight_brightness_fb: PDCU_BDCS1_Backlight_brightness_fb ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_BrightnessSta: CPAL_DCU_BrightnessSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_ColorSta: CPAL_DCU_ColorSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_FadeSta: CPAL_DCU_FadeSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_SwitchSta: CPAL_DCU_SwitchSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_TimeSta: CPAL_DCU_TimeSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_ResponseError: CPAL_ResponseError ;
   Enc_PDCU_Lin1Fr1_BDCS1_BacklightStatus: BDCS1_BacklightStatus ;
-  Enc_PDCU_Lin1Fr1_PDCU_CPAL_NodeSwitch: PDCU_CPAL_NodeSwitch ;
-  Enc_PDCU_Lin1Fr1_PDCU_CPAL_ColorNum: PDCU_CPAL_ColorNum ;
+  Enc_PDCU_Lin1Fr1_PDCU_BDCS1_Backlight_brightness_fb: PDCU_BDCS1_Backlight_brightness_fb ;
   Enc_PDCU_Lin1Fr1_PDCU_CPAL_Brightness: PDCU_CPAL_Brightness ;
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_ColorNum: PDCU_CPAL_ColorNum ;
   Enc_PDCU_Lin1Fr1_PDCU_CPAL_FadeTime: PDCU_CPAL_FadeTime ;
-  Enc_PFGLS_Lin1Fr1_PFGLS_ResponseError: PFGLS_ResponseError ;
-  Enc_PFGLS_Lin1Fr1_PFGLS_RLWindowControl: PFGLS_RLWindowControl ;
-  Enc_PFGLS_Lin1Fr1_PFGLS_CustomSignal: PFGLS_CustomSignal ;
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_NodeSwitch: PDCU_CPAL_NodeSwitch ;
   Enc_PFGLS_Lin1Fr1_PFGLS_ButtonSoundRequest: PFGLS_ButtonSoundRequest ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_CustomSignal: PFGLS_CustomSignal ;
   Enc_PFGLS_Lin1Fr1_PFGLS_ErrorSts: PFGLS_ErrorSts ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_RLWindowControl: PFGLS_RLWindowControl ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_ResponseError: PFGLS_ResponseError ;
   Enc_PFGLS_Lin1Fr1_PFGLS_Voltage_errorCode: PFGLS_Voltage_errorCode ;
   Enc_PFGLS_Lin1Fr1_PFGLS__Capsense_errorCode: PFGLS__Capsense_errorCode ;
   Enc_PFGLS_Lin1Fr1_PFGLS__Motor_errorCode: PFGLS__Motor_errorCode ;
-  Enc_PRGLS_Lin1Fr1_PRGLS_ResponseError: PRGLS_ResponseError ;
-  Enc_PRGLS_Lin1Fr1_PRGLS_RRWindowControl: PRGLS_RRWindowControl ;
-  Enc_PRGLS_Lin1Fr1_PRGLS_CustomSignal: PRGLS_CustomSignal ;
   Enc_PRGLS_Lin1Fr1_PRGLS_ButtonSoundRequest: PRGLS_ButtonSoundRequest ;
-  Enc_PRGLS_Lin1Fr1_PRGLS_ErrorSts: PRGLS_ErrorSts ;
-  Enc_PRGLS_Lin1Fr1_PRGLS_Voltage_errorCode: PRGLS_Voltage_errorCode ;
   Enc_PRGLS_Lin1Fr1_PRGLS_Capsense_errorCode: PRGLS_Capsense_errorCode ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_CustomSignal: PRGLS_CustomSignal ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_ErrorSts: PRGLS_ErrorSts ;
   Enc_PRGLS_Lin1Fr1_PRGLS_Motor_errorCode: PRGLS_Motor_errorCode ;
-  Enc_CPAL_Lin1Fr1_CPAL_ResponseError: CPAL_ResponseError ;
-  Enc_CPAL_Lin1Fr1_CPAL_DCU_SwitchSta: CPAL_DCU_SwitchSta ;
-  Enc_CPAL_Lin1Fr1_CPAL_DCU_ColorSta: CPAL_DCU_ColorSta ;
-  Enc_CPAL_Lin1Fr1_CPAL_DCU_BrightnessSta: CPAL_DCU_BrightnessSta ;
-  Enc_CPAL_Lin1Fr1_CPAL_DCU_TimeSta: CPAL_DCU_TimeSta ;
-  Enc_CPAL_Lin1Fr1_CPAL_DCU_FadeSta: CPAL_DCU_FadeSta ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_RRWindowControl: PRGLS_RRWindowControl ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_ResponseError: PRGLS_ResponseError ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_Voltage_errorCode: PRGLS_Voltage_errorCode ;
 }
-

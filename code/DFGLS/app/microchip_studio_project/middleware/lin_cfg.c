@@ -46,8 +46,8 @@
 
 #include "lin.h"
 
-static const l_u8 LI0_lin_diag_services_supported[LI0_DIAG_NUMBER_OF_SERVICES] = {0xB2,0xB3,0xB6,0xB7,0x22,0x31,0x10,0x2F,0x19,0x14};
-static l_u8 LI0_lin_diag_services_flag[LI0_DIAG_NUMBER_OF_SERVICES] = {0,0,0,0,0,0,0,0,0,0};
+static const l_u8 LI0_lin_diag_services_supported[LI0_DIAG_NUMBER_OF_SERVICES] = { 0x10,0x11,0x27,0x28,0x3E,0x22,0x2E,0x14,0x31,0x34,0x36,0x37,0x85 };
+static l_u8 LI0_lin_diag_services_flag[LI0_DIAG_NUMBER_OF_SERVICES] = { 0,0,0,0,0,0,0,0,0,0 };
 
 #if (SUPPORT_TRANSPORT_LAYER == 1U)
 static lin_tl_pdu_data_t      LI0_tl_tx_queue_data[12];
