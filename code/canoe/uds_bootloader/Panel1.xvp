@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<Panel Type="Vector.CANalyzer.Panels.PanelSerializer, Vector.CANalyzer.Panels.Serializer, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null">
+  <Object Type="Vector.CANalyzer.Panels.Runtime.Panel, Vector.CANalyzer.Panels.Common, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null" Name="Panel" Children="Controls" ControlName="Panel1">
+    <Object Type="Vector.CANalyzer.Panels.Design.ProgressBarControl, Vector.CANalyzer.Panels.CommonControls, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null" Name="ProgressBarControl1" Children="Controls" ControlName="Progress Bar">
+      <Property Name="Name">ProgressBarControl1</Property>
+      <Property Name="Size">207, 28</Property>
+      <Property Name="Location">102, 463</Property>
+      <Property Name="OriginValue">0</Property>
+      <Property Name="DecimalPlaces">0</Property>
+      <Property Name="ValueSize">38, 30</Property>
+      <Property Name="SymbolConfiguration">5;16;;;;Env_ProgressBar;1;;;-1;;;</Property>
+    </Object>
+    <Object Type="Vector.CANalyzer.Panels.Design.CAPLOutputViewControl, Vector.CANalyzer.Panels.CommonControls, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null" Name="CAPLOutputViewControl1" Children="Controls" ControlName="CAPL Output View">
+      <Property Name="Name">CAPLOutputViewControl1</Property>
+      <Property Name="Size">207, 321</Property>
+      <Property Name="Location">102, 171</Property>
+      <Property Name="BoxBackgroundColor">White</Property>
+      <Property Name="TabIndex">6</Property>
+    </Object>
+    <Object Type="Vector.CANalyzer.Panels.Design.ButtonControl, Vector.CANalyzer.Panels.CommonControls, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null" Name="ButtonControl2" Children="Controls" ControlName="Button 2">
+      <Property Name="Name">ButtonControl2</Property>
+      <Property Name="Size">82, 38</Property>
+      <Property Name="Location">227, 103</Property>
+      <Property Name="Text">Stop</Property>
+      <Property Name="SymbolConfiguration">5;16;;;;Env_Stop;1;;;-1;;;</Property>
+      <Property Name="TabIndex">4</Property>
+    </Object>
+    <Object Type="Vector.CANalyzer.Panels.Design.ButtonControl, Vector.CANalyzer.Panels.CommonControls, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null" Name="ButtonControl1" Children="Controls" ControlName="Button">
+      <Property Name="Name">ButtonControl1</Property>
+      <Property Name="Size">79, 38</Property>
+      <Property Name="Location">102, 103</Property>
+      <Property Name="Text">Start</Property>
+      <Property Name="SymbolConfiguration">5;16;;;;Env_Start;1;;;-1;;;</Property>
+      <Property Name="TabIndex">3</Property>
+    </Object>
+    <Object Type="Vector.CANalyzer.Panels.Design.PathControl, Vector.CANalyzer.Panels.CommonControls, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null" Name="PathControl1" Children="Controls" ControlName="Path Dialog">
+      <Property Name="Name">PathControl1</Property>
+      <Property Name="Size">232, 23</Property>
+      <Property Name="Location">102, 58</Property>
+      <Property Name="SymbolConfiguration">5;16;;;;Env_FilePath;4;;;-1;;;</Property>
+      <Property Name="TabIndex">2</Property>
+    </Object>
+    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl2" Children="Controls" ControlName="Static Text 2">
+      <Property Name="Name">StaticTextControl2</Property>
+      <Property Name="Size">83, 13</Property>
+      <Property Name="Location">13, 67</Property>
+      <Property Name="Text">Load S19 File</Property>
+    </Object>
+    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=11.0.81.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl1" Children="Controls" ControlName="Static Text">
+      <Property Name="Name">StaticTextControl1</Property>
+      <Property Name="Size">131, 17</Property>
+      <Property Name="Location">125, 35</Property>
+      <Property Name="Text"> UDS Bootloader Tool</Property>
+    </Object>
+    <Property Name="Name">Panel</Property>
+    <Property Name="Size">379, 554</Property>
+    <Property Name="BackColor">White</Property>
+  </Object>
+</Panel>

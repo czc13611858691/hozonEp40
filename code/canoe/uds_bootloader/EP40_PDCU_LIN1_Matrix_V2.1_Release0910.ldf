@@ -1,0 +1,404 @@
+/*************************************************************************************/
+
+//                                                                                     
+
+// Description: LIN Description file created using VDE						            
+
+// Created:     09/10/2021 16:53:35
+
+// Author:      VDE
+
+//                                                                                     
+
+/*************************************************************************************/
+
+LIN_description_file;
+LIN_protocol_version = "2.1";
+LIN_language_version = "2.1";
+LIN_speed = 19.2 kbps;
+
+Nodes {
+  Master: PDCU, 5 ms, 0.1 ms ;
+  Slaves: PFGLS, PRGLS, CPAL ;
+}
+
+Signals {
+  PDCU_BDCS1_Backlight_brightness_fb: 4, 1, PDCU, PFGLS, PRGLS ;
+  BDCS1_BacklightStatus: 1, 0, PDCU, PFGLS, PRGLS ;
+  PDCU_CPAL_NodeSwitch: 1, 0, PDCU, CPAL ;
+  PDCU_CPAL_ColorNum: 4, 0, PDCU, CPAL ;
+  PDCU_CPAL_Brightness: 4, 0, PDCU, CPAL ;
+  PDCU_CPAL_FadeTime: 8, 0, PDCU, CPAL ;
+  PFGLS_ResponseError: 1, 0, PFGLS, PDCU ;
+  PFGLS_RLWindowControl: 3, 0, PFGLS, PDCU ;
+  PFGLS_CustomSignal: 1, 0, PFGLS, PDCU ;
+  PFGLS_ButtonSoundRequest: 1, 0, PFGLS, PDCU ;
+  PFGLS_ErrorSts: 1, 0, PFGLS, PDCU ;
+  PFGLS_Voltage_errorCode: 1, 0, PFGLS, PDCU ;
+  PFGLS__Capsense_errorCode: 1, 0, PFGLS, PDCU ;
+  PFGLS__Motor_errorCode: 1, 0, PFGLS, PDCU ;
+  PRGLS_ResponseError: 1, 0, PRGLS, PDCU ;
+  PRGLS_RRWindowControl: 3, 0, PRGLS, PDCU ;
+  PRGLS_CustomSignal: 1, 0, PRGLS, PDCU ;
+  PRGLS_ButtonSoundRequest: 1, 0, PRGLS, PDCU ;
+  PRGLS_ErrorSts: 1, 0, PRGLS, PDCU ;
+  PRGLS_Voltage_errorCode: 1, 0, PRGLS, PDCU ;
+  PRGLS_Capsense_errorCode: 1, 0, PRGLS, PDCU ;
+  PRGLS_Motor_errorCode: 1, 0, PRGLS, PDCU ;
+  CPAL_ResponseError: 1, 0, CPAL, PDCU ;
+  CPAL_DCU_SwitchSta: 1, 0, CPAL, PDCU ;
+  CPAL_DCU_ColorSta: 4, 0, CPAL, PDCU ;
+  CPAL_DCU_BrightnessSta: 4, 0, CPAL, PDCU ;
+  CPAL_DCU_TimeSta: 8, 0, CPAL, PDCU ;
+  CPAL_DCU_FadeSta: 1, 0, CPAL, PDCU ;
+}
+
+Diagnostic_signals {
+  MasterReqB0: 8, 0 ;
+  MasterReqB1: 8, 0 ;
+  MasterReqB2: 8, 0 ;
+  MasterReqB3: 8, 0 ;
+  MasterReqB4: 8, 0 ;
+  MasterReqB5: 8, 0 ;
+  MasterReqB6: 8, 0 ;
+  MasterReqB7: 8, 0 ;
+  SlaveRespB0: 8, 0 ;
+  SlaveRespB1: 8, 0 ;
+  SlaveRespB2: 8, 0 ;
+  SlaveRespB3: 8, 0 ;
+  SlaveRespB4: 8, 0 ;
+  SlaveRespB5: 8, 0 ;
+  SlaveRespB6: 8, 0 ;
+  SlaveRespB7: 8, 0 ;
+}
+
+
+
+Frames {
+  PDCU_Lin1Fr1: 16, PDCU, 8 {
+    PDCU_BDCS1_Backlight_brightness_fb, 36 ;
+    BDCS1_BacklightStatus, 0 ;
+    PDCU_CPAL_NodeSwitch, 1 ;
+    PDCU_CPAL_ColorNum, 8 ;
+    PDCU_CPAL_Brightness, 12 ;
+    PDCU_CPAL_FadeTime, 16 ;
+  }
+  PFGLS_Lin1Fr1: 33, PFGLS, 8 {
+    PFGLS_ResponseError, 63 ;
+    PFGLS_RLWindowControl, 0 ;
+    PFGLS_CustomSignal, 3 ;
+    PFGLS_ButtonSoundRequest, 4 ;
+    PFGLS_ErrorSts, 5 ;
+    PFGLS_Voltage_errorCode, 16 ;
+    PFGLS__Capsense_errorCode, 17 ;
+    PFGLS__Motor_errorCode, 18 ;
+  }
+  PRGLS_Lin1Fr1: 34, PRGLS, 8 {
+    PRGLS_ResponseError, 63 ;
+    PRGLS_RRWindowControl, 0 ;
+    PRGLS_CustomSignal, 3 ;
+    PRGLS_ButtonSoundRequest, 4 ;
+    PRGLS_ErrorSts, 5 ;
+    PRGLS_Voltage_errorCode, 16 ;
+    PRGLS_Capsense_errorCode, 17 ;
+    PRGLS_Motor_errorCode, 18 ;
+  }
+  CPAL_Lin1Fr1: 35, CPAL, 8 {
+    CPAL_ResponseError, 63 ;
+    CPAL_DCU_SwitchSta, 0 ;
+    CPAL_DCU_ColorSta, 8 ;
+    CPAL_DCU_BrightnessSta, 12 ;
+    CPAL_DCU_TimeSta, 16 ;
+    CPAL_DCU_FadeSta, 24 ;
+  }
+}
+
+
+
+Diagnostic_frames {
+  MasterReq: 0x3c {
+    MasterReqB0, 0 ;
+    MasterReqB1, 8 ;
+    MasterReqB2, 16 ;
+    MasterReqB3, 24 ;
+    MasterReqB4, 32 ;
+    MasterReqB5, 40 ;
+    MasterReqB6, 48 ;
+    MasterReqB7, 56 ;
+  }
+  SlaveResp: 0x3d {
+    SlaveRespB0, 0 ;
+    SlaveRespB1, 8 ;
+    SlaveRespB2, 16 ;
+    SlaveRespB3, 24 ;
+    SlaveRespB4, 32 ;
+    SlaveRespB5, 40 ;
+    SlaveRespB6, 48 ;
+    SlaveRespB7, 56 ;
+  }
+}
+
+Node_attributes {
+  PFGLS{
+    LIN_protocol = "2.1" ;
+    configured_NAD = 0x60 ;
+    initial_NAD = 0x60 ;
+    product_id = 0x0, 0x0, 0 ;
+    response_error = PFGLS_ResponseError ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
+    configurable_frames {
+      PDCU_Lin1Fr1 ;
+      PFGLS_Lin1Fr1 ;
+    }
+  }
+  PRGLS{
+    LIN_protocol = "2.1" ;
+    configured_NAD = 0x61 ;
+    initial_NAD = 0x61 ;
+    product_id = 0x0, 0x0, 0 ;
+    response_error = PRGLS_ResponseError ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
+    configurable_frames {
+      PDCU_Lin1Fr1 ;
+      PRGLS_Lin1Fr1 ;
+    }
+  }
+  CPAL{
+    LIN_protocol = "2.1" ;
+    configured_NAD = 0x62 ;
+    initial_NAD = 0x62 ;
+    product_id = 0x0, 0x0, 0 ;
+    response_error = CPAL_ResponseError ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
+    configurable_frames {
+      PDCU_Lin1Fr1 ;
+      CPAL_Lin1Fr1 ;
+    }
+  }
+}
+
+Schedule_tables {
+ Dynamic {
+    SlaveResp delay 10 ms ;
+    PDCU_Lin1Fr1 delay 10 ms ;
+    PFGLS_Lin1Fr1 delay 10 ms ;
+    PRGLS_Lin1Fr1 delay 10 ms ;
+    CPAL_Lin1Fr1 delay 20 ms ;
+  }
+}
+
+
+Signal_encoding_types {
+  Enc_PDCU_Lin1Fr1_PDCU_BDCS1_Backlight_brightness_fb {
+    physical_value, 0, 15, 1, 0, "NoUnit" ;
+    logical_value, 1, "Level 1" ;
+    logical_value, 2, "Level 2" ;
+    logical_value, 3, "Level 3" ;
+    logical_value, 4, "Level 4" ;
+    logical_value, 5, "Level 5" ;
+    logical_value, 6, "Level 6" ;
+    logical_value, 7, "Level 7" ;
+    logical_value, 8, "Level 8" ;
+  }
+  Enc_PDCU_Lin1Fr1_BDCS1_BacklightStatus {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "Inactive" ;
+    logical_value, 1, "Active" ;
+  }
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_NodeSwitch {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "?????" ;
+    logical_value, 1, "??????" ;
+  }
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_ColorNum {
+    physical_value, 0, 15, 1, 0, "NoUnit" ;
+    logical_value, 0, "???" ;
+    logical_value, 1, "???" ;
+    logical_value, 2, "???" ;
+    logical_value, 3, "???" ;
+    logical_value, 4, "???" ;
+    logical_value, 5, "???" ;
+  }
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_Brightness {
+    physical_value, 0, 15, 1, 0, "NoUnit" ;
+    logical_value, 0, "Off" ;
+    logical_value, 1, "L1_Dark" ;
+    logical_value, 2, "L2" ;
+    logical_value, 3, "L3" ;
+    logical_value, 4, "L4" ;
+    logical_value, 5, "L5" ;
+    logical_value, 6, "L6" ;
+    logical_value, 7, "L7" ;
+    logical_value, 8, "L8" ;
+    logical_value, 9, "L9" ;
+    logical_value, 10, "L10_bright" ;
+  }
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_FadeTime {
+    physical_value, 0, 255, 1, 0, "NoUnit" ;
+  }
+  Enc_PFGLS_Lin1Fr1_PFGLS_ResponseError {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "normal" ;
+    logical_value, 1, "fault" ;
+  }
+  Enc_PFGLS_Lin1Fr1_PFGLS_RLWindowControl {
+    physical_value, 0, 7, 1, 0, "NoUnit" ;
+    logical_value, 0, "No request" ;
+    logical_value, 1, "Manual Up" ;
+    logical_value, 2, "Manual Down" ;
+    logical_value, 3, "Auto Up " ;
+    logical_value, 4, "Auto Down" ;
+  }
+  Enc_PFGLS_Lin1Fr1_PFGLS_CustomSignal {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "Inactive" ;
+    logical_value, 1, "Active" ;
+  }
+  Enc_PFGLS_Lin1Fr1_PFGLS_ButtonSoundRequest {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "NO Press" ;
+    logical_value, 1, "Press" ;
+  }
+  Enc_PFGLS_Lin1Fr1_PFGLS_ErrorSts {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  Enc_PFGLS_Lin1Fr1_PFGLS_Voltage_errorCode {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  Enc_PFGLS_Lin1Fr1_PFGLS__Capsense_errorCode {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  Enc_PFGLS_Lin1Fr1_PFGLS__Motor_errorCode {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  Enc_PRGLS_Lin1Fr1_PRGLS_ResponseError {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "normal" ;
+    logical_value, 1, "fault" ;
+  }
+  Enc_PRGLS_Lin1Fr1_PRGLS_RRWindowControl {
+    physical_value, 0, 7, 1, 0, "NoUnit" ;
+    logical_value, 0, "No request" ;
+    logical_value, 1, "Manual Up" ;
+    logical_value, 2, "Manual Down" ;
+    logical_value, 3, "Auto Up " ;
+    logical_value, 4, "Auto Down" ;
+  }
+  Enc_PRGLS_Lin1Fr1_PRGLS_CustomSignal {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "Inactive" ;
+    logical_value, 1, "Active" ;
+  }
+  Enc_PRGLS_Lin1Fr1_PRGLS_ButtonSoundRequest {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "NO Press" ;
+    logical_value, 1, "Press" ;
+  }
+  Enc_PRGLS_Lin1Fr1_PRGLS_ErrorSts {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  Enc_PRGLS_Lin1Fr1_PRGLS_Voltage_errorCode {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  Enc_PRGLS_Lin1Fr1_PRGLS_Capsense_errorCode {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  Enc_PRGLS_Lin1Fr1_PRGLS_Motor_errorCode {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "No error" ;
+    logical_value, 1, "Error" ;
+  }
+  Enc_CPAL_Lin1Fr1_CPAL_ResponseError {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+  }
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_SwitchSta {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "?????" ;
+    logical_value, 1, "??????" ;
+  }
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_ColorSta {
+    physical_value, 0, 15, 1, 0, "NoUnit" ;
+    logical_value, 0, "???" ;
+    logical_value, 1, "???" ;
+    logical_value, 2, "???" ;
+    logical_value, 3, "???" ;
+    logical_value, 4, "???" ;
+    logical_value, 5, "???" ;
+  }
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_BrightnessSta {
+    physical_value, 0, 15, 1, 0, "NoUnit" ;
+    logical_value, 0, "Off" ;
+    logical_value, 1, "L1_Dark" ;
+    logical_value, 2, "L2" ;
+    logical_value, 3, "L3" ;
+    logical_value, 4, "L4" ;
+    logical_value, 5, "L5" ;
+    logical_value, 6, "L6" ;
+    logical_value, 7, "L7" ;
+    logical_value, 8, "L8" ;
+    logical_value, 9, "L9" ;
+    logical_value, 10, "L10_bright" ;
+  }
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_TimeSta {
+    physical_value, 0, 255, 1, 0, "NoUnit" ;
+  }
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_FadeSta {
+    physical_value, 0, 1, 1, 0, "NoUnit" ;
+    logical_value, 0, "????????????????????" ;
+    logical_value, 1, "??????????" ;
+  }
+}
+
+Signal_representation {
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_BrightnessSta: CPAL_DCU_BrightnessSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_ColorSta: CPAL_DCU_ColorSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_FadeSta: CPAL_DCU_FadeSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_SwitchSta: CPAL_DCU_SwitchSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_DCU_TimeSta: CPAL_DCU_TimeSta ;
+  Enc_CPAL_Lin1Fr1_CPAL_ResponseError: CPAL_ResponseError ;
+  Enc_PDCU_Lin1Fr1_BDCS1_BacklightStatus: BDCS1_BacklightStatus ;
+  Enc_PDCU_Lin1Fr1_PDCU_BDCS1_Backlight_brightness_fb: PDCU_BDCS1_Backlight_brightness_fb ;
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_Brightness: PDCU_CPAL_Brightness ;
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_ColorNum: PDCU_CPAL_ColorNum ;
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_FadeTime: PDCU_CPAL_FadeTime ;
+  Enc_PDCU_Lin1Fr1_PDCU_CPAL_NodeSwitch: PDCU_CPAL_NodeSwitch ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_ButtonSoundRequest: PFGLS_ButtonSoundRequest ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_CustomSignal: PFGLS_CustomSignal ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_ErrorSts: PFGLS_ErrorSts ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_RLWindowControl: PFGLS_RLWindowControl ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_ResponseError: PFGLS_ResponseError ;
+  Enc_PFGLS_Lin1Fr1_PFGLS_Voltage_errorCode: PFGLS_Voltage_errorCode ;
+  Enc_PFGLS_Lin1Fr1_PFGLS__Capsense_errorCode: PFGLS__Capsense_errorCode ;
+  Enc_PFGLS_Lin1Fr1_PFGLS__Motor_errorCode: PFGLS__Motor_errorCode ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_ButtonSoundRequest: PRGLS_ButtonSoundRequest ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_Capsense_errorCode: PRGLS_Capsense_errorCode ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_CustomSignal: PRGLS_CustomSignal ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_ErrorSts: PRGLS_ErrorSts ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_Motor_errorCode: PRGLS_Motor_errorCode ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_RRWindowControl: PRGLS_RRWindowControl ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_ResponseError: PRGLS_ResponseError ;
+  Enc_PRGLS_Lin1Fr1_PRGLS_Voltage_errorCode: PRGLS_Voltage_errorCode ;
+}

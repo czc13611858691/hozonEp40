@@ -1,0 +1,408 @@
+/*@!Encoding:936*/
+includes
+{
+  #include "Uds_Fbl_lib.cin"
+}
+
+variables
+{
+  long dwFile;
+  char s19Filename[500];
+  byte dataBuffer[0x0FFFFF];
+  long data_len = 0;
+  long transferData_idx=0;
+  
+  int iRespTimeout=500;
+  enum  {
+    Extended_Session=0,
+    TesterPresent,
+    Disable_DTC,
+    Disable_Communication,
+    Programming_Session,
+    Pending_Programming,
+    Security_Access_Seed,
+    Security_Access_Key,
+    Erase_Flash,
+    Request_Download,
+    Transfer_Data,
+    Transfer_Exit,
+    Reset,
+    Stop
+    }prog_step=Extended_Session;
+  enum {
+    PROG_NOT_STARTED,
+    PROG_INPROGRESS,
+    PROG_STOPED
+    }prog_status=PROG_NOT_STARTED;
+  enum {
+    Pre_programming,
+    Programming,
+    Post_Programming
+    }programming_state;
+  
+  const int gSeedArraySize= 4;
+  const int gKeyArraySize= 4;
+  byte gSeedArray[gSeedArraySize];
+  byte gKeyArray[gKeyArraySize];
+  
+  long MEM_START_ADDR = 0x006400;
+  long MEM_END_ADDR   = 0x00FFFF;
+  long MEM_SIZE   = 0;
+  
+  byte sequence_num=1;
+  msTimer delayTimer;
+}
+
+on start
+{
+  char absPath[256];
+  
+  openPanel("UdsBootloader");
+  getAbsFilePath("File\\test_app.s19", absPath, 256);
+  putValue(Env_FilePath,absPath);
+  
+  diagSetTarget("BasicDiagnosticsEcu");
+  MEM_SIZE   = MEM_END_ADDR-MEM_START_ADDR+1;
+}
+
+on envVar Env_Start
+{ 
+  if(@Env_Start ==1)
+  {
+    if(dwFile!=0) /*S19 File*/
+    {
+      programming_state = Pre_programming;
+      prog_status = PROG_INPROGRESS;
+      prog_step=Extended_Session;
+      @Env_Progress =0;
+      
+      display_status("Preprogramming.......",'T');
+      Preprogramming_seq();
+    }
+    else
+    {
+      display_status("ERROR - Load S19 File",'F');
+    }
+  }
+}
+
+on envVar Env_Stop
+{  
+  if(@Env_Stop ==1)
+  {
+    if(prog_status==PROG_INPROGRESS)
+    {
+      prog_status = PROG_STOPED;
+      prog_step = Stop;
+      programming_state=Pre_programming;
+      
+      @Env_Progress =100;
+      display_status("Flasing Interrupted",'F'); 
+    }
+  }
+}
+
+on envVar Env_FilePath
+{
+   dwFile= getvalue(Env_FilePath,s19Filename);
+}
+
+void display_status(char str[],char sts)
+{
+  if(sts=='F')
+  {//FAIL case- RED
+    SetControlForeColor("UdsBootloader", "CAPL Output View", MakeRGB(255,0,0));
+    @Env_Progress =100;
+  }
+  else
+  {//PASS case- GREEN
+    SetControlForeColor("UdsBootloader", "CAPL Output View", MakeRGB(0,100,0));
+  }
+  
+  putValueToControl("UdsBootloader","CAPL Output View","\n");
+  putValueToControl("UdsBootloader","CAPL Output View",str);  
+  //write("%s",str);
+  //write("----------------------------------------");
+}
+void Preprogramming_seq()
+{
+  if(prog_status == PROG_INPROGRESS)
+  {
+    switch(prog_step)
+    {
+      case Extended_Session:
+        diagSendRequest(dr_ExtendSession);
+        display_status("1.1 Extended Session",'T');
+        prog_step = TesterPresent;
+        break;
+      case TesterPresent:
+        diagSendRequest(dr_3E_00);
+        display_status("1.2 TesterPresent",'T');
+        prog_step = Disable_DTC;
+        break;
+      case Disable_DTC:
+        diagSendRequest(dr_85_DisDTC);
+        display_status("1.3 Control DTC",'T');
+        prog_step = Disable_Communication;
+        break;
+      case Disable_Communication:
+        diagSendRequest(dr_28_DisAll);
+        display_status("1.4 Communication Control",'T');
+        prog_step = Security_Access_Seed;
+        break;
+      case Security_Access_Seed:
+        diagSendRequest(dr_27_SeedReq);
+        display_status("1.5 Request Seed",'T');
+        prog_step = Security_Access_Key;
+        break;
+      case Security_Access_Key:
+        Seed2Key();
+        diagSetParameterRaw(dr_27_KeyReq, "securityKey", gKeyArray, gKeyArraySize);
+        diagSendRequest(dr_27_KeyReq);
+        display_status("1.6 Send Key",'T');
+        prog_step = Programming_Session;
+        break;
+      case Programming_Session:
+        diagSendRequest(dr_ProgSession);
+        display_status("1.6 Programming Session",'T');
+        
+        programming_state=Programming;
+        prog_step = Erase_Flash;
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+void Programming_seq()
+{
+  byte memAddr[4];
+  byte memSize[4];
+  byte buff[512];
+  int i;
+  if(prog_status == PROG_INPROGRESS)
+  {
+    switch(prog_step)
+    {
+      case Erase_Flash:
+        memAddr[0] = (byte)(MEM_START_ADDR>>24);
+        memAddr[1] = (byte)(MEM_START_ADDR>>16);
+        memAddr[2] = (byte)(MEM_START_ADDR>>8);
+        memAddr[3] = (byte)(MEM_START_ADDR);
+        
+        memSize[0] = (byte)(MEM_SIZE>>24);
+        memSize[1] = (byte)(MEM_SIZE>>16);
+        memSize[2] = (byte)(MEM_SIZE>>8);
+        memSize[3] = (byte)(MEM_SIZE);
+        
+        diagSetParameterRaw(dr_31_EraseFlash, "memory_addr", memAddr, 4);
+        diagSetParameterRaw(dr_31_EraseFlash, "memory_size", memSize, 4);
+        diagSendRequest(dr_31_EraseFlash);
+        display_status("2.1 Erase Flash",'T');
+        prog_step = Request_Download;
+        break;
+      case Request_Download:
+        memAddr[0] = (byte)(MEM_START_ADDR>>24);
+        memAddr[1] = (byte)(MEM_START_ADDR>>16);
+        memAddr[2] = (byte)(MEM_START_ADDR>>8);
+        memAddr[3] = (byte)(MEM_START_ADDR);
+        
+        memSize[0] = (byte)(MEM_SIZE>>24);
+        memSize[1] = (byte)(MEM_SIZE>>16);
+        memSize[2] = (byte)(MEM_SIZE>>8);
+        memSize[3] = (byte)(MEM_SIZE);
+        
+        diagSetParameterRaw(dr_34_ReqDownload, "memory_addr", memAddr, 4);
+        diagSetParameterRaw(dr_34_ReqDownload, "memory_size", memSize, 4);
+        diagSendRequest(dr_34_ReqDownload);
+        display_status("2.2 Request_Download",'T');
+        prog_step = Transfer_Data;
+        Read_s19File(s19Filename);
+        break;
+      case Transfer_Data:
+        for(i=0;i<512;i++)
+        {
+          buff[i]=dataBuffer[transferData_idx++];
+        }
+        diagSetParameter(dr_36_TransferData, "blockSequenceCounter", sequence_num);
+        diagSetParameterRaw(dr_36_TransferData, "transferData", buff,512);
+        diagSendRequest(dr_36_TransferData);
+        if(sequence_num==0xFF)
+        {
+          sequence_num =0;
+        }
+        else
+        {
+          sequence_num ++;
+        }
+        @Env_Progress = transferData_idx*100/data_len;
+        
+        if(transferData_idx>=data_len)
+        {
+          prog_step = Transfer_Exit;
+          sequence_num =1;
+          transferData_idx=0;
+          @Env_Progress = 100;
+        }
+        break;
+      case Transfer_Exit:
+        diagSendRequest(dr_37_ReqTransferExit);
+        display_status("2.4 Request TransferExit",'T');
+        
+        programming_state=Post_Programming;
+        prog_step = Reset;
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+void Post_programming_seq()
+{
+  if(prog_status == PROG_INPROGRESS)
+  {
+    switch(prog_step)
+    {
+      case Reset:
+        diagSendRequest(dr_EcuReset_01);
+        display_status("3.1 Ecu Reset",'T');
+        
+        prog_status = PROG_STOPED;
+        prog_step = Stop;
+        programming_state=Pre_programming;
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+
+on diagResponse *
+{
+  byte data[4096];
+  long size;
+  diagResponse * resp; // declare response with no concrete interpretation
+  size=this.GetPrimitiveSize(); // get length of response
+  this.GetPrimitiveData(data, elcount(data)); // copy actual response from "on diagResponse *" into data array
+  switch(data[0])
+  {
+    case 0x67: // UDS: SecurityAccess_Process positive Response
+      if(data[1]==0x01) 
+      {
+        gSeedArray[0]=data[2];
+        gSeedArray[1]=data[3];
+        gSeedArray[2]=data[4];
+        gSeedArray[3]=data[5];
+      }
+    case 0x50:// UDS: DiagnosticSessionControl_Process positive Response
+    case 0x51: // UDS: EcuReset_Process positive Response
+    case 0x7E: // UDS: TestPresent positive Response
+    case 0x71: // UDS: Routine Control positive Response
+    case 0x68: // UDS: CommunicationControl positive Response
+    case 0x74: // UDS: RequestDownload positive Response
+    case 0x76: // UDS: TransferData positive Response
+    case 0x77: // UDS: RequestTransferExit positive Response
+    case 0xC5: // UDS: ControlDTCSetting positive Response
+      setTimer(delayTimer,10);
+      break;
+      
+    case 0x7F:// UDS: Negative Response
+      break;
+    default:
+      break;
+  }
+}
+on timer delayTimer
+{
+  if(programming_state==Pre_programming)
+  {
+    Preprogramming_seq();
+  }
+  else if(programming_state==Programming)
+  {
+    Programming_seq();
+  }
+  else
+  {
+    Post_programming_seq();
+  }
+}
+void Seed2Key(void)
+{
+  gKeyArray[0]=gSeedArray[3];
+  gKeyArray[1]=gSeedArray[2];
+  gKeyArray[2]=gSeedArray[1];
+  gKeyArray[3]=gSeedArray[0];
+}
+
+void Read_s19File(char Filename[])
+{
+  long file_handle;
+  char str[100];
+  long char_index=0;
+  long mem_Address;
+  int Line_Length;
+  long buff_index=0; 
+  long length;
+  file_handle=OpenFileRead(Filename,0);
+  if(file_handle!=0)
+  {
+    buff_index=0;
+    // Read all lines
+    while ( fileGetString(str,elcount(str),file_handle)!=0 )
+    {
+      if((str[0]=='S')&&(str[1]=='3'))
+      {
+        /*memory address char 4 to 11*/
+        mem_Address= char2byte(str[4])*0x10000000+char2byte(str[5])*0x1000000
+                      +char2byte(str[6])*0x100000+char2byte(str[7])*0x10000
+                      +char2byte(str[8])*0x1000+char2byte(str[9])*0x100
+                      +char2byte(str[10])*0x10+char2byte(str[11]);
+        // the number of bytes each line contains
+        Line_Length = (char2byte(str[2])*0x10+char2byte(str[3]));
+        for(char_index=0; char_index<(2*(Line_Length-5)); char_index=char_index+2)
+        {
+          dataBuffer[buff_index++]=(char2byte(str[char_index+12])*0x10+char2byte(str[char_index+13]));
+        }
+      }
+      else  if((str[0]=='S')&&(str[1]=='2'))
+      {
+        /*memory address char 4 to 9*/
+        mem_Address= char2byte(str[4])*0x100000+char2byte(str[5])*0x10000
+                      +char2byte(str[6])*0x1000+char2byte(str[7])*0x100
+                      +char2byte(str[8])*0x10+char2byte(str[9]);
+        // the number of bytes each line contains
+        Line_Length = (char2byte(str[2])*0x10+char2byte(str[3]));
+        for(char_index=0; char_index<(2*(Line_Length-4)); char_index=char_index+2)
+        {
+          dataBuffer[buff_index++]=(char2byte(str[char_index+10])*0x10+char2byte(str[char_index+11]));
+        }
+      }
+    }
+  }
+  fileClose(file_handle);
+  
+  data_len = buff_index;
+  write("data_len:%d",data_len);
+}
+
+byte char2byte(char ch)
+{
+   byte  val = 0;
+   if ( ch >= '0' && ch <= '9')
+   {
+      val = ch - '0';      
+   }
+   if ( ch >= 'a' && ch <= 'f')
+   {
+      val = (ch - 'a') + 10;      
+   }
+   if ( ch >= 'A' && ch <= 'F')
+   {
+      val = (ch - 'A') + 10;       
+   }
+   return val;
+}

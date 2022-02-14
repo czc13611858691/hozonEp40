@@ -1,0 +1,224 @@
+/*@!Encoding:936*/
+includes
+{
+  
+}
+
+variables
+{
+  long dwFile=5;
+  char s19Filename[500];
+  byte dataBuffer[0x0FFFFF];
+  long data_len = 0;
+  long transferData_idx=0;
+  
+  int iRespTimeout=500;
+  enum  {
+    Program_Session=0,
+    TesterPresent,
+    Disable_DTC,
+    Disable_Communication,
+    Programming_Session,
+    Pending_Programming,
+    Security_Access_Seed,
+    Security_Access_Key,
+    Erase_Flash,
+    Request_Download,
+    Transfer_Data,
+    Transfer_Exit,
+    Reset,
+    Stop
+    }prog_step=Program_Session;
+  enum {
+    PROG_NOT_STARTED,
+    PROG_INPROGRESS,
+    PROG_STOPED
+    }prog_status=PROG_NOT_STARTED;
+  enum {
+    Pre_programming,
+    Programming,
+    Post_Programming
+    }programming_state;
+  
+  const int gSeedArraySize= 4;
+  const int gKeyArraySize= 4;
+  byte gSeedArray[gSeedArraySize];
+  byte gKeyArray[gKeyArraySize];
+  
+  long MEM_START_ADDR = 0x006400;
+  long MEM_END_ADDR   = 0x00FFFF;
+  long MEM_SIZE   = 0;
+  
+  byte sequence_num=1;
+  msTimer delayTimer;
+  
+  linFrame 0x3d diag_3d = {msgChannel = 1};
+  
+  diagRequest DiagnosticSessionControl163 dr_SessionDefault;
+  diagRequest DiagnosticSessionControl161 dr_SessionProgram;
+  diagRequest DiagnosticSessionControl162 dr_SessionExtend;
+  diagRequest EcuReset170 dr_EcuReset;
+  diagRequest ClearDiagnosticInformation200 dr_ClearDiagInfo;
+  diagRequest ReadDataByIdentifier340 dr_ReadDID_BootSW;
+  diagRequest ReadDataByIdentifier341 dr_ReadDID_ActiveDiagnosticSession;
+  diagRequest ReadDataByIdentifier342 dr_ReadDID_VehicleManufacturerSparePartNumber;
+  diagRequest ReadDataByIdentifier343 dr_ReadDID_AppSW_Normal;
+  diagRequest ReadDataByIdentifier346 dr_ReadDID_SupplierNumber;
+  diagRequest ReadDataByIdentifier347 dr_ReadDID_EcuManuData;
+  diagRequest ReadDataByIdentifier349 dr_ReadDID_EcuSerialNumber;
+  diagRequest ReadDataByIdentifier348 dr_ReadDID_VIN;
+  diagRequest ReadDataByIdentifier3410 dr_ReadDID_HardwareSW;
+  diagRequest ReadDataByIdentifier3411 dr_ReadDID_TestSerialNumber;
+  diagRequest ReadDataByIdentifier3412 dr_ReadDID_ProgramData;
+  diagRequest ReadDataByIdentifier3413 dr_ReadDID_ECU_InstallData;
+  diagRequest ReadDataByIdentifier345 dr_ReadDID_ECU_CalibrationSW;
+  diagRequest ReadDataByIdentifier344 dr_ReadDID_AppSW_Fix;
+  diagRequest ReadDataByIdentifier3414 dr_ReadDID_HardwareSW_Fix;
+  diagRequest ReadDataByIdentifier3415 dr_ReadDID_SwAssemblyVer;
+  diagRequest ReadDataByIdentifier3416 dr_ReadDID_SwAssemblyPartNumber;
+}
+
+on start
+{
+  char absPah[256];
+  
+  openPanel("UdsBootloaderPanel");
+  sysSetVariableString(sysvar::Env_FilePath,absPah);
+  
+  diagSetTarget("BasicDiagnosticsEcu");
+  MEM_SIZE=MEM_END_ADDR-MEM_START_ADDR+1;
+}
+
+on diagResponse *
+{
+  
+}
+
+on sysvar Env_Start
+{
+  int var;
+  var = sysGetVariableInt(sysvar::Env_Start);  
+  if(var == 1)
+  {
+    if(dwFile==0) /*S19 File*/
+    {
+      programming_state = Pre_programming;
+      prog_status = PROG_INPROGRESS;
+      prog_step=Program_Session;
+      sysSetVariableInt(sysvar::Env_ProgressBar,0);
+      
+      display_status("Preprogramming.......",'T');
+      Preprogramming_seq();
+    }
+    else
+    {
+      display_status("ERROR - Load S19 File",'F');
+    }
+  }
+}
+
+on sysvar Env_Stop
+{
+  int var;
+  var = sysGetVariableInt(sysvar::Env_Stop);  
+  if(var == 1)
+  {
+    prog_status=PROG_STOPED;
+    prog_step=Stop;
+    programming_state=Pre_programming;
+    
+    sysSetVariableInt(sysvar::Env_ProgressBar,100);
+    display_status("Flasing Interrupted",'F'); 
+  }
+}
+
+on sysvar Env_FilePath
+{
+  dwFile=sysGetVariableString(sysvar::Env_FilePath,s19Filename,elCount(s19Filename));
+}
+
+
+void display_status(char str[],char sts)
+{
+  if(sts=='F')
+  {//FAIL case- RED
+    SetControlForeColor("UdsBootloaderPanel", "CAPL Output View", MakeRGB(255,0,0));
+    sysSetVariableInt(sysvar::Env_ProgressBar,100);
+  }
+  else
+  {//PASS case- GREEN
+    SetControlForeColor("UdsBootloaderPanel", "CAPL Output View", MakeRGB(0,100,0));
+  }
+  
+  putValueToControl("UdsBootloaderPanel","CAPL Output View",str); 
+  putValueToControl("UdsBootloaderPanel","CAPL Output View","\n");
+}
+
+void Preprogramming_seq()
+{
+  if(prog_status==PROG_INPROGRESS)
+  {
+    switch(prog_step)
+    {
+      case Program_Session:
+        diagSendRequest(dr_SessionProgram);
+        break;
+      case TesterPresent:
+        break;
+      case Disable_DTC:
+        break;
+      case Disable_Communication:
+        break;
+      case Security_Access_Seed:
+        break;
+      case Security_Access_Key:
+        break;
+      case Programming_Session:
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+void Programming_seq()
+{
+  
+}
+
+void Post_programming_seq()
+{
+  
+}
+
+on timer delayTimer
+{
+  
+}
+
+void Seed2Key(void)
+{
+}
+
+void Read_s19File(char Filename[])
+{
+  
+}
+
+byte char2byte(char ch)
+{
+  byte  val = 0;
+   if ( ch >= '0' && ch <= '9')
+   {
+      val = ch - '0';      
+   }
+   if ( ch >= 'a' && ch <= 'f')
+   {
+      val = (ch - 'a') + 10;      
+   }
+   if ( ch >= 'A' && ch <= 'F')
+   {
+      val = (ch - 'A') + 10;       
+   }
+   return val;
+}
