@@ -11,6 +11,7 @@
 #include "led.h"
 #include "touch_press_motor_cfg.h"
 #include "rstctrl.h"
+#include "fuse.h"
 
 #define PROGRAM_REQUEST_EEPROM_POS 0
 #define APPLICATION_VALID_EEPROM_POS 1

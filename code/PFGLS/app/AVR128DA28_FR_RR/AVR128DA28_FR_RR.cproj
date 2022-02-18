@@ -249,6 +249,15 @@
       <Value>../middleware/lin/include</Value>
       <Value>../middleware/lin/lowlevel</Value>
       <Value>../middleware/lin/transport</Value>
+      <Value>../user/common/app</Value>
+      <Value>../user/common/driver</Value>
+      <Value>../user/common/lin_protocol/middleware</Value>
+      <Value>../user/common/lin_protocol/middleware/lin/coreapi</Value>
+      <Value>../user/common/lin_protocol/middleware/lin/diagnostic</Value>
+      <Value>../user/common/lin_protocol/middleware/lin/include</Value>
+      <Value>../user/common/lin_protocol/middleware/lin/lowlevel</Value>
+      <Value>../user/common/lin_protocol/middleware/lin/transport</Value>
+      <Value>../user/target</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
@@ -269,6 +278,11 @@
       <Value>../qtouch/lib/gcc</Value>
     </ListValues>
   </avrgcc.linker.libraries.LibrarySearchPaths>
+  <avrgcc.linker.memorysettings.Flash>
+    <ListValues>
+      <Value>.text=0x3200</Value>
+    </ListValues>
+  </avrgcc.linker.memorysettings.Flash>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>../Config</Value>
@@ -297,11 +311,6 @@
     <Folder Include="examples\include\" />
     <Folder Include="examples\src\" />
     <Folder Include="include\" />
-    <Folder Include="middleware\lin" />
-    <Folder Include="middleware\lin\coreapi" />
-    <Folder Include="middleware\lin\diagnostic" />
-    <Folder Include="middleware\lin\lowlevel" />
-    <Folder Include="middleware\lin\transport" />
     <Folder Include="modules\" />
     <Folder Include="modules\adc\" />
     <Folder Include="modules\adc\doc\" />
@@ -327,13 +336,24 @@
     <Folder Include="modules\usart\doc\" />
     <Folder Include="modules\vref\" />
     <Folder Include="modules\vref\doc\" />
-    <Folder Include="middleware" />
+    <Folder Include="user" />
     <Folder Include="qtouch\" />
     <Folder Include="qtouch\datastreamer\" />
     <Folder Include="qtouch\include\" />
     <Folder Include="qtouch\lib\" />
     <Folder Include="qtouch\lib\gcc\" />
     <Folder Include="src\" />
+    <Folder Include="user\common" />
+    <Folder Include="user\common\lin_protocol" />
+    <Folder Include="user\common\driver" />
+    <Folder Include="user\common\app" />
+    <Folder Include="user\common\lin_protocol\middleware\" />
+    <Folder Include="user\common\lin_protocol\middleware\lin\" />
+    <Folder Include="user\common\lin_protocol\middleware\lin\coreapi\" />
+    <Folder Include="user\common\lin_protocol\middleware\lin\diagnostic\" />
+    <Folder Include="user\common\lin_protocol\middleware\lin\lowlevel\" />
+    <Folder Include="user\common\lin_protocol\middleware\lin\transport\" />
+    <Folder Include="user\target" />
     <Folder Include="utils\" />
     <Folder Include="utils\assembler\" />
   </ItemGroup>
@@ -442,9 +462,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="adc.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="atmel_start.c">
       <SubType>compile</SubType>
     </Compile>
@@ -455,15 +472,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Config\RTE_Components.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="driver_isr.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="ep40_cfg.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="ep40_function_specification.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="examples\include\adc_basic_example.h">
@@ -494,9 +502,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="examples\src\usart_basic_example.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="hc595.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\adc_basic.h">
@@ -556,46 +561,7 @@
     <Compile Include="include\vref.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="led.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="main.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin1.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin\coreapi\lin_common_api.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin\coreapi\lin_common_proto.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin\coreapi\lin_j2602_proto.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin\coreapi\lin_lin21_proto.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin\diagnostic\lin_diagnostic_service.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin\lowlevel\lin.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin\transport\lin_commontl_api.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin\transport\lin_commontl_proto.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin_cfg.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin_common.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="middleware\lin_driver.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="qtouch\datastreamer\datastreamer.h">
@@ -626,9 +592,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="qtouch\touch.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="soft_timer.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\adc_basic.c">
@@ -673,10 +636,67 @@
     <Compile Include="src\vref.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="touch_press_motor.c">
+    <Compile Include="user\common\app\ep40_cfg.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="touch_press_motor_cfg.c">
+    <Compile Include="user\common\app\ep40_function_specification.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\app\touch_press_motor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\app\touch_press_motor_cfg.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\driver\adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\driver\driver_isr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\driver\hc595.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\driver\led.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\driver\soft_timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin1.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin\coreapi\lin_common_api.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin\coreapi\lin_common_proto.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin\coreapi\lin_j2602_proto.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin\coreapi\lin_lin21_proto.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin\diagnostic\lin_diagnostic_service.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin\lowlevel\lin.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin\transport\lin_commontl_api.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin\transport\lin_commontl_proto.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin_cfg.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin_common.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\common\lin_protocol\middleware\lin_driver.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="utils\assembler.h">
