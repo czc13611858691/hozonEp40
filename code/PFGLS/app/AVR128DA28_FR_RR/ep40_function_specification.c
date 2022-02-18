@@ -303,7 +303,7 @@ void backlight_task(void)
     }
 }
 
-void lin_go_to_sleep(void)
+void __attribute__((optimize("O0"))) lin_go_to_sleep(void)
 {
     /* 使能脚设置低电平 */
     LIN_EN_set_level(0);
