@@ -648,6 +648,9 @@
     <Compile Include="user\common\app\touch_press_motor_cfg.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="user\common\app\UDS.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="user\common\driver\adc.c">
       <SubType>compile</SubType>
     </Compile>
@@ -697,6 +700,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="user\common\lin_protocol\middleware\lin_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="user\target\target.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="utils\assembler.h">

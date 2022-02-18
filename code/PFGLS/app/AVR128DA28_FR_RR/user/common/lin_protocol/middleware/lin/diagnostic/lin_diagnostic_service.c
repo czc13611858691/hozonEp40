@@ -24,7 +24,7 @@
 
 #include "lin_commontl_api.h"
 #include "lin_diagnostic_service.h"
-#include "app_config.h"
+#include "UDS.h"
 
 #define SECURITY_ACCESS_LOCK        0U
 #define SECURITY_ACCESS_LEVEL_1     3U
@@ -2521,11 +2521,7 @@ void lin_transfer_data(l_ifc_handle iii)
 {
     lin_tl_pdu_data_t lin_tl_pdu;
     l_u8 block_count;
-    l_u8 data_len;
     l_u8 pci_type;
-    l_u8 byte_cnt = 0;
-    l_u16 buf_cnt = update_cnt;
-    l_u16 index = 0;
     lin_tl_descriptor_t* tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
     const lin_protocol_user_config_t* prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     const lin_node_attribute_t* node_attr_ptr;
@@ -2566,71 +2562,7 @@ void lin_transfer_data(l_ifc_handle iii)
     else
     {
         block_count = rx_queue->tl_pdu_ptr[rx_queue->queue_header][4];  //块计数
-        data_len = rx_queue->tl_pdu_ptr[rx_queue->queue_header][2] - 2; //数据长度
-        index = rx_queue->queue_header;
 
-        if (history_blcok_count == block_count) //无错误
-        {
-            program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[rx_queue->queue_header][5];
-            program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[rx_queue->queue_header][6];
-            program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[rx_queue->queue_header][7];
-
-            for (index = 1u; index <= rx_queue->queue_tail; index++)
-            {
-                if (byte_cnt < data_len)
-                {
-                    byte_cnt++;
-                    program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[index][2];
-                }
-                if (byte_cnt < data_len)
-                {
-                    byte_cnt++;
-                    program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[index][3];
-                }
-                if (byte_cnt < data_len)
-                {
-                    byte_cnt++;
-                    program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[index][4];
-                }
-                if (byte_cnt < data_len)
-                {
-                    byte_cnt++;
-                    program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[index][5];
-                }
-                if (byte_cnt < data_len)
-                {
-                    byte_cnt++;
-                    program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[index][6];
-                }
-                if (byte_cnt < data_len)
-                {
-                    byte_cnt++;
-                    program_buffer[buf_cnt++] = rx_queue->tl_pdu_ptr[index][7];
-                }
-            }
-            history_blcok_count++;
-
-            //这里执行刷写
-            update_cnt = data_len + update_cnt;
-            bin_size_cnt += data_len;
-            if (update_cnt >= 512)
-            {
-                update_cnt = 0;
-                flash_flag = 1u;
-            }
-            else
-            {
-                if (bin_size_cnt >= 21712U)
-                {
-                    update_cnt = 0;
-                    flash_flag = 1u;
-                    jump_flag = 1;
-                }
-            }
-        }
-        else
-        {
-        }
         lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
         lin_tl_pdu[1] = 0x02; //数据长度
         lin_tl_pdu[2] = 0x76; //肯定响应 0x10 + 0x40

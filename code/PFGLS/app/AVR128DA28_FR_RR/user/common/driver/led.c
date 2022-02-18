@@ -83,14 +83,7 @@ void led_init(void)
 	/* 亮度控制，目前20KHz，最大1199,默认%45亮度 */
 	TCA0.SINGLE.CMP2 = 540;
 
-	// LED_ON_N_set_level(0);
 	led_set_level(led_d11, 0);
-	// led_set_level(led_d10, 0);
-	// led_set_level(led_d9, 0);
-	// led_set_level(led_d8, 0);
-	// led_set_level(led_d7, 0);
-	// led_set_level(led_d5, 0);
-	// led_set_level(led_d6, 0);
-	// led_set_level(led_d4, 0);
+
 	HC595_Write(g_hc595_buffer, HC595_NUM, HC595_OUT_PIN);
 }
