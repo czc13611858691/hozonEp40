@@ -250,6 +250,11 @@
       <Value>../qtouch/lib/gcc</Value>
     </ListValues>
   </avrgcc.linker.libraries.LibrarySearchPaths>
+  <avrgcc.linker.memorysettings.Flash>
+    <ListValues>
+      <Value>.text=0x3200</Value>
+    </ListValues>
+  </avrgcc.linker.memorysettings.Flash>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>../Config</Value>

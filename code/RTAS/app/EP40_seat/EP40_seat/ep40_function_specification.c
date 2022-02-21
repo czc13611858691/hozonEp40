@@ -315,7 +315,7 @@ void backlight_task(void)
     wind_config = l_bool_rd_LI0_BDCS2_RearSeatVentilating_configuration();
 }
 
-void lin_go_to_sleep(void)
+void __attribute__((optimize("O0"))) lin_go_to_sleep(void)
 {
 	uint16_t sleep_cnt;
 
