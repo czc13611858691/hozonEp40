@@ -1352,6 +1352,11 @@ void lin_security_access(l_ifc_handle iii)
 
             SECURITY_ACCESS_SEED = (((uint32_t)g_soft_timer_ticks & 0x00FF) << 8) | (((uint32_t)g_soft_timer_ticks & 0xFF00) >> 8) | (((uint32_t)g_soft_timer_ticks & 0x0FF0) << 12) | (((uint32_t)(g_soft_timer_ticks >> 3) & 0x00FF) << 24);
 
+            if (SECURITY_ACCESS_SEED == 0)
+            {
+                SECURITY_ACCESS_SEED = 0x11223344;
+            }
+
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x06;
             lin_tl_pdu[2] = 0x67; //肯定响应 0x27 + 0x40
