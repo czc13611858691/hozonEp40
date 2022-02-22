@@ -38,6 +38,7 @@
 #include <clock_config.h>
 #include <usart_basic.h>
 #include <atomic.h>
+#include "target.h"
 
 #include <stdio.h>
 
@@ -71,18 +72,10 @@ int putchar(int outChar)
 int8_t USART_init()
 {
 
-	// USART0.BAUD = (uint16_t)USART0_BAUD_RATE(115200); /* set baud rate register */
-	USART0.BAUD = (uint16_t)(((float)(F_CPU * 64 / (16 * (float)19200)) + 0.5));
+	/* set baud rate register */
+	LIN_USART_X.BAUD = (uint16_t)(((float)(F_CPU * 64 / (16 * (float)19200)) + 0.5));
 
-	// USART0.CTRLA = 0 << USART_ABEIE_bp /* Auto-baud Error Interrupt Enable: disabled */
-	//		 | 0 << USART_DREIE_bp /* Data Register Empty Interrupt Enable: disabled */
-	//		 | 0 << USART_LBME_bp /* Loop-back Mode Enable: disabled */
-	//		 | USART_RS485_DISABLE_gc /* RS485 Mode disabled */
-	//		 | 0 << USART_RXCIE_bp /* Receive Complete Interrupt Enable: disabled */
-	//		 | 0 << USART_RXSIE_bp /* Receiver Start Frame Interrupt Enable: disabled */
-	//		 | 0 << USART_TXCIE_bp; /* Transmit Complete Interrupt Enable: disabled */
-
-	USART0.CTRLA = 1 << USART_ABEIE_bp		/* Auto-baud Error Interrupt Enable: enabled */
+	LIN_USART_X.CTRLA = 1 << USART_ABEIE_bp		/* Auto-baud Error Interrupt Enable: enabled */
 				   | 0 << USART_DREIE_bp	/* Data Register Empty Interrupt Enable: enabled */
 				   | 0 << USART_LBME_bp		/* Loop-back Mode Enable: disabled */
 				   | USART_RS485_DISABLE_gc /* RS485 Mode disabled */
@@ -90,34 +83,12 @@ int8_t USART_init()
 				   | 0 << USART_RXSIE_bp	/* Receiver Start Frame Interrupt Enable: disabled */
 				   | 0 << USART_TXCIE_bp;	/* Transmit Complete Interrupt Enable: disabled */
 
-	// USART0.CTRLB = 0 << USART_MPCM_bp		/* Multi-processor Communication Mode: disabled */
-	// 			   | 0 << USART_ODME_bp		/* Open Drain Mode Enable: disabled */
-	// 			   | 1 << USART_RXEN_bp		/* Receiver Enable: enabled */
-	// 			   | USART_RXMODE_NORMAL_gc /* Normal mode */
-	// 			   | 0 << USART_SFDEN_bp	/* Start Frame Detection Enable: disabled */
-	// 			   | 1 << USART_TXEN_bp;	/* Transmitter Enable: enabled */
-	USART0.CTRLB = 0 << USART_MPCM_bp		 /* Multi-processor Communication Mode: disabled */
+	LIN_USART_X.CTRLB = 0 << USART_MPCM_bp		 /* Multi-processor Communication Mode: disabled */
 				   | 0 << USART_ODME_bp		 /* Open Drain Mode Enable: disabled */
 				   | 1 << USART_RXEN_bp		 /* Receiver Enable: enabled */
 				   | USART_RXMODE_LINAUTO_gc /* LIN constrained autobaud mode */
 				   | 0 << USART_SFDEN_bp	 /* Start Frame Detection Enable: disabled */
 				   | 1 << USART_TXEN_bp;	 /* Transmitter Enable: enabled */
-
-	// USART0.CTRLC = USART_CMODE_ASYNCHRONOUS_gc /* Asynchronous Mode */
-	// 		 | USART_CHSIZE_8BIT_gc /* Character size: 8 bit */
-	// 		 | USART_PMODE_DISABLED_gc /* No Parity */
-	// 		 | USART_SBMODE_1BIT_gc; /* 1 stop bit */
-
-	// USART0.DBGCTRL = 0 << USART_DBGRUN_bp; /* Debug Run: disabled */
-
-	// USART0.EVCTRL = 0 << USART_IREI_bp; /* IrDA Event Input Enable: disabled */
-
-	// USART0.RXPLCTRL = 0x0 << USART_RXPL_gp; /* Receiver Pulse Length: 0x0 */
-
-	// USART0.TXPLCTRL = 0x0 << USART_TXPL_gp; /* Transmit pulse length: 0x0 */
-	// #if defined(__GNUC__)
-	// 	stdout = &USART_stream;
-	// #endif
 
 	return 0;
 }
@@ -244,16 +215,4 @@ void USART_write(const uint8_t data)
 	while (!(USART0.STATUS & USART_DREIF_bm))
 		;
 	USART0.TXDATAL = data;
-}
-
-size_t USART0_Read(uint8_t * rDATA)
-{
-	*rDATA = USART0.RXDATAL;
-	return 0;
-}
-
-size_t USART0_Send(uint8_t * tDATA)
-{
-	USART0.TXDATAL = *tDATA;
-	return 0;
 }

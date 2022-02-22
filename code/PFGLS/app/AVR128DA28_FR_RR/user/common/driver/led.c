@@ -7,55 +7,8 @@
 #include "led.h"
 #include "hc595.h"
 #include <atmel_start.h>
-#include "user_common.h"
-
-uint8_t g_hc595_buffer[1] = {0xff};
-
-//   x──────────────────┐
-//   x      D4          │
-//   x                  │
-//   x                  │
-//   x      D5          │
-//   x                  │
-//   x      D6          │
-//   x                  │
-//   x      D7          │
-//   x                  │
-//   x      D8          │
-//   x                  │
-//   x                  │
-//  xx                  │
-//  x       D9          │
-//  x                   │
-//  x                   │
-// x        D10         │
-// x                    │
-// x        D11   blue  │
-// x                   xx
-// x             xxxxx
-// x          xxxx
-// x        xx
-// x    xxxx
-// x xxxx
-
-typedef struct
-{
-	uint8_t byte;
-	uint8_t bit;
-} led_Dx_t;
-
-#define LED_NUM (8)
-
-const led_Dx_t g_led_Dx[LED_NUM] = {
-	{0, 0}, /* LED8 D11 */
-	{0, 1}, /* LED4 D9 */
-	{0, 2}, /* LED7 D10 */
-	{0, 3}, /* LED1 D4 */
-	{0, 4}, /* LED2 D5 */
-	{0, 5}, /* LED5 D6 */
-	{0, 6}, /* LED3 D8 */
-	{0, 7}, /* LED6 D7  */
-};
+#include "bit_operation.h"
+#include "target.h"
 
 void led_set_level(led_Dx_e Dx, uint8_t level)
 {
@@ -80,10 +33,5 @@ void led_update_buf_task(void)
 
 void led_init(void)
 {
-	/* 亮度控制，目前20KHz，最大1199,默认%45亮度 */
-	TCA0.SINGLE.CMP2 = 540;
-
-	led_set_level(led_d11, 0);
-
 	HC595_Write(g_hc595_buffer, HC595_NUM, HC595_OUT_PIN);
 }

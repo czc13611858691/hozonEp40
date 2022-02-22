@@ -23,6 +23,7 @@ const eeprom_did_data_t ECUInstallationDateDataIdentifier_eeprom = {
     .start = 50,
     .len = 4,
 };
+
 uint8_t gVINDataIdentifier[17] = { 0 };
 uint8_t gVINDataIdentifier_update_flg = 0;
 uint8_t gTesterSerialNumberDataIdentifier[10] = { 0 };

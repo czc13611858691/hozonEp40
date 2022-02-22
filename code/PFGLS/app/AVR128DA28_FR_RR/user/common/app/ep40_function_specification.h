@@ -1,17 +1,7 @@
-#ifndef __ep40_function_specification_H_
-#define __ep40_function_specification_H_
+#pragma once
 
 #include <stdint.h>
 #include "stddef.h"
-
-#define SIGNAL_VAL_LEVEL_1 0x01
-#define SIGNAL_VAL_LEVEL_2 0x02
-#define SIGNAL_VAL_LEVEL_3 0x03
-#define SIGNAL_VAL_LEVEL_4 0x04
-#define SIGNAL_VAL_LEVEL_5 0x05
-#define SIGNAL_VAL_LEVEL_6 0x06
-#define SIGNAL_VAL_LEVEL_7 0x07
-#define SIGNAL_VAL_LEVEL_8 0x08
 
 #define SIGNAL_VAL_INACTIVE 0x00
 #define SIGNAL_VAL_ACTIVE 0x01
@@ -101,7 +91,6 @@ extern LIN_RX_signal_t g_lin_rx_signal;
 extern backlight_cb_t g_backlight_cb;
 
 extern PFGLS_signal_t g_PFGLS_signal;
-extern btn_rear_t g_btn_rear;
 extern window_lock_t g_window_lock;
 extern backlight_cb_t g_backlight_cb;
 
@@ -109,6 +98,3 @@ void btn_rear_tick_task(void);
 void window_task(window_t *window_ptr);
 void window_lock_task(void);
 void backlight_task(void);
-void lin_go_to_sleep(void);
-
-#endif

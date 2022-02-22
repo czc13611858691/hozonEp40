@@ -104,10 +104,6 @@ state_event_table_t g_state_event_table[STATE_EVENT_TABLE_NUM] = {
     {3, 3, 0},
 };
 
-state_obj_t g_btn_a_state;
-state_obj_t g_btn_b_state;
-state_obj_t g_btn_self_state;
-
 void state_mahine_run(state_obj_t *state_obj_ptr)
 {
     uint8_t cur_state_handle;

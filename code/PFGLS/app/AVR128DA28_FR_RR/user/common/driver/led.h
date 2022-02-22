@@ -22,6 +22,13 @@ typedef enum
     led_d7,
 } led_Dx_e;
 
+typedef struct
+{
+	uint8_t byte;
+	uint8_t bit;
+} led_Dx_t;
+
+
 void led_set_level(led_Dx_e Dx, uint8_t level);
 void led_update_buf_task(void);
 void led_init(void);

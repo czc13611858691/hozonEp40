@@ -1,9 +1,3 @@
-/**
- * @file ep40_cfg.c
- * @author 曹志成
- * @brief ep40功能规范中所有和硬件相关的配置放在这里的文件
- * @date 2021-10-20
- */
 #include "ep40_cfg.h"
 #include "led.h"
 #include <atmel_start.h>
@@ -12,13 +6,61 @@
 #include "lin.h"
 #include "lin_cfg.h"
 
-/* REAR按键回调函数注册 */
+typedef struct
+{
+    uint8_t status;
+    uint16_t ticks;
+    uint8_t btn_a_status_last;
+    uint8_t btn_a_status;
+    uint8_t btn_b_status_last;
+    uint8_t btn_b_status;
+    uint8_t slide_status_last;
+    uint8_t slide_status;
+    uint8_t slide_pos_first;
+    uint8_t slide_pos;
+    window_t window;
+} window_obj_t;
+
+typedef struct
+{
+    uint8_t cnt;
+    uint8_t val;
+    uint8_t satus;
+} lin_signal_cnt_t;
+
+PFGLS_signal_t g_PFGLS_signal;
+LIN_RX_signal_t g_lin_rx_signal = {
+    .backlight_brightness = 4,
+};
+lin_signal_cnt_t g_lin_signal_cnt[LIN_NUM_OF_SIGS];
+
 void rear_led_ctrl(uint8_t status);
+void window_lock_led_cb(uint8_t status);
+void window_lock_signal_cb(void);
+void backlight_cb(uint32_t duty);
+void left_window_signal_out_cb(uint8_t signal);
+void right_window_signal_out_cb(uint8_t signal);
+
 btn_rear_t g_btn_rear = {
     .rear_led_ctrl_cb = rear_led_ctrl,
 };
+window_lock_t g_window_lock = {
+    .led_cb = window_lock_led_cb,
+    .signal_cb = window_lock_signal_cb,
+};
+backlight_cb_t g_backlight_cb = backlight_cb;
+window_obj_t g_left_window_obj = {
+    .window = {
+        .cb = left_window_signal_out_cb,
+    },
+};
 
-/* REAR触摸检测定时器任务 */
+window_obj_t g_right_window_obj = {
+    .window = {
+        .cb = right_window_signal_out_cb,
+    },
+};
+
 void soft_timer_rear_btn_task(void)
 {
     static uint8_t btn_status_last = 0;
@@ -68,15 +110,6 @@ void rear_led_ctrl(uint8_t status)
     }
 }
 
-/* 窗锁止led控制回调函数注册和信号输出控制 */
-void window_lock_led_cb(uint8_t status);
-void window_lock_signal_cb(void);
-
-window_lock_t g_window_lock = {
-    .led_cb = window_lock_led_cb,
-    .signal_cb = window_lock_signal_cb,
-};
-
 void window_lock_led_cb(uint8_t status)
 {
     if (status == 1)
@@ -91,7 +124,6 @@ void window_lock_led_cb(uint8_t status)
     }
 }
 
-/* 窗锁止定时器按键触摸检测任务 */
 void soft_timer_window_lock_task(void)
 {
     static uint8_t btn_status_last = 0;
@@ -115,12 +147,6 @@ void window_lock_signal_cb(void)
     lin_signal_send_x_times(LI0_PFGLS_CustomSignal, 3, 1);
 }
 
-PFGLS_signal_t g_PFGLS_signal;
-
-LIN_RX_signal_t g_lin_rx_signal = {
-    .backlight_brightness = 3,
-};
-/* lin信号更新到变量定时器任务 */
 void soft_timer_lin_signal_update_task(void)
 {
     if (l_u8_rd_LI0_PDCU_BDCS1_Backlight_brightness_fb() != 0)
@@ -130,52 +156,10 @@ void soft_timer_lin_signal_update_task(void)
     g_lin_rx_signal.backlight_status = l_bool_rd_LI0_BDCS1_BacklightStatus();
 }
 
-/* 背光亮度控制回调函数注册 */
-void backlight_cb(uint32_t duty);
-backlight_cb_t g_backlight_cb = backlight_cb;
 void backlight_cb(uint32_t duty)
 {
     TCA0.SINGLE.CMP2 = duty;
 }
-
-/* 窗提升滑条和按键定时器任务 */
-void left_window_signal_out_cb(uint8_t signal);
-void right_window_signal_out_cb(uint8_t signal);
-typedef struct
-{
-    uint8_t status;
-    uint16_t ticks;
-    uint8_t btn_a_status_last;
-    uint8_t btn_a_status;
-    uint8_t btn_b_status_last;
-    uint8_t btn_b_status;
-    uint8_t slide_status_last;
-    uint8_t slide_status;
-    uint8_t slide_pos_first;
-    uint8_t slide_pos;
-    window_t window;
-} window_obj_t;
-
-window_obj_t g_left_window_obj = {
-    .window = {
-        .cb = left_window_signal_out_cb,
-    },
-};
-
-window_obj_t g_right_window_obj = {
-    .window = {
-        .cb = right_window_signal_out_cb,
-    },
-};
-
-typedef struct
-{
-    uint8_t cnt;
-    uint8_t val;
-    uint8_t satus;
-} lin_signal_cnt_t;
-
-lin_signal_cnt_t g_lin_signal_cnt[LIN_NUM_OF_SIGS];
 
 void ep40_lin_signal_update_while_task(void)
 {
@@ -301,41 +285,20 @@ void window_obj_var_clear(window_obj_t *handle)
     handle->window.signal = 0;
 }
 
-/* 左边窗提升信号输出回调函数 */
 void left_window_signal_out_cb(uint8_t signal)
 {
-    // uint8_t rear_status = g_btn_rear.status;
-
-    // if (rear_status == 0)
-    // {
-    //     lin_signal_x_shot_wr(PFGLS_0X21_FL_WINDOW_CONTROL, signal, 3);
-    // }
-    // else
-    // {
-    //     lin_signal_x_shot_wr(PFGLS_0X21_RL_WINDOW_CONTROL, signal, 3);
-    // }
 }
 
-/* 右边窗提升信号输出回调函数 */
 void right_window_signal_out_cb(uint8_t signal)
 {
     lin_signal_send_x_times(LI0_PFGLS_RLWindowControl, 3, signal);
 }
 
-/* 窗提升滑条呵呵按键软件定时器任务 */
 void soft_timer_window_task(void)
 {
     window_obj_t *window_obj_ptr = &g_left_window_obj;
     window_t *window_ptr = &g_left_window_obj.window;
-    //static uint8_t rear_status_last = 0;
-    //static uint8_t rear_status = 0;
 
-    //rear_status_last = rear_status;
-    //rear_status = g_btn_rear.status;
-
-    /*************************************LEFT************************************************/
-
-    /*************************************RIGHT************************************************/
     window_obj_ptr = &g_right_window_obj;
     window_ptr = &g_right_window_obj.window;
 

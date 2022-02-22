@@ -18,10 +18,6 @@ typedef struct
     motor_shake_cb_t motor_shake;
 } state_obj_t;
 
-extern state_obj_t g_btn_a_state;
-extern state_obj_t g_btn_b_state;
-extern state_obj_t g_btn_self_state;
-
 void state_mahine_run(state_obj_t *state_obj_ptr);
 
 #endif

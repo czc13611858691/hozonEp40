@@ -60,10 +60,6 @@ uint8_t USART_read(void);
 
 void USART_write(const uint8_t data);
 
-size_t USART0_Read(uint8_t * rDATA);
-
-size_t USART0_Send(uint8_t * tDATA);
-
 #ifdef __cplusplus
 }
 #endif

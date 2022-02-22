@@ -45,6 +45,7 @@
  */
 
 #include "lin.h"
+#include "target.h"
 
 static const l_u8 LI0_lin_diag_services_supported[LI0_DIAG_NUMBER_OF_SERVICES] = { 0x10,0x11,0x27,0x28,0x3E,0x22,0x2E,0x14,0x31,0x34,0x36,0x37,0x85 };
 static l_u8 LI0_lin_diag_services_flag[LI0_DIAG_NUMBER_OF_SERVICES] = { 0,0,0,0,0,0,0,0,0,0 };
@@ -123,13 +124,13 @@ static const lin_frame_t lin_frame_tbl[LIN_NUM_OF_FRMS] = {
 
 };
 
-static l_u8 LI0_lin_configuration_RAM[LI0_LIN_SIZE_OF_CFG] = { 0x00, 0x10, 0x21, 0x3C, 0x3D ,0xFF };
+static l_u8 LI0_lin_configuration_RAM[LI0_LIN_SIZE_OF_CFG] = { 0x00, 0x10, LIN_TX_ID, 0x3C, 0x3D ,0xFF };
 
-static const l_u16  LI0_lin_configuration_ROM[LI0_LIN_SIZE_OF_CFG] = { 0x0000, 0x10, 0x21, 0x3C, 0x3D ,0xFFFF };
+static const l_u16  LI0_lin_configuration_ROM[LI0_LIN_SIZE_OF_CFG] = { 0x0000, 0x10, LIN_TX_ID, 0x3C, 0x3D ,0xFFFF };
 
-static l_u8 LI0_lin_configured_NAD = 0x60;
+static l_u8 LI0_lin_configured_NAD = LIN_NAD;
 
-static l_u8 LI0_lin_frm_err_resp_sig[1] = { 0x21 };
+static l_u8 LI0_lin_frm_err_resp_sig[1] = { LIN_TX_ID };
 
 static l_u16 LI0_lin_response_error_byte_offset[1] = { LIN_LI0_PFGLS_ResponseError_BYTE_OFFSET };
 
@@ -140,7 +141,7 @@ const lin_node_attribute_t      g_lin_node_attribute_array[LIN_NUM_OF_SLAVE_IFCS
     /** LI0 **/
     {
         .configured_NAD_ptr = &LI0_lin_configured_NAD,        /*configured_NAD*/
-        .initial_NAD = 0x60,        /*initial_NAD*/
+        .initial_NAD = LIN_NAD,        /*initial_NAD*/
         .serial_number = {0x1, 0x1, 0x1, 0x1},
         .product_id = {0x0000, 0x0000, 0x00},   /*{<supplier_id>,<function_id>,<variant>}*/
         .resp_err_frm_id_ptr = LI0_lin_frm_err_resp_sig,                         /*list index of frame error*/

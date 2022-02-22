@@ -45,6 +45,7 @@
 /* MODULE lin1. */
 
 #include "lin1.h"
+#include "target.h"
 
 
 /*! lin1 configuration structure */

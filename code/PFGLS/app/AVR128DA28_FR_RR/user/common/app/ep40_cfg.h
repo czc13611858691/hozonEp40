@@ -19,15 +19,12 @@
 /* REAR时基配置 */
 #define ONE_TICK_UNIT_MS 20
 
-/* 硬件pwm占空比最大值配置 */
-#define DUTY_MAX 1199
-
 /* 背光亮度白天和夜晚的亮度区别 */
 #define BACKLIGHT_NIGHT_GAIN 50
 #define BACKLIGHT_DAYTIME_GAIN 100
 
 /* 功能规范中REAR电容不触发时间，60*1000=60000ms */
-#define TIMEOUT_REAR_UNIT_S 5
+#define TIMEOUT_REAR_UNIT_S 60
 
 /* WINDOW时基配置 */
 #define WINDOW_TICK_UNIT_MS 20

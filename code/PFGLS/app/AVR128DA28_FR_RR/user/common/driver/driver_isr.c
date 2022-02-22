@@ -38,36 +38,36 @@
 #include "soft_timer.h"
 #include "lin_driver.h"
 #include "lin.h"
+#include "target.h"
 
 /* lin RX接收到一个完整数据产生的中断 */
-ISR(USART0_RXC_vect)
+ISR(LIN_USART_ISR_VECT)
 {
    uint8_t index;
-   index = (USART0.STATUS & USART_ISFIF_bm) >> USART_ISFIF_bp;
+   index = (LIN_USART_X.STATUS & USART_ISFIF_bm) >> USART_ISFIF_bp;
    if (index == 1)
    {
       LIN_DRV_IRQHandler(0, -1);
-      USART0.STATUS |= USART_ISFIF_bm;
+      LIN_USART_X.STATUS |= USART_ISFIF_bm;
       return;
    }
 
-   index = (USART0.RXDATAH & USART_DATA8_bm) >> USART_DATA8_bp;
+   index = (LIN_USART_X.RXDATAH & USART_DATA8_bm) >> USART_DATA8_bp;
    if (index == 0) /* is pid */
    {
       LIN_DRV_IRQHandler(0, 1);
-      USART0.STATUS |= USART_ISFIF_bm;
+      LIN_USART_X.STATUS |= USART_ISFIF_bm;
       return;
    }
 
-   index = (USART0.RXDATAH & USART_FERR_bm) >> USART_FERR_bp;
+   index = (LIN_USART_X.RXDATAH & USART_FERR_bm) >> USART_FERR_bp;
    if (index == 1)
    {
-      // g_lin_protocol_state_array[0].error_in_response = 1;
       LIN_DRV_IRQHandler(0, -2);
    }
 
    LIN_DRV_IRQHandler(0, 0);
-   USART0.STATUS |= USART_ISFIF_bm;
+   LIN_USART_X.STATUS |= USART_ISFIF_bm;
 }
 
 ISR(RTC_CNT_vect)
@@ -87,64 +87,12 @@ ISR(TCB0_INT_vect)
    TCB0.INTFLAGS = TCB_CAPT_bm;
 }
 
-/* 为dac输出单独开一个定时器中断(为了调手感)，时间为0.5ms */
 uint16_t sin_data_index = 0;
-// 512,757,944,1019,969,813,591,362,180,86,98,209,385,581,750,851,866,795,662,502,356,257,227,266,360,482,600,686,722,705,644,559,473,408,376,381,416,467,519,558,576,573,562,540,515,493,478,474,480,492,506,517,524,
+
 uint16_t sin_data[53] = {
-    76,
-    113,
-    141,
-    152,
-    145,
-    121,
-    88,
-    54,
-    27,
-    12,
-    14,
-    31,
-    57,
-    87,
-    112,
-    127,
-    129,
-    119,
-    99,
-    75,
-    53,
-    38,
-    34,
-    39,
-    54,
-    72,
-    90,
-    102,
-    108,
-    105,
-    96,
-    83,
-    70,
-    61,
-    56,
-    57,
-    62,
-    70,
-    77,
-    83,
-    86,
-    85,
-    84,
-    81,
-    77,
-    73,
-    71,
-    71,
-    72,
-    73,
-    75,
-    77,
-    78,
+   76,113,141,152,145,121,88,54,27,12,14,31,57,87,112,127,129,119,99,75,53,38,34,39,54,72,90,102,108,105,96,83,70,61,56,57,62,70,77,83,86,85,84,81,77,73,71,71,72,73,75,77,78,
 };
+
 uint8_t sin_data_out_flg = 0;
 
 void soft_timer_sin_data_task(void)

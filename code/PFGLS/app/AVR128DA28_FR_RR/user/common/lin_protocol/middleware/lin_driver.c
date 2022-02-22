@@ -1,6 +1,7 @@
 #include "lin_driver.h"
 #include "lin1.h"
 #include "ep40_cfg.h"
+#include "target.h"
 
 /*  用来保存LIN 驱动状态的表 */
 lin_state_t *g_linStatePtr[LIN_COM_NUM] = {NULL}; // LIN_COM_NUM 取决于芯片自身支持的外设数目 一般LIN用两个就够了，再多会影响其他功能

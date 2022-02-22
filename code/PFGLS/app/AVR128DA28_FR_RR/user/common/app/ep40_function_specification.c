@@ -1,16 +1,26 @@
 #include "ep40_function_specification.h"
 #include "ep40_cfg.h"
 #include "atmel_start_pins.h"
-// PFGLS 主开关
+#include "target.h"
 
-/* V01-3.1.5.1 */
-/* 反转按键任务，需要放在定时器中，TIMEOUT_REAR_UNIT_S配置定时器任务的时间 */
-/* 外部输入:cap_trig_flg\press_trig_flg */
-/* 判断电容触发标志，压力触发标志 */
-/* 输出:反转LED控制回调函数 */
+const uint32_t g_level[11] = {
+    0,
+    20,
+    28,
+    37,
+    46,
+    55,
+    64,
+    73,
+    82,
+    91,
+    100,
+};
+uint8_t g_level_index = 4;//level3 初始值 37%
+
 void btn_rear_tick_task(void)
 {
-    btn_rear_t *btn_rear_ptr = &g_btn_rear;
+    btn_rear_t* btn_rear_ptr = &g_btn_rear;
     switch (btn_rear_ptr->status)
     {
     case 0:
@@ -70,7 +80,7 @@ void btn_rear_tick_task(void)
     }
 }
 
-void window_task(window_t *window_ptr)
+void window_task(window_t* window_ptr)
 {
     switch (window_ptr->status)
     {
@@ -232,8 +242,8 @@ void window_task(window_t *window_ptr)
 /* V01-3.1.5.6 */
 void window_lock_task(void)
 {
-    window_lock_t *window_lock_ptr = &g_window_lock;
-    LIN_RX_signal_t *signal_ptr = &g_lin_rx_signal;
+    window_lock_t* window_lock_ptr = &g_window_lock;
+    LIN_RX_signal_t* signal_ptr = &g_lin_rx_signal;
 
     if (window_lock_ptr->capsense_flg == 1)
     {
@@ -256,69 +266,38 @@ void window_lock_task(void)
     }
 }
 
-const uint32_t g_level[10] = {
-    20,
-    28,
-    37,
-    46,
-    55,
-    64,
-    73,
-    82,
-    91,
-    100,
-};
-
 /**
  * @brief 背光亮度控制任务
- * 
+ *
  * 输入:LIN信号更新到变量
  * 输出:背光亮度控制回调函数
- * 
+ *
  */
 void backlight_task(void)
 {
-    LIN_RX_signal_t *signal_ptr = &g_lin_rx_signal;
+    LIN_RX_signal_t* signal_ptr = &g_lin_rx_signal;
 
     uint32_t tmp = 0;
     uint32_t night_gain = 0;
-    uint32_t pwm_index = 0;
 
     if (signal_ptr->backlight_status == SIGNAL_VAL_ACTIVE)
     {
         night_gain = BACKLIGHT_NIGHT_GAIN;
-        pwm_index = signal_ptr->backlight_brightness;
+        if (signal_ptr->backlight_brightness != 0)
+        {
+            g_level_index = signal_ptr->backlight_brightness;
+        }
     }
     else
     {
         night_gain = BACKLIGHT_DAYTIME_GAIN;
-        pwm_index = 9;
+        g_level_index = 10;
     }
 
-    tmp = g_level[pwm_index] * night_gain * DUTY_MAX / 10000;
+    tmp = g_level[g_level_index] * night_gain * DUTY_MAX / 10000;
 
     if (g_backlight_cb != NULL)
     {
         g_backlight_cb(tmp);
     }
-}
-
-void __attribute__((optimize("O0"))) lin_go_to_sleep(void)
-{
-    /* 使能脚设置低电平 */
-    LIN_EN_set_level(0);
-
-    /* 关闭usart模块 */
-    Disable_global_interrupt();
-    USART0.CTRLA &= ~(1 << USART_ABEIE_bp | 1 << USART_RXCIE_bp);
-    USART0.CTRLB &= ~(1 << USART_TXEN_bp | USART_RXMODE_LINAUTO_gc | 1 << USART_RXEN_bp);
-
-    /* LIN TX设置低电平 */
-    PA0_set_dir(PORT_DIR_OUT);
-    PA0_set_level(
-        // <y> Initial level
-        // <id> pad_initial_level
-        // <false"> Low
-        // <true"> High
-        false);
 }
