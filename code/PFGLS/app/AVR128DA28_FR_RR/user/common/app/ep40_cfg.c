@@ -261,7 +261,7 @@ void lin_signal_send_x_times(l_signal_handle signal_handle, uint8_t cnt, uint8_t
     g_lin_signal_cnt[signal_handle].val = val;
 }
 
-void window_obj_var_clear(window_obj_t *handle)
+void window_obj_var_clear(window_obj_t* handle)
 {
     handle->status = 0;
     handle->ticks = 0;
@@ -296,8 +296,8 @@ void right_window_signal_out_cb(uint8_t signal)
 
 void soft_timer_window_task(void)
 {
-    window_obj_t *window_obj_ptr = &g_left_window_obj;
-    window_t *window_ptr = &g_left_window_obj.window;
+    window_obj_t* window_obj_ptr = &g_left_window_obj;
+    window_t* window_ptr = &g_left_window_obj.window;
 
     window_obj_ptr = &g_right_window_obj;
     window_ptr = &g_right_window_obj.window;
@@ -329,12 +329,15 @@ void soft_timer_window_task(void)
             window_ptr->long_flg = 1;
             window_ptr->btn_a_cap_trig_flg = 1;
         }
+
+#if 0
         if (window_obj_ptr->btn_a_status == 0)
         {
             window_obj_ptr->status = 0;
             window_ptr->long_flg = 0;
             window_ptr->btn_a_cap_trig_flg = 1;
         }
+#endif
     }
 
     if ((window_obj_ptr->btn_b_status != 0) && (window_obj_ptr->btn_b_status_last == 0))
@@ -355,12 +358,14 @@ void soft_timer_window_task(void)
             window_ptr->long_flg = 1;
             window_ptr->btn_b_cap_trig_flg = 1;
         }
+#if 0
         if (window_obj_ptr->btn_b_status == 0)
         {
             window_obj_ptr->status = 0;
             window_ptr->long_flg = 0;
             window_ptr->btn_b_cap_trig_flg = 1;
         }
+#endif
     }
 
     window_obj_ptr->slide_status_last = window_obj_ptr->slide_status;
@@ -380,6 +385,40 @@ void soft_timer_window_task(void)
     }
     else if (window_obj_ptr->status == 4)
     {
+        if (window_obj_ptr->slide_pos_first < 100)
+        {
+            if (window_obj_ptr->slide_pos > (window_obj_ptr->slide_pos_first + 100))
+            {
+                window_ptr->long_flg = 0;
+                window_ptr->slide_1_to_2_flg = 1;
+                window_obj_ptr->status = 5;
+            }
+        }
+        else if (window_obj_ptr->slide_pos_first > 150)
+        {
+            if ((window_obj_ptr->slide_pos + 100) < window_obj_ptr->slide_pos_first)
+            {
+                window_ptr->long_flg = 0;
+                window_ptr->slide_2_to_1_flg = 1;
+                window_obj_ptr->status = 5;
+            }
+        }
+        else
+        {
+            if (window_obj_ptr->slide_pos > (window_obj_ptr->slide_pos_first + 100))
+            {
+                window_ptr->long_flg = 0;
+                window_ptr->slide_1_to_2_flg = 1;
+                window_obj_ptr->status = 5;
+            }
+            else if ((window_obj_ptr->slide_pos + 100) < window_obj_ptr->slide_pos_first)
+            {
+                window_ptr->long_flg = 0;
+                window_ptr->slide_2_to_1_flg = 1;
+                window_obj_ptr->status = 5;
+            }
+        }
+#if 0
         if (window_obj_ptr->slide_status == 0)
         {
             window_obj_ptr->status = 0;
@@ -441,6 +480,7 @@ void soft_timer_window_task(void)
                 }
             }
         }
+#endif
     }
     else if (window_obj_ptr->status == 5)
     {
