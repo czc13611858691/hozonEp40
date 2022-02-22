@@ -266,13 +266,6 @@ void window_lock_task(void)
     }
 }
 
-/**
- * @brief 背光亮度控制任务
- *
- * 输入:LIN信号更新到变量
- * 输出:背光亮度控制回调函数
- *
- */
 void backlight_task(void)
 {
     LIN_RX_signal_t* signal_ptr = &g_lin_rx_signal;

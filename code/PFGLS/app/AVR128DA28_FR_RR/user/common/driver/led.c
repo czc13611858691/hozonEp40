@@ -1,9 +1,3 @@
-/*
- * led.c
- *
- * Created: 2021/9/24 15:15:36
- *  Author: Sunny
- */
 #include "led.h"
 #include "hc595.h"
 #include <atmel_start.h>

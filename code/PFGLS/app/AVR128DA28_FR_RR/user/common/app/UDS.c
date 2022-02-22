@@ -6,7 +6,6 @@
 #include "target.h"
 #include "lin_commontl_api.h"
 
-/* DID需要写入EEPROM的变量 */
 const eeprom_did_data_t VINDataIdentifier_eeprom = {
     .start = 10,
     .len = 17,

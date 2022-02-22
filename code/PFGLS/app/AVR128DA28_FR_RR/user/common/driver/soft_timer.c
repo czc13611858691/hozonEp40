@@ -1,9 +1,3 @@
-/*
- * soft_timer.c
- *
- * Created: 2021/9/24 16:17:51
- *  Author: Sunny
- */
 #include "soft_timer.h"
 #include <stdlib.h>
 #include <string.h>

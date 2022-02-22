@@ -117,15 +117,12 @@ void soft_timer_touch_press_motor_task(void)
 
 void __attribute__((optimize("O0"))) lin_go_to_sleep(void)
 {
-    /* ???????? */
     LIN_EN_set_level(0);
 
-    /* ??usart?? */
     Disable_global_interrupt();
     LIN_USART_X.CTRLA &= ~(1 << USART_ABEIE_bp | 1 << USART_RXCIE_bp);
     LIN_USART_X.CTRLB &= ~(1 << USART_TXEN_bp | USART_RXMODE_LINAUTO_gc | 1 << USART_RXEN_bp);
 
-    /* LIN TX????? */
     LIN_TX_SET_DIR(PORT_DIR_OUT);
     LIN_TX_SET_LEVEL(false);
 }

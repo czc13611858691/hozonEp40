@@ -1,10 +1,3 @@
-/*
- * led.h
- *
- * Created: 2021/9/24 15:15:55
- *  Author: Sunny
- */
-
 #ifndef LED_H_
 #define LED_H_
 
