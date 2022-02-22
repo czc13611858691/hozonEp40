@@ -26,6 +26,7 @@
 #include "lin_diagnostic_service.h"
 #include "UDS.h"
 #include "soft_timer.h"
+#include "target.h"
 
 #define SECURITY_ACCESS_LOCK        0U
 #define SECURITY_ACCESS_LEVEL_1     3U
@@ -1503,6 +1504,8 @@ void lin_communication_ctrl(l_ifc_handle iii)
                 break;
             }
 
+            g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=LIN_TX_ID;
+
             /* 肯定响应抑制 */
             if (suppress_pos_msg_indication == 0)
             {
@@ -1527,6 +1530,8 @@ void lin_communication_ctrl(l_ifc_handle iii)
                 ld_make_slave_response_pdu(iii, SERVICE_COMMUNICATION_CTRL, NEGATIVE, 0x31);
                 break;
             }
+
+            g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=LIN_TX_ID;
 
             /* 肯定响应抑制 */
             if (suppress_pos_msg_indication == 0)
@@ -1554,6 +1559,8 @@ void lin_communication_ctrl(l_ifc_handle iii)
                 ld_make_slave_response_pdu(iii, SERVICE_COMMUNICATION_CTRL, NEGATIVE, 0x31);
                 break;
             }
+
+            g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=0xFF;
 
             /* 肯定响应抑制 */
             if (suppress_pos_msg_indication == 0)
