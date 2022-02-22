@@ -1504,7 +1504,7 @@ void lin_communication_ctrl(l_ifc_handle iii)
                 break;
             }
 
-            g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=LIN_TX_ID;
+            // g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=LIN_TX_ID;
 
             /* 肯定响应抑制 */
             if (suppress_pos_msg_indication == 0)
@@ -1531,7 +1531,7 @@ void lin_communication_ctrl(l_ifc_handle iii)
                 break;
             }
 
-            g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=LIN_TX_ID;
+            // g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=LIN_TX_ID;
 
             /* 肯定响应抑制 */
             if (suppress_pos_msg_indication == 0)
@@ -1560,7 +1560,7 @@ void lin_communication_ctrl(l_ifc_handle iii)
                 break;
             }
 
-            g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=0xFF;
+            // g_lin_protocol_user_cfg_array[0].list_identifiers_RAM_ptr[2]=0xFF;
 
             /* 肯定响应抑制 */
             if (suppress_pos_msg_indication == 0)
