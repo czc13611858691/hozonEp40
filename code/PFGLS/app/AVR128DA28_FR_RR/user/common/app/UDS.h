@@ -26,5 +26,9 @@ extern const eeprom_did_data_t ECUInstallationDateDataIdentifier_eeprom;
 extern uint8_t gECUInstallationDateDataIdentifier[4];
 extern uint8_t gECUInstallationDateDataIdentifier_update_flg;
 
+extern uint32_t SECURITY_ACCESS_SEED;
+extern uint8_t g_calculate_key_flg;
+extern uint32_t diag_device_send_key;
+
 void UDS_read_DID_from_eeprom(void);
 void UDS_flg_check_task(void);

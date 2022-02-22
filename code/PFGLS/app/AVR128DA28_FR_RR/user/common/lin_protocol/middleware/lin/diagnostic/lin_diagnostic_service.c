@@ -25,6 +25,7 @@
 #include "lin_commontl_api.h"
 #include "lin_diagnostic_service.h"
 #include "UDS.h"
+#include "soft_timer.h"
 
 #define SECURITY_ACCESS_LOCK        0U
 #define SECURITY_ACCESS_LEVEL_1     3U
@@ -34,11 +35,17 @@
 #define SESSION_PROGRAM     2U
 #define SESSION_EXTEND      3U
 
+#define NO_DEFAULT_SESSION_PERIOD (5000);
+
   /* 会话模式:上电默认会话模式(0x01) */
 l_u8 g_sessionStatus = SESSION_DEFAULT;
+uint16_t g_noDefaultSessionTicks = 0;
 
 /* 安全等级:默认安全等级为锁定状态 */
 l_u8 g_security_access = SECURITY_ACCESS_LOCK;
+
+uint8_t g_security_access_ticks = 0;
+uint16_t g_security_access_10s_timer_ticks = 0;
 
 #if (1U == SUPPORT_TRANSPORT_LAYER)
 #if (1U == SUPPORT_DIAG_SERVICE)
@@ -1049,6 +1056,15 @@ void lin_slave_session_ctr(l_ifc_handle iii)
                 break;
             }
 
+            if (g_sessionStatus == SESSION_DEFAULT)
+            {
+                /* 子功能在当前会话模式下不支持 */
+                ld_make_slave_response_pdu(iii, SERVICE_SESSION_CONTROL, NEGATIVE, 0x7E);
+                break;
+            }
+
+            g_noDefaultSessionTicks = NO_DEFAULT_SESSION_PERIOD;
+
             /* 切换会话为编程会话 */
             g_sessionStatus = SESSION_PROGRAM;
 
@@ -1065,17 +1081,13 @@ void lin_slave_session_ctr(l_ifc_handle iii)
             if (suppress_pos_msg_indication == 0)
             {
                 lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
-                lin_tl_pdu[1] = 0x06;
+                lin_tl_pdu[1] = 0x02;
                 lin_tl_pdu[2] = 0x50; //肯定响应 0x10 + 0x40
                 lin_tl_pdu[3] = g_sessionStatus;
-
-                /* 会话参数值
-                    P2CAN_Server max: 50 ms; - 0x32
-                    P2*CAN_Server max: 5000 ms; - 0x1388 */
-                lin_tl_pdu[4] = 0x00U;
-                lin_tl_pdu[5] = 0x32U;
-                lin_tl_pdu[6] = 0x13U;
-                lin_tl_pdu[7] = 0x88U;
+                lin_tl_pdu[4] = 0xFFU;
+                lin_tl_pdu[5] = 0xFFU;
+                lin_tl_pdu[6] = 0xFFU;
+                lin_tl_pdu[7] = 0xFFU;
 
                 ld_put_raw(iii, lin_tl_pdu);
                 tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
@@ -1089,6 +1101,7 @@ void lin_slave_session_ctr(l_ifc_handle iii)
                 ld_make_slave_response_pdu(iii, SERVICE_SESSION_CONTROL, NEGATIVE, 0x7E);
                 break;
             }
+            g_noDefaultSessionTicks = NO_DEFAULT_SESSION_PERIOD;
 
             /* 切换会话为扩展会话 */
             g_sessionStatus = SESSION_EXTEND;
@@ -1100,17 +1113,13 @@ void lin_slave_session_ctr(l_ifc_handle iii)
             if (suppress_pos_msg_indication == 0)
             {
                 lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
-                lin_tl_pdu[1] = 0x06;
+                lin_tl_pdu[1] = 0x02;
                 lin_tl_pdu[2] = 0x50; //肯定响应 0x10 + 0x40
                 lin_tl_pdu[3] = g_sessionStatus;
-
-                /* 会话参数值
-                    P2CAN_Server max: 50 ms; - 0x32
-                    P2*CAN_Server max: 5000 ms; - 0x1388 */
-                lin_tl_pdu[4] = 0x00U;
-                lin_tl_pdu[5] = 0x32U;
-                lin_tl_pdu[6] = 0x13U;
-                lin_tl_pdu[7] = 0x88U;
+                lin_tl_pdu[4] = 0xFFU;
+                lin_tl_pdu[5] = 0xFFU;
+                lin_tl_pdu[6] = 0xFFU;
+                lin_tl_pdu[7] = 0xFFU;
 
                 ld_put_raw(iii, lin_tl_pdu);
                 tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
@@ -1169,13 +1178,6 @@ void lin_ecu_reset(l_ifc_handle iii)
                 break;
             }
 
-            if (g_security_access == SECURITY_ACCESS_LOCK)
-            {
-                /* 条件不满足,硬件复位需要安全等级设置为LEVEL 1或者LEVEL FBL */
-                ld_make_slave_response_pdu(iii, SERVICE_ECU_RESET, NEGATIVE, 0x22);
-                break;
-            }
-
             /* 置位复位标志位,复位之前需要发送肯定响应报文,所以在main函数中检测发送队列为空后才进行复位 */
             ecu_rst_flg = 1;
 
@@ -1207,24 +1209,7 @@ void lin_ecu_reset(l_ifc_handle iii)
     }
 }
 
-const uint32_t SECURITY_ACCESS_SEED = 0x11223344;
-
-const uint32_t APP_MASK = 0x460DB0A7;
 uint8_t g_request_seed_flg_LEVEL_1 = 0;
-uint32_t canculate_security_access_bcm(uint32_t seed, uint32_t APP_MASK)
-{
-    uint32_t tmpseed = seed;
-    uint32_t key_1 = tmpseed ^ APP_MASK;
-    uint32_t seed_2 = tmpseed;
-    seed_2 = (seed_2 & 0x55555555) << 1 ^ (seed_2 & 0xAAAAAAAA) >> 1;
-    seed_2 = (seed_2 ^ 0x33333333) << 2 ^ (seed_2 ^ 0xCCCCCCCC) >> 2;
-    seed_2 = (seed_2 & 0x0F0F0F0F) << 4 ^ (seed_2 & 0xF0F0F0F0) >> 4;
-    seed_2 = (seed_2 ^ 0x00FF00FF) << 8 ^ (seed_2 ^ 0xFF00FF00) >> 8;
-    seed_2 = (seed_2 & 0x0000FFFF) << 16 ^ (seed_2 & 0xFFFF0000) >> 16;
-    uint32_t key_2 = seed_2;
-    uint32_t key = key_1 + key_2;
-    return key;
-}
 
 #if 0
 #define BOOT_MASK 0xD503607A
@@ -1297,7 +1282,7 @@ void lin_security_access(l_ifc_handle iii)
     l_u8 sub_func_id;
     //l_u8 suppress_pos_msg_indication;
     l_u8 d_len;
-    uint32_t diag_device_send_key = 0;
+    uint32_t diag_device_send_key_temp = 0;
     uint32_t diag_device_send_key4 = 0;
     uint32_t diag_device_send_key5 = 0;
     uint32_t diag_device_send_key6 = 0;
@@ -1323,10 +1308,15 @@ void lin_security_access(l_ifc_handle iii)
         return;
     }
 
-    if (g_sessionStatus == SESSION_DEFAULT)
+    // if (g_sessionStatus == SESSION_DEFAULT)
     {
         ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x7F); //0x7E 默认会话模式下不支持该服务
         return;
+    }
+
+    if (g_security_access_10s_timer_ticks != 0)
+    {
+        ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x37); //延时时间未到
     }
 
     if (d_len == 2U)
@@ -1340,7 +1330,27 @@ void lin_security_access(l_ifc_handle iii)
                 ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x7E); //0x7E 服务当前会话不支持该子功能
                 break;
             }
+
+            /* 请求种子时安全等级已经解锁的情况下返回的种子全为0 */
+            if (g_security_access == SECURITY_ACCESS_LEVEL_1)
+            {
+                lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
+                lin_tl_pdu[1] = 0x06;
+                lin_tl_pdu[2] = 0x67; //肯定响应 0x27 + 0x40
+                lin_tl_pdu[3] = 0x03;
+                lin_tl_pdu[4] = 0x00;
+                lin_tl_pdu[5] = 0x00;
+                lin_tl_pdu[6] = 0x00;
+                lin_tl_pdu[7] = 0x00;
+                ld_put_raw(iii, lin_tl_pdu);
+                tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
+                break;
+            }
+
             g_request_seed_flg_LEVEL_1 = 1;
+            g_calculate_key_flg = 1;
+
+            SECURITY_ACCESS_SEED = (((uint32_t)g_soft_timer_ticks & 0x00FF) << 8) | (((uint32_t)g_soft_timer_ticks & 0xFF00) >> 8) | (((uint32_t)g_soft_timer_ticks & 0x0FF0) << 12) | (((uint32_t)(g_soft_timer_ticks >> 3) & 0x00FF) << 24);
 
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x06;
@@ -1354,31 +1364,9 @@ void lin_security_access(l_ifc_handle iii)
             ld_put_raw(iii, lin_tl_pdu);
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
-            /* 扩展模式下只支持安全等级LEVEL1 */
-#if 0
-            /* 安全等级LEVEL FBL 请求种子 */
-        case 11:
-            if (g_sessionStatus == SESSION_EXTEND)
-            {
-                ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x7E); //0x7E 服务当前会话不支持该子功能
-                break;
-            }
-
-            g_request_seed_flg_LEVEL_FBL = 1;
-
-            lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
-            lin_tl_pdu[1] = 0x06;
-            lin_tl_pdu[2] = 0x67; //肯定响应 0x27 + 0x40
-            lin_tl_pdu[3] = 0x11;
-            lin_tl_pdu[4] = (SECURITY_ACCESS_SEED >> 24U) & 0x000000FF;
-            lin_tl_pdu[5] = (SECURITY_ACCESS_SEED >> 16U) & 0x000000FF;
-            lin_tl_pdu[6] = (SECURITY_ACCESS_SEED >> 8U) & 0x000000FF;
-            lin_tl_pdu[7] = (SECURITY_ACCESS_SEED >> 0U) & 0x000000FF;
-
-            ld_put_raw(iii, lin_tl_pdu);
-            tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
+        case 0x11:
+            ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x7E); //0x7E 服务当前会话不支持该子功能
             break;
-#endif
         default:
             ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x12); //0x12 子功能不支持
             break;
@@ -1409,17 +1397,19 @@ void lin_security_access(l_ifc_handle iii)
             diag_device_send_key5 = (uint32_t)rx_queue->tl_pdu_ptr[rx_queue->queue_header][5] << 16U;
             diag_device_send_key6 = (uint32_t)rx_queue->tl_pdu_ptr[rx_queue->queue_header][6] << 8U;
             diag_device_send_key7 = (uint32_t)rx_queue->tl_pdu_ptr[rx_queue->queue_header][7] << 0U;
-            diag_device_send_key = diag_device_send_key4 | diag_device_send_key5 | diag_device_send_key6 | diag_device_send_key7;
+            diag_device_send_key_temp = diag_device_send_key4 | diag_device_send_key5 | diag_device_send_key6 | diag_device_send_key7;
 
-            if (diag_device_send_key == canculate_security_access_bcm(SECURITY_ACCESS_SEED, APP_MASK))
+            if (diag_device_send_key == diag_device_send_key_temp)
             {
                 /* 切换安全等级 */
                 g_security_access = SECURITY_ACCESS_LEVEL_1;
 
+                g_security_access_ticks = 0; // 安全访问失败计数清零
+
                 /* 发送肯定响应信息 */
                 lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
                 lin_tl_pdu[1] = 0x02;
-                lin_tl_pdu[2] = 0x67; //肯定响应 0x27 + 0x40
+                lin_tl_pdu[2] = 0x67;
                 lin_tl_pdu[3] = 0x04;
                 lin_tl_pdu[4] = 0xFFU;
                 lin_tl_pdu[5] = 0xFFU;
@@ -1430,59 +1420,25 @@ void lin_security_access(l_ifc_handle iii)
                 tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             }
             else {
-                ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x35U); //0x35 接收到发送密钥子功能的密钥，但与 ECU 内部存储或计算的密钥不匹配。
+                g_security_access_ticks++;
+                if (g_security_access_ticks == 3)
+                {
+                    g_security_access_10s_timer_ticks = 10000;
+                }
+                if (g_security_access_ticks >= 3)
+                {
+                    ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x36U); //访问次数超限
+                }
+                else {
+                    ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x35U); //0x35 接收到发送密钥子功能的密钥，但与 ECU 内部存储或计算的密钥不匹配。
+                }
                 break;
             }
             break;
             /* 扩展模式下只支持安全等级LEVEL1 */
-#if 0
-            /* 安全等级LEVEL FBL 接收密钥并给出响应信息 */
-        case 12:
-            if (g_sessionStatus == SESSION_EXTEND)
-            {
-                ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x7E); //0x7E 服务当前会话不支持该子功能
-                break;
-            }
-
-            if (g_request_seed_flg_LEVEL_FBL == 1)
-            {
-                g_request_seed_flg_LEVEL_FBL = 0;
-            }
-            else {
-                ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x24U); //0x24 在未接收到请求种子信息的情况下接收到发送密钥的信息。
-                break;
-            }
-
-            diag_device_send_key4 = (uint32_t)rx_queue->tl_pdu_ptr[rx_queue->queue_header][4] << 24U;
-            diag_device_send_key5 = (uint32_t)rx_queue->tl_pdu_ptr[rx_queue->queue_header][5] << 16U;
-            diag_device_send_key6 = (uint32_t)rx_queue->tl_pdu_ptr[rx_queue->queue_header][6] << 8U;
-            diag_device_send_key7 = (uint32_t)rx_queue->tl_pdu_ptr[rx_queue->queue_header][7] << 0U;
-            diag_device_send_key = diag_device_send_key4 | diag_device_send_key5 | diag_device_send_key6 | diag_device_send_key7;
-
-            if (diag_device_send_key == GENERIC_ALGORITHM(SECURITY_ACCESS_SEED, APP_MASK))
-            {
-                /* 切换安全等级 */
-                g_security_access = g_request_seed_flg_LEVEL_FBL;
-
-                /* 发送肯定响应信息 */
-                lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
-                lin_tl_pdu[1] = 0x02;
-                lin_tl_pdu[2] = 0x67; //肯定响应 0x27 + 0x40
-                lin_tl_pdu[3] = 0x12;
-                lin_tl_pdu[4] = 0xFFU;
-                lin_tl_pdu[5] = 0xFFU;
-                lin_tl_pdu[6] = 0xFFU;
-                lin_tl_pdu[7] = 0xFFU;
-
-                ld_put_raw(iii, lin_tl_pdu);
-                tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
-            }
-            else {
-                ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x35U); //0x35 接收到发送密钥子功能的密钥，但与 ECU 内部存储或计算的密钥不匹配。
-                break;
-            }
+        case 0x12:
+            ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x7E); //0x7E 服务当前会话不支持该子功能
             break;
-#endif
         default:
             ld_make_slave_response_pdu(iii, SERVICE_SECURITY_ACCESS, NEGATIVE, 0x12); //0x12 子功能不支持
             break;
@@ -1535,7 +1491,32 @@ void lin_communication_ctrl(l_ifc_handle iii)
             /* 使能收发 */
         case 0:
             /* 通讯类型:01/02/03 */
-            if ((communication_type != 1) || (communication_type != 2) || (communication_type != 3))
+            if ((communication_type != 1) && (communication_type != 2) && (communication_type != 3))
+            {
+                /* 如果 ECU 检测到请求信息中通信类型错误，则返回该否定码 */
+                ld_make_slave_response_pdu(iii, SERVICE_COMMUNICATION_CTRL, NEGATIVE, 0x31);
+                break;
+            }
+
+            /* 肯定响应抑制 */
+            if (suppress_pos_msg_indication == 0)
+            {
+                lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
+                lin_tl_pdu[1] = 0x02;
+                lin_tl_pdu[2] = 0x68; //肯定响应 0x28 + 0x40
+                lin_tl_pdu[3] = sub_func_id;
+                lin_tl_pdu[4] = 0xFFU;
+                lin_tl_pdu[5] = 0xFFU;
+                lin_tl_pdu[6] = 0xFFU;
+                lin_tl_pdu[7] = 0xFFU;
+
+                ld_put_raw(iii, lin_tl_pdu);
+                tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
+            }
+            break;
+        case 1:
+            /* 通讯类型:01/02/03 */
+            if ((communication_type != 1) && (communication_type != 2) && (communication_type != 3))
             {
                 /* 如果 ECU 检测到请求信息中通信类型错误，则返回该否定码 */
                 ld_make_slave_response_pdu(iii, SERVICE_COMMUNICATION_CTRL, NEGATIVE, 0x31);
@@ -1562,7 +1543,7 @@ void lin_communication_ctrl(l_ifc_handle iii)
             /* 禁止收发 */
         case 3:
             /* 通讯类型:01/02/03 */
-            if ((communication_type != 1) || (communication_type != 2) || (communication_type != 3))
+            if ((communication_type != 1) && (communication_type != 2) && (communication_type != 3))
             {
                 /* 如果 ECU 检测到请求信息中通信类型错误，则返回该否定码 */
                 ld_make_slave_response_pdu(iii, SERVICE_COMMUNICATION_CTRL, NEGATIVE, 0x31);
@@ -1789,6 +1770,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
 
+#if 0
         case 0xF1B0: //应用软件版本号（固定版本） ASCII 支持会话:0x01 0x03 写入:N
             if (g_sessionStatus == SESSION_PROGRAM)
             {
@@ -1848,7 +1830,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
             ld_put_raw(iii, lin_tl_pdu);
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
-
+#endif
         case 0xF18A: //系统供应商代码 ASCII 支持会话:0x01 0x03 写入:N
             if (g_sessionStatus == SESSION_PROGRAM)
             {
@@ -1968,35 +1950,35 @@ void lin_read_data_by_identify(l_ifc_handle iii)
             lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
             lin_tl_pdu[4] = 0xF1;
             lin_tl_pdu[5] = 0x90;
-            lin_tl_pdu[6] = gVINDataIdentifier[0];
-            lin_tl_pdu[7] = gVINDataIdentifier[1];
+            lin_tl_pdu[6] = 0x30;
+            lin_tl_pdu[7] = 0x30;
             ld_put_raw(iii, lin_tl_pdu);
 
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x21;
-            lin_tl_pdu[2] = gVINDataIdentifier[2];
-            lin_tl_pdu[3] = gVINDataIdentifier[3];
-            lin_tl_pdu[4] = gVINDataIdentifier[4];
-            lin_tl_pdu[5] = gVINDataIdentifier[5];
-            lin_tl_pdu[6] = gVINDataIdentifier[6];
-            lin_tl_pdu[7] = gVINDataIdentifier[7];
+            lin_tl_pdu[2] = 0x30;
+            lin_tl_pdu[3] = 0x30;
+            lin_tl_pdu[4] = 0x30;
+            lin_tl_pdu[5] = 0x30;
+            lin_tl_pdu[6] = 0x30;
+            lin_tl_pdu[7] = 0x30;
             ld_put_raw(iii, lin_tl_pdu);
 
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x22;
-            lin_tl_pdu[2] = gVINDataIdentifier[8];
-            lin_tl_pdu[3] = gVINDataIdentifier[9];
-            lin_tl_pdu[4] = gVINDataIdentifier[10];
-            lin_tl_pdu[5] = gVINDataIdentifier[11];
-            lin_tl_pdu[6] = gVINDataIdentifier[12];
-            lin_tl_pdu[7] = gVINDataIdentifier[13];
+            lin_tl_pdu[2] = 0x30;
+            lin_tl_pdu[3] = 0x30;
+            lin_tl_pdu[4] = 0x30;
+            lin_tl_pdu[5] = 0x30;
+            lin_tl_pdu[6] = 0x30;
+            lin_tl_pdu[7] = 0x30;
             ld_put_raw(iii, lin_tl_pdu);
 
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x23;
-            lin_tl_pdu[2] = gVINDataIdentifier[14];
-            lin_tl_pdu[3] = gVINDataIdentifier[15];
-            lin_tl_pdu[4] = gVINDataIdentifier[16];
+            lin_tl_pdu[2] = 0x00;
+            lin_tl_pdu[3] = 0x00;
+            lin_tl_pdu[4] = 0x00;
             lin_tl_pdu[5] = 0x00;
             lin_tl_pdu[6] = 0x00;
             lin_tl_pdu[7] = 0x00;
@@ -2099,14 +2081,14 @@ void lin_read_data_by_identify(l_ifc_handle iii)
             lin_tl_pdu[3] = (l_u8)(sid + RES_POSITIVE);
             lin_tl_pdu[4] = 0xF1;
             lin_tl_pdu[5] = 0x9D;
-            lin_tl_pdu[6] = gECUInstallationDateDataIdentifier[0];
-            lin_tl_pdu[7] = gECUInstallationDateDataIdentifier[1];
+            lin_tl_pdu[6] = 0x20;
+            lin_tl_pdu[7] = 0x22;
             ld_put_raw(iii, lin_tl_pdu);
 
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x21;
-            lin_tl_pdu[2] = gECUInstallationDateDataIdentifier[2];
-            lin_tl_pdu[3] = gECUInstallationDateDataIdentifier[3];
+            lin_tl_pdu[2] = 0x02;
+            lin_tl_pdu[3] = 0x21;
             lin_tl_pdu[4] = 0x00;
             lin_tl_pdu[5] = 0x00;
             lin_tl_pdu[6] = 0x00;
@@ -2114,7 +2096,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
             ld_put_raw(iii, lin_tl_pdu);
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
-
+#if 0
         case 0xF1BF: //硬件版本  ASCII 支持会话:0x01 0x02 0x03 写入:N
             lin_tl_pdu[0] = *node_attr_ptr->configured_NAD_ptr;
             lin_tl_pdu[1] = 0x10;
@@ -2138,6 +2120,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
             ld_put_raw(iii, lin_tl_pdu);
             tl_desc_ptr->diag_state = LD_DIAG_TX_PHY;
             break;
+#endif
         case 0xF1C0: //软件总成  ASCII 支持会话:0x01 0x03 写入:N
             if (g_sessionStatus == SESSION_PROGRAM)
             {
@@ -2214,7 +2197,7 @@ void lin_read_data_by_identify(l_ifc_handle iii)
         ld_make_slave_response_pdu(iii, SERVICE_READ_DATA_BY_IDENTIFY, NEGATIVE, 0x13U);
     }
 }
-// TODO:写入DID数据没有实际功能
+
 void lin_write_data_by_identify(l_ifc_handle iii)
 {
     lin_tl_pdu_data_t lin_tl_pdu;
@@ -2239,10 +2222,10 @@ void lin_write_data_by_identify(l_ifc_handle iii)
     /* Get did in request */
     did = (l_u16)(((l_u16)lin_tl_pdu[4]) << 8U);
     did = (l_u16)(did | ((l_u16)lin_tl_pdu[5]));
-    sid = (l_u8)(lin_tl_pdu[2]);
+    sid = (l_u8)(lin_tl_pdu[3]);
 
     /* 写入数据 */
-    if (g_sessionStatus == SESSION_DEFAULT)
+    // if (g_sessionStatus == SESSION_DEFAULT)
     {
         ld_make_slave_response_pdu(iii, SERVICE_WRITE_DATA_BY_IDENTIFY, NEGATIVE, 0x7F); //0x7F 默认会话模式下不支持该服务
         return;
@@ -2250,10 +2233,12 @@ void lin_write_data_by_identify(l_ifc_handle iii)
 
     switch (did)
     {
+#if 0
     case 0xF190:
         if (g_security_access != SECURITY_ACCESS_LEVEL_1)
         {
             ld_make_slave_response_pdu(iii, SERVICE_WRITE_DATA_BY_IDENTIFY, NEGATIVE, 0x33);
+            break;
         }
 
         if (d_len == 20)
@@ -2294,10 +2279,12 @@ void lin_write_data_by_identify(l_ifc_handle iii)
         }
 
         break;
+#endif
     case 0xF198:
         if (g_security_access != SECURITY_ACCESS_LEVEL_FBL)
         {
             ld_make_slave_response_pdu(iii, SERVICE_WRITE_DATA_BY_IDENTIFY, NEGATIVE, 0x33);
+            break;
         }
 
         if (d_len == 13)
@@ -2336,6 +2323,7 @@ void lin_write_data_by_identify(l_ifc_handle iii)
         if (g_security_access != SECURITY_ACCESS_LEVEL_FBL)
         {
             ld_make_slave_response_pdu(iii, SERVICE_WRITE_DATA_BY_IDENTIFY, NEGATIVE, 0x33);
+            break;
         }
 
         if (d_len == 7)
@@ -2363,10 +2351,12 @@ void lin_write_data_by_identify(l_ifc_handle iii)
         }
 
         break;
+#if 0
     case 0xF19D:
         if (g_security_access != SECURITY_ACCESS_LEVEL_1)
         {
             ld_make_slave_response_pdu(iii, SERVICE_WRITE_DATA_BY_IDENTIFY, NEGATIVE, 0x33);
+            break;
         }
 
         if (d_len == 7)
@@ -2394,7 +2384,7 @@ void lin_write_data_by_identify(l_ifc_handle iii)
         }
 
         break;
-
+#endif
     default:
         ld_make_slave_response_pdu(iii, SERVICE_WRITE_DATA_BY_IDENTIFY, NEGATIVE, 0x31U);
         break;
@@ -2467,11 +2457,13 @@ void lin_routine_control(l_ifc_handle iii)
         return;
     }
 
+#if 0
     if (g_security_access == SECURITY_ACCESS_LOCK)
     {
         ld_make_slave_response_pdu(iii, SERVICE_ROUTINE_CONTROL, NEGATIVE, 0x33); //安全等级不满足
         return;
     }
+#endif
 
     /* 不支持功能寻址 */
     if (tl_desc_ptr->diag_state == LD_DIAG_RX_FUNCTIONAL)
@@ -2609,7 +2601,7 @@ void control_dtc_setting(l_ifc_handle iii)
     {
 
         code_type = rx_queue->tl_pdu_ptr[rx_queue->queue_header][3];
-        if (code_type == 0x1U) //检验刷新安全条件请求信息
+        if (code_type == 0x1U)
         {
             if (suppress_pos_msg_indication == 0)
             {
@@ -2811,6 +2803,9 @@ void lin_diag_service_callback(l_ifc_handle iii,
         tl_desc_ptr->tl_rx_queue.queue_current_size = 0U;
         tl_desc_ptr->tl_rx_queue.queue_header = tl_desc_ptr->tl_rx_queue.queue_tail;
     }
+
+    /* 接收到诊断请求 */
+    g_noDefaultSessionTicks = NO_DEFAULT_SESSION_PERIOD;
 }
 
 /*FUNCTION**********************************************************************

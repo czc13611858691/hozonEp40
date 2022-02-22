@@ -400,6 +400,11 @@ l_u8 lin_lld_rx_response(l_ifc_handle iii,
     return (retVal == STATUS_SUCCESS) ? LIN_LLD_OK : LIN_LLD_ERROR;
 }
 
+extern uint16_t g_noDefaultSessionTicks;
+extern l_u8 g_sessionStatus;
+extern uint8_t g_security_access_ticks;
+extern uint16_t g_security_access_10s_timer_ticks;
+
 /*FUNCTION**********************************************************************
  *
  * Function Name : lin_lld_timeout_service
@@ -444,6 +449,23 @@ void lin_lld_timeout_service(l_ifc_handle iii)
                 {
                     s_lin_max_frame_res_timeout_val[iii][index - 1U] = lin_calc_max_res_timeout_cnt(g_lin_protocol_user_cfg_array->lin_user_config_ptr->baudRate, index);
                 }
+            }
+
+            /* 非默认会话超时服务 */
+            if(g_noDefaultSessionTicks!=0)
+            {
+                g_noDefaultSessionTicks--;
+
+            }else{
+                g_sessionStatus=0x01;
+            }
+
+            /* ECU安全访问10s计时器 */
+            if(g_security_access_10s_timer_ticks!=0)
+            {
+                g_security_access_10s_timer_ticks--;
+            }else{
+                g_security_access_ticks=0;
             }
             break;
         case LIN_NODE_STATE_SEND_BREAK_FIELD:
