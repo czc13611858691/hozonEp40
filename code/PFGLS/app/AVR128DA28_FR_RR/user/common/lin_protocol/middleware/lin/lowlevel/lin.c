@@ -404,6 +404,7 @@ extern uint16_t g_noDefaultSessionTicks;
 extern l_u8 g_sessionStatus;
 extern uint8_t g_security_access_ticks;
 extern uint16_t g_security_access_10s_timer_ticks;
+extern l_u8 g_security_access;
 
 /*FUNCTION**********************************************************************
  *
@@ -458,6 +459,7 @@ void lin_lld_timeout_service(l_ifc_handle iii)
 
             }else{
                 g_sessionStatus=0x01;
+                g_security_access=0;
             }
 
             /* ECU安全访问10s计时器 */
